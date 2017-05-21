@@ -1,8 +1,25 @@
 {
-	"folders":
-	[
-		{
-			"path": "."
-		}
-	]
+    "folders":
+    [
+        {
+            "path": "."
+        }
+    ],
+    "settings":
+    {
+        "ensure_newline_at_eof_on_save": true,
+    },
+    "build_systems":
+    [
+        {
+            "name": "Run Main",
+            "cmd": ["python3", "-m", "rota.main"],
+            "working_dir": "${project_path}",
+        },
+        {
+            "name": "Run Tests",
+            "cmd": ["python3", "-m", "unittest", "tests.test_rota_days"],
+            "working_dir": "${project_path}",
+        },
+    ],
 }
