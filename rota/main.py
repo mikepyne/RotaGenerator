@@ -1,5 +1,5 @@
 import argparse
-from rota_days import RotaDays
+from .rota_days import RotaDays
 
 
 if __name__ == '__main__':
@@ -10,4 +10,4 @@ if __name__ == '__main__':
     args = parser.parse_args()
     r = RotaDays()
 
-    r.get_weekends(2017, args.start, args.end)
+    print(r.find_weekends(2017, args.start, args.end))
