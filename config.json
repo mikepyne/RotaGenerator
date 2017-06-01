@@ -1,0 +1,46 @@
+{
+    "readings": {
+        "saturday": 2,
+        "sunday": 3
+    },
+    "readers": {
+        "saturday": [
+            "Gabrielle Bedford",
+            "Ruth Burgess",
+            "Veronica Chisholm",
+            "Bridget Pope",
+            "Mary Wilson",
+            [
+                "Antoinette Philp",
+                "Claire Philp"
+            ],
+            "Prue Fenn",
+            [
+                "Mike Pyne",
+                "Angharad Pyne"
+            ],
+            "Sue Smith",
+            "Jane Cain"
+        ],
+        "sunday": [
+            "Robin Bartlett",
+            "Karen Neville",
+            "David Gillingham",
+            "Sylvia Walker",
+            "Dominic Boeck",
+            [
+                "Joan Sargent",
+                "Bethany Sargent"
+            ],
+            "Anna Rainer",
+            "Marzena Elliot",
+            "Lucy Moran",
+            [
+                "Mike Pyne",
+                "Angharad Pyne"
+            ],
+            "Sue Smith",
+            "Jane Cain"
+        ]
+    }
+}
