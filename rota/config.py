@@ -1,4 +1,5 @@
 import json
+import logging
 
 class ConfigException(Exception):
     pass
@@ -6,6 +7,7 @@ class ConfigException(Exception):
 
 class Config:
     def __init__(self):
+        self.logger = logging.getLogger('rotaGenerator')
         self.readings = {}
         self.readers = {}
 
@@ -20,14 +22,17 @@ class Config:
         """
         o = json.load(conf_file)
         if len(o) is 0:
-            raise ConfigException("No configuration details available")
+            self.logger.error('No configuration details available')
+            raise ConfigException('No configuration details available')
 
         try:
             self.readings = o['readings']
             self.readers = o['readers']
         except KeyError as e:
-            raise ConfigException("Missing key: {0}".format(e))
+            self.logger.error('Missing key: {0}'.format(e))
+            raise ConfigException('Missing key: {0}'.format(e))
 
         for r in self.readings:
             if r not in self.readers or len(self.readers[r]) is 0:
+                self.logger.error("No readers for '{0}'".format(r))
                 raise ConfigException("No readers for '{0}'".format(r))
