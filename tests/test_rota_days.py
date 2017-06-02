@@ -40,10 +40,29 @@ class TestRotaDays(unittest.TestCase):
 
         self.assertEqual(self.rd.find_weekends(2015, 3, 5), expected)
 
+    def test_find_weekends_dec_feb(self):
+        # Liturgical year starts in December, so first rota period is Dec - Feb
+        expected = ['Saturday 5th/Sunday 6th December',
+                    'Saturday 12th/Sunday 13th December',
+                    'Saturday 19th/Sunday 20th December',
+                    'Saturday 26th/Sunday 27th December',
+                    'Saturday 2nd/Sunday 3rd January',
+                    'Saturday 9th/Sunday 10th January',
+                    'Saturday 16th/Sunday 17th January',
+                    'Saturday 23rd/Sunday 24th January',
+                    'Saturday 30th/Sunday 31st January',
+                    'Saturday 6th/Sunday 7th February',
+                    'Saturday 13th/Sunday 14th February',
+                    'Saturday 20th/Sunday 21st February',
+                    'Saturday 27th/Sunday 28th February']
+
+        self.assertEqual(self.rd.find_weekends(2015, 12, 2, 2016), expected)
+
     def test_find_weekends_bad_params(self):
         expected = []
 
         self.assertEqual(self.rd.find_weekends(2015, 5, 3), expected)
+
 
 if __name__ == '__main__':
     unittest.main()
