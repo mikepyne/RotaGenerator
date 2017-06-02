@@ -51,6 +51,19 @@ class TestConfig(unittest.TestCase):
         self.assertRaisesRegex(ConfigException, "No readers for 'saturday'",
                                self.conf.read, data)
 
+    def test_config_empty_readers(self):
+        data = StringIO("""{
+                            "readings": {
+                                "saturday": 2
+                            },
+                            "readers": {
+                                "sunday": []
+                            }
+                        }""")
+
+        self.assertRaisesRegex(ConfigException, "No readers for 'saturday'",
+                               self.conf.read, data)
+
     def test_config_config(self):
         expected_readings = {"saturday": 2, "sunday": 3}
         expected_readers = {"saturday": ["Reader One"], "sunday": ["Reader Two"]}

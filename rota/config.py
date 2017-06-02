@@ -10,6 +10,14 @@ class Config:
         self.readers = {}
 
     def read(self, conf_file):
+        """Read config data from the file
+
+        Parameters:
+        conf_file -- a file-like object to read from
+
+        conf_file is a file like object, rather than the path to a file to make
+        testing easier.
+        """
         o = json.load(conf_file)
         if len(o) is 0:
             raise ConfigException("No configuration details available")
@@ -21,5 +29,5 @@ class Config:
             raise ConfigException("Missing key: {0}".format(e))
 
         for r in self.readings:
-            if r not in self.readers:
+            if r not in self.readers or len(self.readers[r]) is 0:
                 raise ConfigException("No readers for '{0}'".format(r))
