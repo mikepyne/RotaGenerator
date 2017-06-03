@@ -1,46 +1,116 @@
 {
-    "readings": {
-        "saturday": 2,
-        "sunday": 3
+    "saturday": {
+        "spaces": 2,
+        "startfrom": 1,
+        "readers": {
+            "1": {
+                "name": "Gabrielle Bedford",
+                "exclude": []
+            },
+            "2": {
+                "name": "Ruth Burgess",
+                "exclude": []
+            },
+            "3": {
+                "name": "Veronica Chisholm",
+                "exclude": []
+            },
+            "4": {
+                "name": "Bridget Pope",
+                "exclude": []
+            },
+            "5": {
+                "name": "Mary Wilson",
+                "exclude": []
+            },
+            "6": {
+                "name": "Philp",
+                "names": [
+                    "Antoinette Philp",
+                    "Claire Philp",
+                ],
+                "exclude": []
+            },
+            "7": {
+                "name": "Prue Fenn",
+                "exclude": []
+            },
+            "8": {
+                "name": "Pyne",
+                "names": [
+                    "Michael Pyne",
+                    "Angharad Pyne"
+                ],
+                "exclude": []
+            },
+            "9": {
+                "name": "Sue Smith",
+                "exclude": []
+            },
+            "10": {
+                "name": "Jain Cain",
+                "exclude": []
+            }
+        }
     },
-    "readers": {
-        "saturday": [
-            "Gabrielle Bedford",
-            "Ruth Burgess",
-            "Veronica Chisholm",
-            "Bridget Pope",
-            "Mary Wilson",
-            [
-                "Antoinette Philp",
-                "Claire Philp"
-            ],
-            "Prue Fenn",
-            [
-                "Mike Pyne",
-                "Angharad Pyne"
-            ],
-            "Sue Smith",
-            "Jane Cain"
-        ],
-        "sunday": [
-            "Robin Bartlett",
-            "Karen Neville",
-            "David Gillingham",
-            "Sylvia Walker",
-            "Dominic Boeck",
-            [
-                "Joan Sargent",
-                "Bethany Sargent"
-            ],
-            "Anna Rainer",
-            "Marzena Elliot",
-            "Lucy Moran",
-            [
-                "Mike Pyne",
-                "Angharad Pyne"
-            ],
-            "Sue Smith",
-            "Jane Cain"
-        ]
+    "sunday": {
+        "spaces": 3,
+        "startfrom": 1,
+        "readers": {
+            "1": {
+                "name": "Robin Bartlett",
+                "exclude": []
+            },
+            "2": {
+                "name": "Karen Neville",
+                "exclude": []
+            },
+            "3": {
+                "name": "David Gillingham",
+                "exclude": []
+            },
+            "4": {
+                "name": "Sylvia Walker",
+                "exclude": []
+            },
+            "5": {
+                "name": "Dominic Boeck",
+                "exclude": []
+            },
+            "6": {
+                "names": [
+                    "Joan Sargent",
+                    "Bethany Sargent"
+                ],
+                "exclude": []
+            },
+            "7": {
+                "name": "Anna Rainer",
+                "exclude": []
+            },
+            "8": {
+                "name": "Marzena Elliot",
+                "exclude": []
+            },
+            "9": {
+                "name": "Lucy Moran",
+                "exclude": []
+            },
+            "10": {
+                "names": [
+                   "Mike Pyne",
+                   "Angharad Pyne"
+                ],
+                "exclude": []
+            },
+            "11": {
+                "name": "Sue Smith",
+                "exclude": []
+            },
+            "12": {
+                "name": "Jane Cain",
+                "exclude": []
+            }
+        }
     }
 }

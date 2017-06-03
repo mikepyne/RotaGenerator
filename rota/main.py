@@ -37,7 +37,7 @@ if __name__ == '__main__':
             config.read(conf_file)
 
     except ConfigException as e:
-        print ('Error: {0}'.format(e.msg))
+        logger.error("Error: '%s'", e)
 
     print('\n'.join(r.find_weekends(args.start_year, args.start, args.end,
                                     args.end_year)))
