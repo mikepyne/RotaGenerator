@@ -1,0 +1,33 @@
+{
+    "version": 1,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "level": "DEBUG",
+            "formatter": "screen",
+            "stream": "ext://sys.stdout"
+        },
+        "file": {
+            "class": "logging.FileHandler",
+            "filename": "rota.log",
+            "mode": "w",
+            "level": "DEBUG",
+            "formatter": "file"
+        }
+    },
+    "formatters": {
+        "screen": {
+            "format": "%(asctime)s %(name)s %(funcName)s %(message)s",
+            "datefmt": "%H:%M:%S"
+        },
+        "file": {
+            "format": "%(asctime)s %(name)s %(levelname)s %(funcName)s %(message)s"
+        }
+    },
+    "loggers": {
+        "rotaGenerator": {
+            "level": "DEBUG",
+            "handlers": ["console", "file"]
+        }
+    }
+}
