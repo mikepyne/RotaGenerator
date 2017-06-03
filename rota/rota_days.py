@@ -5,7 +5,7 @@ import calendar
 
 class RotaDays:
     def __init__(self):
-        self.logger = logging.getLogger('rotaGenerator')
+        self.logger = logging.getLogger('rotaGenerator.rota_days')
         self.ie = inflect.engine()
 
     # Weekday 0 is Monday; weekday 6 is Sunday
@@ -21,19 +21,18 @@ class RotaDays:
         end -- the ending month
         end_year -- the year the ending month is in, if different to start year
         """
-        self.logger.debug('find_weekends: start_year=%s, start=%s, '
-                          'end=%s, end_year=%s', start_year, start, end,
-                          end_year)
+        self.logger.debug('start_year=%s, start=%s, end=%s, end_year=%s',
+                          start_year, start, end, end_year)
 
         if end_year is None:
             end_year = start_year
-            self.logger.debug('find_weekends: end_year=%s', end_year)
+            self.logger.debug('end_year=%s', end_year)
 
         weekends = []
         current = date(start_year, start, 1)
         e = calendar.monthrange(end_year, end)[1] # monthrange returns two values
         last = date(end_year, end, e)
-        self.logger.debug('find_weekends: current=%s, last=%s', current, last)
+        self.logger.debug('current=%s, last=%s', current, last)
 
         while(current <= last):
             if current.weekday() < 6:
@@ -56,7 +55,7 @@ class RotaDays:
             - Saturday 31st December/Sunday 1st January
             - Saturday 11th/Sunday 12th February
         """
-        self.logger.debug('format_weekend: saturday=%s, sunday=%s, ', saturday,
+        self.logger.debug('saturday=%s, sunday=%s, ', saturday,
                           sunday)
 
         sun = self.ie.ordinal(sunday.day)
@@ -70,5 +69,5 @@ class RotaDays:
             weekend = '{a:%A} {b} {a:%B}/{c:%A} {d} {c:%B}'.format(a=saturday,
                 b=sat, c=sunday, d=sun)
 
-        self.logger.debug('format_weekend; returning: %s', weekend)
+        self.logger.debug('returning: %s', weekend)
         return weekend

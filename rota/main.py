@@ -1,21 +1,19 @@
 import argparse
 import os.path
+import json
 import logging
+import logging.config
 from .rota_days import RotaDays
 from .config import Config, ConfigException
 
 
 if __name__ == '__main__':
+    with open(os.path.join('/', 'home', 'mike', 'Projects',
+                           'RotaGenerator', 'log_config.json')) as lcf:
+        lc = json.load(lcf)
+        logging.config.dictConfig(lc)
+
     logger = logging.getLogger('rotaGenerator')
-    logger.setLevel(logging.DEBUG)
-
-    ch = logging.StreamHandler()
-    ch.setLevel(logging.DEBUG)
-
-    formatter = logging.Formatter('%(asctime)s; %(name)s; %(levelname)s: %(message)s')
-
-    ch.setFormatter(formatter)
-    logger.addHandler(ch)
 
     logger.debug('=== Starting __main__')
     parser = argparse.ArgumentParser(description='Do some rota magic')

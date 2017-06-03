@@ -7,7 +7,7 @@ class ConfigException(Exception):
 
 class Config:
     def __init__(self):
-        self.logger = logging.getLogger('rotaGenerator')
+        self.logger = logging.getLogger('rotaGenerator.config')
         self.readings = {}
         self.readers = {}
 
