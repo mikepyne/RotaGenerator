@@ -47,16 +47,15 @@ class Config:
         except KeyError as e:
             raise ConfigError('Missing key', e, index)
 
-        try:
-            for reader in record['readers']:
-                if len(record['readers'][reader]) is not 0:
-                    self.validate_reader(index, reader,
-                                         record['readers'][reader])
-                else:
-                    raise ConfigError('Empty readers', 'readers', index)
+        if 'readers' not in record:
+            raise ConfigError('Missing readers', index)
 
-        except KeyError as e:
-            raise ConfigError('Missing readers', e, index)
+        if 'readers' in record and len(record['readers']) is 0:
+            raise ConfigError('Empty readers', index)
+
+        for reader in record['readers']:
+            self.validate_reader(index, reader,
+                                 record['readers'][reader])
 
     def validate_reader(self, index, reader_id, reader):
         self.logger.debug("Validating reader '%s' in record '%s'", reader_id,

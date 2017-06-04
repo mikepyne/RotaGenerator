@@ -1,73 +1,85 @@
 import pytest
-import unittest
 from io import StringIO
 from rota.config import Config, ConfigError
 
-@unittest.skip("Focus on testing config")
-class TestConfigError(unittest.TestCase):
+
+class TestConfigError(object):
     def test_config_error(self):
-        try:
-            raise ConfigError("An error", "a key", "a record")
-        except ConfigError as e:
-            self.assertEqual("An error; Key: a key; Record: a record", str(e))
+        with pytest.raises(
+            ConfigError,
+            match='An error; Key: a key; Record: a record'
+        ):
+            raise ConfigError('An error', 'a key', 'a record')
+
+    def test_config_error_key_none(self):
+        with pytest.raises(
+            ConfigError,
+            match='An error; Key: None; Record: a record'
+        ):
+            raise ConfigError('An error', record='a record')
+
+    def test_config_error_record_none(self):
+        with pytest.raises(
+            ConfigError,
+            match='An error; Key: a key; Record: None'
+        ):
+            raise ConfigError('An error', 'a key')
+
+    def test_config_error_key_record_none(self):
+        with pytest.raises(
+            ConfigError,
+            match='An error; Key: None; Record: None'
+        ):
+            raise ConfigError('An error')
 
 
-class TestConfig(unittest.TestCase):
-    def setUp(self):
-        self.conf = Config()
+@pytest.fixture(scope="module")
+def config():
+    return Config()
 
 
-    def test_validate_reader_valid(self):
+class TestConfig(object):
+    def test_validate_reader_valid(self, config):
         data = {"name": "Gabrielle","exclude": []}
-        try:
-            self.conf.validate_reader('saturday', '1', data)
-        except ConfigError as e:
-            self.fail("Unexpected exception: '{0}'".format(e))
+        config.validate_reader('saturday', '1', data)
 
-    def test_validate_reader_names(self):
+    def test_validate_reader_names(self, config):
         data = {"names": ["Gabrielle", "Ruth"], "exclude": []}
-        try:
-            self.conf.validate_reader('saturday', "1", data)
-        except ConfigError as e:
-            self.fail("Unexpected exception: '{0}'".format(e))
+        config.validate_reader('saturday', "1", data)
 
-    def test_validate_reader_empty_name(self):
+    def test_validate_reader_empty_name(self, config):
         data = {"name": "", "exclude": []}
-        self.assertRaisesRegex(ConfigError,
-                               'Empty name; Key: 1; Record: saturday',
-                               self.conf.validate_reader,
-                               'saturday',
-                               '1',
-                               data)
+        with pytest.raises(
+            ConfigError,
+            match='Empty name; Key: 1; Record: saturday'
+        ):
+            config.validate_reader('saturday', '1', data)
 
-    def test_validate_reader_empty_names(self):
+    def test_validate_reader_empty_names(self, config):
         data = {"names": [], "exclude": []}
-        self.assertRaisesRegex(ConfigError,
-                               'Names is empty; Key: 1; Record: saturday',
-                               self.conf.validate_reader,
-                               'saturday',
-                               '1',
-                               data)
+        with pytest.raises(
+            ConfigError,
+            match='Names is empty; Key: 1; Record: saturday'
+        ):
+            config.validate_reader('saturday', '1', data)
 
-    def test_validate_reader_empty_name_in_names(self):
+    def test_validate_reader_empty_name_in_names(self, config):
         data = {"names": [""], "exclude": []}
-        self.assertRaisesRegex(ConfigError,
-                               'Names has an empty name; Key: 1; Record: saturday',
-                               self.conf.validate_reader,
-                               'saturday',
-                               '1',
-                               data)
+        with pytest.raises(
+            ConfigError,
+            match='Names has an empty name; Key: 1; Record: saturday'
+        ):
+            config.validate_reader('saturday', '1', data)
 
-    @unittest.skip("Focus on validate_reader")
-    def test_config_empty(self):
+    def test_config_empty(self, config):
         data = StringIO("{}")
-        self.assertRaisesRegex(ConfigError,
-                               'No configuration details available',
-                               self.conf.read,
-                               data)
+        with pytest.raises(
+            ConfigError,
+            match='No configuration details available'
+        ):
+            config.read(data)
 
-    @unittest.skip("Focus on validate_reader")
-    def test_config_missing_key_readers(self):
+    def test_config_missing_key_readers(self, config):
         data = StringIO("""{
                             "saturday": {
                                 "spaces": 2,
@@ -75,13 +87,13 @@ class TestConfig(unittest.TestCase):
                            }
                         }""")
 
-        self.assertRaisesRegex(
-                ConfigError,
-                "Missing readers; Key: 'readers'; Record: saturday",
-                self.conf.read, data)
+        with pytest.raises(
+            ConfigError,
+            match="Missing readers; Key: saturday; Record: None"
+        ):
+            config.read(data)
 
-    @unittest.skip("Focus on validate_reader")
-    def test_config_missing_key_spaces(self):
+    def test_config_missing_key_spaces(self, config):
         data = StringIO("""{
                             "saturday": {
                                 "startfrom": 1,
@@ -94,12 +106,13 @@ class TestConfig(unittest.TestCase):
                             }
                         }""")
 
-        self.assertRaisesRegex(ConfigError,
-                               "Missing key; Key: 'spaces'; Record: saturday",
-                               self.conf.read, data)
+        with pytest.raises(
+            ConfigError,
+            match="Missing key; Key: 'spaces'; Record: saturday"
+        ):
+            config.read(data)
 
-    @unittest.skip("Focus on validate_reader")
-    def test_config_missing_key_startfrom(self):
+    def test_config_missing_key_startfrom(self, config):
         data = StringIO("""{
                             "saturday": {
                                 "spaces": 1,
@@ -112,12 +125,13 @@ class TestConfig(unittest.TestCase):
                             }
                         }""")
 
-        self.assertRaisesRegex(ConfigError,
-                               "Missing key; Key: 'startfrom'; Record: saturday",
-                               self.conf.read, data)
+        with pytest.raises(
+            ConfigError,
+            match="Missing key; Key: 'startfrom'; Record: saturday"
+        ):
+            config.read(data)
 
-    @unittest.skip("Focus on validate_reader")
-    def test_config_missing_key_name(self):
+    def test_config_missing_key_name(self, config):
         data = StringIO("""{
                             "saturday": {
                                 "spaces": 1,
@@ -130,14 +144,13 @@ class TestConfig(unittest.TestCase):
                             }
                         }""")
 
-        self.assertRaisesRegex(
-                ConfigError,
-                "No name or names in reader; Key: 1; Record: saturday",
-                self.conf.read,
-                data)
+        with pytest.raises(
+            ConfigError,
+            match="No name or names in reader; Key: 1; Record: saturday"
+        ):
+            config.read(data)
 
-    @unittest.skip("Focus on validate_reader")
-    def test_config_missing_key_name_but_names(self):
+    def test_config_missing_key_name_but_names(self, config):
         data = StringIO("""{
                             "saturday": {
                                 "spaces": 1,
@@ -151,13 +164,9 @@ class TestConfig(unittest.TestCase):
                             }
                         }""")
 
-        try:
-            self.conf.read(data)
-        except ConfigError as e:
-            self.fail("Unexpected exception: '{0}'".format(e))
+        config.read(data)
 
-    @unittest.skip("Focus on validate_reader")
-    def test_config_empty_readers(self):
+    def test_config_empty_readers(self, config):
         data = StringIO("""{
                             "saturday": {
                                 "spaces": 2,
@@ -167,11 +176,13 @@ class TestConfig(unittest.TestCase):
                             }
                         }""")
 
-        self.assertRaisesRegex(ConfigError, "No readers for 'saturday'",
-                               self.conf.read, data)
+        with pytest.raises(
+            ConfigError,
+            match="Empty readers; Key: saturday; Record: None"
+        ):
+            config.read(data)
 
-    @unittest.skip("Focus on validate_reader")
-    def test_config_config(self):
+    def test_config_config(self, config):
         expected_readings = {}
         expected_readers = {}
         data = StringIO("""{
@@ -197,12 +208,4 @@ class TestConfig(unittest.TestCase):
                             }
                         }""")
 
-        self.conf.read(data)
-        self.assertEqual(self.conf.readings, expected_readings)
-        self.assertEqual(self.conf.readers, expected_readers)
-
-
-#TODO: Add tests for validate and validate_reader, then for read?
-
-if __name__ == '__main__':
-    unittest.main()
+        config.read(data)
