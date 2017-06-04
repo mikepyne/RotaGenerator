@@ -64,11 +64,14 @@ class Config:
 
         if 'name' not in reader and 'names' not in reader:
             raise ConfigError('No name or names in reader', reader_id, index)
-        elif 'names' in reader and len(reader['names']) is 0:
+
+        if 'names' in reader and len(reader['names']) is 0:
             raise ConfigError('Names is empty', reader_id, index)
-        elif not reader['name']:
+
+        if 'name' in reader and not reader['name']:
             raise ConfigError('Empty name', reader_id, index)
 
+        # Does 'names' contain contain an empty string?
         if 'names' in reader and len(reader['names']) is not 0:
             for name in reader['names']:
                 if not name:
