@@ -1,3 +1,4 @@
 rota.sublime-workspace
 *.pyc
 *.log
+.cache/
