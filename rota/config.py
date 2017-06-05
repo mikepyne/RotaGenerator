@@ -1,5 +1,7 @@
 import json
 import logging
+from collections import OrderedDict
+
 
 class ConfigError(Exception):
     def __init__(self, error, key = None, record = None):
@@ -15,8 +17,7 @@ class ConfigError(Exception):
 class Config:
     def __init__(self):
         self.logger = logging.getLogger('rotaGenerator.config')
-        self.readings = {}
-        self.readers = {}
+        self.loaded_data = OrderedDict()
 
     def read(self, conf_file):
         """Read config data from the file
@@ -27,12 +28,20 @@ class Config:
         conf_file is a file like object, rather than the path to a file to make
         testing easier.
         """
-        loaded = json.load(conf_file)
-        if len(loaded) is 0:
+        self.loaded_data = json.load(conf_file, object_pairs_hook=OrderedDict)
+        if len(self.loaded_data) is 0:
             raise ConfigError('No configuration details available')
 
-        for index in loaded:
-            self.validate(index, loaded[index])
+        for index in self.loaded_data:
+            self.validate(index, self.loaded_data[index])
+
+    def days(self):
+        """Return a list of days"""
+        return list(self.loaded_data.keys())
+
+    def day(self, key):
+        """Return details for a specific day"""
+        return self.loaded_data[key]
 
     def validate(self, index, record):
         """Validate a record from the config"""

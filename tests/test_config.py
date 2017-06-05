@@ -33,7 +33,7 @@ class TestConfigError(object):
             raise ConfigError('An error')
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture()
 def config():
     return Config()
 
@@ -79,59 +79,49 @@ class TestConfig(object):
         ):
             config.read(data)
 
-    def test_config_missing_key_readers(self, config):
-        data = StringIO("""{
-                            "saturday": {
-                                "spaces": 2,
-                                "startfrom": 1
-                           }
-                        }""")
-
+    def test_validate_missing_key_readers(self, config):
+        data = {"spaces": 2, "startfrom": 1}
         with pytest.raises(
             ConfigError,
             match="Missing readers; Key: saturday; Record: None"
         ):
-            config.read(data)
+            config.validate('saturday', data)
 
-    def test_config_missing_key_spaces(self, config):
-        data = StringIO("""{
-                            "saturday": {
-                                "startfrom": 1,
-                                "readers": {
-                                    "1": {
-                                        "name": "Gabrielle Bedford",
-                                        "exclude": []
-                                    }
-                                }
-                            }
-                        }""")
+    def test_validate_missing_key_spaces(self, config):
+        data = {
+            "startfrom": 1,
+            "readers": {
+                "1": {
+                    "name": "Gabrielle Bedford",
+                    "exclude": []
+                }
+            }
+        }
 
         with pytest.raises(
             ConfigError,
             match="Missing key; Key: 'spaces'; Record: saturday"
         ):
-            config.read(data)
+            config.validate('saturday', data)
 
-    def test_config_missing_key_startfrom(self, config):
-        data = StringIO("""{
-                            "saturday": {
-                                "spaces": 1,
-                                "readers": {
-                                    "1": {
-                                        "name": "Gabrielle Bedford",
-                                        "exclude": []
-                                    }
-                                }
-                            }
-                        }""")
+    def test_validate_missing_key_startfrom(self, config):
+        data = {
+            "spaces": 1,
+            "readers": {
+                "1": {
+                    "name": "Gabrielle Bedford",
+                    "exclude": []
+                }
+            }
+        }
 
         with pytest.raises(
             ConfigError,
             match="Missing key; Key: 'startfrom'; Record: saturday"
         ):
-            config.read(data)
+            config.validate('saturday', data)
 
-    def test_config_missing_key_name(self, config):
+    def test_read_missing_key_name(self, config):
         data = StringIO("""{
                             "saturday": {
                                 "spaces": 1,
@@ -150,7 +140,7 @@ class TestConfig(object):
         ):
             config.read(data)
 
-    def test_config_missing_key_name_but_names(self, config):
+    def test_read_missing_key_name_but_names(self, config):
         data = StringIO("""{
                             "saturday": {
                                 "spaces": 1,
@@ -166,7 +156,7 @@ class TestConfig(object):
 
         config.read(data)
 
-    def test_config_empty_readers(self, config):
+    def test_read_empty_readers(self, config):
         data = StringIO("""{
                             "saturday": {
                                 "spaces": 2,
@@ -182,7 +172,7 @@ class TestConfig(object):
         ):
             config.read(data)
 
-    def test_config_config(self, config):
+    def test_read(self, config):
         expected_readings = {}
         expected_readers = {}
         data = StringIO("""{
@@ -209,3 +199,72 @@ class TestConfig(object):
                         }""")
 
         config.read(data)
+
+    def test_days(self, config):
+        data = StringIO("""{
+                            "saturday": {
+                                "spaces": 2,
+                                "startfrom": 3,
+                                "readers": {
+                                    "1": {
+                                        "name": "Gabrielle",
+                                        "exclude": []
+                                    }
+                                }
+                            },
+                            "sunday": {
+                                "spaces": 3,
+                                "startfrom": 1,
+                                "readers": {
+                                    "1": {
+                                        "name": "John",
+                                        "exlude": []
+                                    }
+                                }
+                            }
+                        }""")
+
+        config.read(data);
+        assert config.days() == ['saturday', 'sunday']
+
+    def test_day(self, config):
+        data = StringIO("""{
+                            "saturday": {
+                                "spaces": 2,
+                                "startfrom": 3,
+                                "readers": {
+                                    "1": {
+                                        "name": "Gabrielle",
+                                        "exclude": []
+                                    }
+                                }
+                            },
+                            "sunday": {
+                                "spaces": 3,
+                                "startfrom": 1,
+                                "readers": {
+                                    "1": {
+                                        "name": "John",
+                                        "exclude": []
+                                    }
+                                }
+                            }
+                        }""")
+
+        config.read(data);
+        assert config.day('sunday') == {
+            "spaces": 3,
+            "startfrom": 1,
+            "readers": {"1": {"name": "John", "exclude": []}}
+        }
+
+        assert config.day('saturday') == {
+            "spaces": 2,
+            "startfrom": 3,
+            "readers": {
+                "1": {
+                    "name": "Gabrielle",
+                    "exclude": []
+                }
+            }
+        }
