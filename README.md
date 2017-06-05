@@ -17,5 +17,6 @@ Things that I want to do using this tool:
 
 ## Requirements
 
-* Python 3
-* [inflect](https://pypi.python.org/pypi/inflect) (0.2.5)
+See requirements.txt for list of required packages.
+
+Missing packages can be installed using PyPi.
