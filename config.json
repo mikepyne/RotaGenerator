@@ -1,6 +1,6 @@
 {
     "saturday": {
-        "spaces": 2,
+        "needed": 2,
         "startfrom": 1,
         "readers": {
             "1": {
