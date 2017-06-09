@@ -14,11 +14,11 @@ class Reader:
         self.exclude = exclude
 
     def __repr__(self):
-        return("{0}({1}, '{2}', {3}, {4})".format(self.__class__.__name__,
-                                                     self.id,
-                                                     self.name,
-                                                     str(self.names),
-                                                     str(self.exclude)))
+        return("{0}({1:d}, '{2}', {3!r}, {4!r})".format(self.__class__.__name__,
+                                                        self.id,
+                                                        self.name,
+                                                        self.names,
+                                                        self.exclude))
 
     def __str__(self):
         string = '{0} - {1}'.format(self.id, self.name)

@@ -32,6 +32,12 @@ class TestReader(object):
         expected = "Reader(1, 'Gabrielle', ['Burt', 'Ernie'], ['01/01/2001'])"
         reader = Reader(1, 'Gabrielle', ['Burt', 'Ernie'], ['01/01/2001'])
         assert repr(reader) == expected
+        assert eval(repr(reader)) == reader
+
+    def test_repr_bad_id(self):
+        reader = Reader('A', 'Gabrielle', [], [])
+        with pytest.raises(ValueError):
+            repr(reader)
 
     def test_eq_id(self):
         reader = Reader(1, 'Gabrielle')

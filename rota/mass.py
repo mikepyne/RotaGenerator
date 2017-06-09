@@ -9,18 +9,29 @@ class MassError(Exception):
 class Mass:
     """Represents a mass readers are needed for"""
 
-    def __init__(self, label, needed, startfrom):
+    def __init__(self, label, needed, startfrom, readers={}):
         """Create the Mass object
 
         Arguments:
         label -- [string] a label for the mass (e.g. Saturday)
         needed -- [int] how many readers are needed for a Mass
         startfrom -- [int] which reader to startfrom
+        readers -- [dict] the readers for the Mass
         """
         self.label = label
         self.needed = needed
         self.startfrom = startfrom
-        self.readers = []
+        self.readers = readers
+
+    def __str__(self):
+        return self.label
+
+    def __repr__(self):
+        return("{0}('{1}', {2:d}, {3:d}, {4!r})".format(self.__class__.__name__,
+                                                        self.label,
+                                                        self.needed,
+                                                        self.startfrom,
+                                                        self.readers))
 
     def add_reader(self, reader):
         """Add a reader to the mass
@@ -28,10 +39,7 @@ class Mass:
         Arguments:
         reader -- [Reader] the reader to add
         """
-        if not isinstance(reader, Reader):
-            raise MassError('Not a reader')
-
-        self.readers.append(reader)
+        self.readers[reader.id] = reader
 
     def get_reader(self, id):
         """Get a reader object
@@ -39,6 +47,7 @@ class Mass:
         Arguments:
         id -- the id of the reader to retrieve
         """
-        for r in self.readers:
-            if r == id:
-                return r
+        if id in self.readers:
+            return self.readers[id]
+        else:
+            raise MassError('No reader for ID: {0:d}'.format(id))
