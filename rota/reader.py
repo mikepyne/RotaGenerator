@@ -1,17 +1,29 @@
 import logging
 
 class ReaderError(Exception):
-    pass
+    def __init__(self, error, id = None):
+        self.error = error
+        self.id = id
+
+    def __str__(self):
+        return "{0}; ID: {1}".format(self.error, self.id)
 
 class Reader:
-    def __init__(self, id, name='', names=[], exclude=[]):
-        if not name and not names:
-            raise ReaderError('Reader must have a name and/or names')
-
+    def __init__(self, id, name='', names=None, exclude=None):
         self.id = id
         self.name = name
         self.names = names
         self.exclude = exclude
+
+        if not self.name and not self.names:
+            raise ReaderError('Reader must have a name and/or names', self.id)
+
+        try:
+            for n in self.names:
+                if not n:
+                    raise ReaderError('Bad name in names', self.id)
+        except TypeError as e:
+            raise ReaderError('Invalid names ({s})'.format(e), self.id)
 
     def __repr__(self):
         return("{0}({1:d}, '{2}', {3!r}, {4!r})".format(self.__class__.__name__,
@@ -26,13 +38,3 @@ class Reader:
             string = '{0} - {1}'.format(self.id, str(self.names))
 
         return string
-
-    def __eq__(self, other):
-        eq = False
-        if isinstance(other, int):
-            eq = self.id == other
-        else:
-            eq = self.id == other.id and self.name == other.name and \
-                 self.names == other.names and self.exclude == self.exclude
-
-        return eq

@@ -32,21 +32,8 @@ class TestReader(object):
         expected = "Reader(1, 'Gabrielle', ['Burt', 'Ernie'], ['01/01/2001'])"
         reader = Reader(1, 'Gabrielle', ['Burt', 'Ernie'], ['01/01/2001'])
         assert repr(reader) == expected
-        assert eval(repr(reader)) == reader
 
     def test_repr_bad_id(self):
         reader = Reader('A', 'Gabrielle', [], [])
         with pytest.raises(ValueError):
             repr(reader)
-
-    def test_eq_id(self):
-        reader = Reader(1, 'Gabrielle')
-        assert (reader == 1) == True
-        assert (reader == 2) == False
-
-    def test_eq_all(self):
-        left = Reader(1, 'Gabrielle', ['Burt', 'Ernie'])
-        right = Reader(1, 'Gabrielle', ['Burt', 'Ernie'])
-        alt = Reader(2, 'Mike')
-        assert (left == right) == True
-        assert (left == alt) == False

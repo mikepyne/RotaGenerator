@@ -2,6 +2,7 @@
     "saturday": {
         "needed": 2,
         "startfrom": 1,
+        "exclude": [],
         "readers": {
             "1": {
                 "name": "Gabrielle Bedford",
@@ -54,8 +55,9 @@
         }
     },
     "sunday": {
-        "spaces": 3,
+        "needed": 3,
         "startfrom": 1,
+        "exclude": [],
         "readers": {
             "1": {
                 "name": "Robin Bartlett",

@@ -1,2 +1,2 @@
-inflect==0.2.5
-pytest==3.1.1
+inflect>=0.2.5
+pytest>=3.1.1
