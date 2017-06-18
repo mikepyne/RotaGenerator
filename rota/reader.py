@@ -9,21 +9,33 @@ class ReaderError(Exception):
         return "{0}; ID: {1}".format(self.error, self.id)
 
 class Reader:
-    def __init__(self, id, name='', names=None, exclude=None):
+    def __init__(self, id, data):
         self.id = id
-        self.name = name
-        self.names = names
-        self.exclude = exclude
 
-        if not self.name and not self.names:
+        if 'name' not in data and 'names' not in data:
             raise ReaderError('Reader must have a name and/or names', self.id)
+
+        try:
+            self.name = data['name']
+        except KeyError:
+            self.name = ''
+
+        try:
+            self.names = data['names']
+        except KeyError:
+            self.names = []
 
         try:
             for n in self.names:
                 if not n:
                     raise ReaderError('Bad name in names', self.id)
         except TypeError as e:
-            raise ReaderError('Invalid names ({s})'.format(e), self.id)
+            raise ReaderError('Invalid names ({0})'.format(e), self.id)
+
+        try:
+            self.exclude = data['exclude']
+        except KeyError:
+            self.exclude = []
 
     def __repr__(self):
         return("{0}({1:d}, '{2}', {3!r}, {4!r})".format(self.__class__.__name__,
