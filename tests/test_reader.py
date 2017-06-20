@@ -3,11 +3,8 @@ from rota.reader import Reader, ReaderError
 
 
 class TestReader_init():
-    """Test the init method of the Reader class
+    """Test the init method of the Reader class"""
 
-    init_data is a list of tuples containing test data
-    init_ids is a list of strings to identify which test is run
-    """
     init_data = [
         ({'name': 'Gabrielle'}),
         ({'name': 'Gabrielle', 'names': ['Burt', 'Ernie']}),
@@ -34,11 +31,8 @@ class TestReader_init():
 
 
 class TestReader_str():
-    """Test the str method of the Reader class
+    """Test the str method of the Reader class"""
 
-    test_data is a list of tuples containing test data and expected results
-    test_ids is a list of strings to identify which test is run
-    """
     test_data = [
         ({'name': 'Gabrielle'}, '1 - Gabrielle'),
         ({'names': ['Burt', 'Ernie']}, "1 - ['Burt', 'Ernie']"),
@@ -58,19 +52,41 @@ class TestReader_str():
 
 
 class TestReader_repr():
-    """Test the repr method of the Reader class
+    """Test the repr method of the Reader class"""
 
-    TODO:
-        - Test with names only
-        - Test with no exclude
-    """
-    def test_repr(self):
-        data = {
-            'name': 'Gabrielle',
-            'names': ['Burt', 'Ernie'],
-            'exclude': ['01/01/2001']
-        }
-        expected = "Reader(1, 'Gabrielle', ['Burt', 'Ernie'], ['01/01/2001'])"
+    test_data = [
+        (
+            {
+                'name': 'Gabrielle',
+                'names': ['Burt', 'Ernie'],
+                'exclude': ['01/01/2001']
+            },
+            "Reader(1, 'Gabrielle', ['Burt', 'Ernie'], ['01/01/2001'])"
+        ),
+        (
+            {
+                'names': ['Burt', 'Ernie'],
+                'exclude': ['01/01/2001']
+            },
+            "Reader(1, '', ['Burt', 'Ernie'], ['01/01/2001'])"
+        ),
+        (
+            {
+                'name': 'Gabrielle',
+                'names': ['Burt', 'Ernie']
+            },
+            "Reader(1, 'Gabrielle', ['Burt', 'Ernie'], [])"
+        )
+    ]
+
+    test_ids = [
+        'all',
+        'names_only',
+        'no_exlude'
+    ]
+
+    @pytest.mark.parametrize("data, expected", test_data, ids=test_ids)
+    def test_repr(sel, data, expected):
         reader = Reader(1, data)
         assert repr(reader) == expected
 
