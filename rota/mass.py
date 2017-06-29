@@ -14,34 +14,41 @@ class MassError(Exception):
 class Mass:
     """Represents a mass readers are needed for"""
 
-    def __init__(self, label, needed, startfrom, exclude=None, readers=None):
+    def __init__(self, label, data):
         """Create the Mass object
 
         Arguments:
         label -- [string] a label for the mass (e.g. Saturday)
-        needed -- [int] how many readers are needed for a Mass
-        startfrom -- [int] which reader to startfrom
-        exclude -- [list] masses which do not need readers
-        readers -- [dict] the readers for the Mass
+        data -- dict with the attributes for the mass
 
         To Do:
             * Check 'exclude'
             * Check 'readers'
         """
         self.label = label
-        self.needed = needed
-        self.startfrom = startfrom
-        if exclude is None:
-            self.exclude = []
-        else:
-            self.exclude = exclude
-        if readers is None:
-            self.readers = {}
-        else:
-            self.readers = readers
-
+        self.readers = []
         if not self.label:
             raise (MassError('Bad label'))
+
+        try:
+            self.needed = data['needed']
+            self.startfrom = data['startfrom']
+        except KeyError as e:
+            raise MassError("Required key is missing ({0})".format(e),
+                            self.label)
+
+        try:
+            self.exclude = data['exclude']
+        except KeyError:
+            self.exclude = []
+
+        try:
+            for r in data['readers']:
+                reader = Reader(r, data['readers'][r])
+                self.readers.append(r)
+
+        except KeyError:
+            self.readers = []
 
         try:
             int(self.needed)
@@ -76,6 +83,17 @@ class Mass:
         reader -- [Reader] the reader to add
         """
         self.readers[reader.id] = reader
+
+    def add_exclude(self, exclude):
+        """Add a list of masses that don't need readers
+
+        Arguments:
+        excludes -- [list] Masses that don't need readers
+        """
+        if exclude is None:
+            self.exclude = []
+        else:
+            self.exclude = exclude
 
     def get_reader(self, id):
         """Get a reader object
