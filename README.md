@@ -20,3 +20,11 @@ Things that I want to do using this tool:
 See requirements.txt for list of required packages.
 
 Missing packages can be installed using PyPi.
+
+## Running Tests
+
+In the project directory, use the command:
+
+``
+python3 -m pytest tests/
+``
