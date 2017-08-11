@@ -1,5 +1,5 @@
 import logging
-from .reader import Reader, ReaderError
+from reader import Reader, ReaderError
 
 
 class MassError(Exception):

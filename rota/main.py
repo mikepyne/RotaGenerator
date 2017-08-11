@@ -1,10 +1,10 @@
+#!/usr/bin/env python3
 import argparse
 import os.path
 import json
 import logging
 import logging.config
-from .rota_days import RotaDays
-from .config import Config, ConfigException
+from rota_days import RotaDays
 
 
 if __name__ == '__main__':
@@ -26,7 +26,6 @@ if __name__ == '__main__':
     args = parser.parse_args()
     logger.debug('... Parsed arguments: %s', args)
     r = RotaDays()
-    config = Config()
 
     try:
         config_fpath = os.path.join('/', 'home', 'mike', 'Projects',
@@ -34,9 +33,14 @@ if __name__ == '__main__':
 
         logger.debug('... Opening config from %s', config_fpath)
         with open(config_fpath) as conf_file:
-            config.read(conf_file)
+            loaded_data = json.load(conf_file, object_pairs_hook=OrderedDict)
+            if len(loaded_data) is 0:
+                raise ConfigError('No configuration details available')
 
-    except ConfigException as e:
+            for index in loaded_data:
+                m = Mass(index, loaded_data[index])
+
+    except Exception as e:
         logger.error("Error: '%s'", e)
 
     print('\n'.join(r.find_weekends(args.start_year, args.start, args.end,
