@@ -114,6 +114,8 @@ class TestMass_init(object):
 
 class TestMass_repr:
     repr_data = [
+        # Test data for the __repr__ method
+        # Each set contains the label, data, and expected output
         (
             'saturday',
             {
@@ -122,7 +124,7 @@ class TestMass_repr:
                 'exclude': [],
                 'readers': {}
             },
-            "Mass('saturday', 2, 1, [], [])"
+            "Mass('saturday', 2, 1, [], {})"
         ),
         (
             'saturday',
@@ -131,13 +133,15 @@ class TestMass_repr:
                 'startfrom': 1,
                 'exclude': ['A'],
                 'readers':{
-                    "1": {
+                    1: {
                         "name": "Gabrielle Bedford",
                         "exclude": []
                     }
                 }
             },
-            "Mass('saturday', 2, 1, ['A'], ['1'])"
+            # Long string split over two lines
+            "Mass('saturday', 2, 1, ['A'], "
+            "{1: Reader(1, 'Gabrielle Bedford', [], [])})"
         )
     ]
 
@@ -152,7 +156,6 @@ class TestMass_repr:
         assert repr(m) == expected
 
 
-@pytest.mark.skip(reason="Not reader yet")
 class TestMass:
     def test_str(self, mass):
         assert str(mass) == 'saturday'

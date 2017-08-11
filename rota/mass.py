@@ -12,7 +12,15 @@ class MassError(Exception):
 
 
 class Mass:
-    """Represents a mass readers are needed for"""
+    """Represents a mass readers are needed for
+
+    Instance Variables:
+    label -- label for the mass (e.g. 'Saturday', or 'Sat 6:15pm')
+    startfrom -- ID of reader (in readers) to assign first
+    needed -- how many readers are needed for each occasion
+    exclude -- list of occasions to be excluded
+    readers -- dictionary of readers available for the mass
+    """
 
     def __init__(self, label, data):
         """Create the Mass object
@@ -26,7 +34,7 @@ class Mass:
             * Check 'readers'
         """
         self.label = label
-        self.readers = []
+        self.readers = {}
         if not self.label:
             raise (MassError('Bad label'))
 
@@ -45,10 +53,10 @@ class Mass:
         try:
             for r in data['readers']:
                 reader = Reader(r, data['readers'][r])
-                self.readers.append(r)
+                self.readers[r] = reader
 
         except KeyError:
-            self.readers = []
+            self.readers = {}
 
         try:
             int(self.needed)
