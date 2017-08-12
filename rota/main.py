@@ -4,7 +4,10 @@ import os.path
 import json
 import logging
 import logging.config
+from collections import OrderedDict
+
 from rota_days import RotaDays
+from mass import Mass
 
 
 if __name__ == '__main__':
@@ -20,7 +23,10 @@ if __name__ == '__main__':
     parser.add_argument('start', type=int, help="Starting month")
     parser.add_argument('start_year', type=int, help="Starting year")
     parser.add_argument('end', type=int, help="Ending month")
-    parser.add_argument('-e', '--end_year', type=int, help="Ending month, if different",
+    parser.add_argument('-e',
+                        '--end_year',
+                        type=int,
+                        help="Ending year, if different",
                         nargs='?', default=None)
 
     args = parser.parse_args()
@@ -41,7 +47,7 @@ if __name__ == '__main__':
                 m = Mass(index, loaded_data[index])
 
     except Exception as e:
-        logger.error("Error: '%s'", e)
+        logger.error("Error reading JSON: '%s'", e)
 
     print('\n'.join(r.find_weekends(args.start_year, args.start, args.end,
                                     args.end_year)))

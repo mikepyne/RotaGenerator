@@ -3,7 +3,7 @@
     "handlers": {
         "console": {
             "class": "logging.StreamHandler",
-            "level": "DEBUG",
+            "level": "INFO",
             "formatter": "screen",
             "stream": "ext://sys.stdout"
         },
@@ -17,7 +17,7 @@
     },
     "formatters": {
         "screen": {
-            "format": "%(asctime)s %(name)s %(funcName)s %(message)s",
+            "format": "%(asctime)s %(message)s",
             "datefmt": "%H:%M:%S"
         },
         "file": {
