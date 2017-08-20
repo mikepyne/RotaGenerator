@@ -1,45 +1,36 @@
-import logging
-import scrapy
-from scrapy.crawler import CrawlerProcess
-from scrapy.selector import Selector
-from scrapy.http import HtmlResponse
-from scrapy.utils.log import configure_logging
+from bs4 import BeautifulSoup
 
 
-class LoewSpider(scrapy.Spider):
-    """Spider for extracting data from the Liturgy Office calendar
+class LiturgyOffice:
+    root_url = 'http://www.liturgyoffice.org.uk/Calendar/'
 
-    I've noticed that the calendar uses the 'Sunday' class for days other than
-    sundays. For example, Tuesday 15th August 2017 has the class 'Sunday'
-    """
-    name = "liturgyoffice"
+    def get_sundays_in(self, year, month):
+        url = '{0}{1}/{2}.shtml'.format(LiturgyOffice.root_url, year, month)
+        sunday_rows = []
+        with open('../docs/Liturgical Calendar | August 2017.shtml',
+                  encoding='windows-1252') as doc:
+            soup = BeautifulSoup(doc, 'lxml')
+            table = soup.find('table', summary='Liturgical Calendar for August 2017')
+            all_rows = table.find('tr')
+            sunday_rows = table.find_all(self._row_is_sunday)
 
-    def start_requests(self):
-        urls = ['http://www.liturgyoffice.org.uk/Calendar/2017/Aug.shtml']
+        if sunday_rows:
+            self._parse_sundays(sunday_rows)
 
-        for url in urls:
-            yield scrapy.Request(url=url, callback=self.parse)
+    def _parse_sundays(self, rows):
+        pass
 
-    def parse(self, response):
-        html = HtmlResponse(
-            url=response.url,
-            body=response.body)
+    def _row_is_sunday(self, tag):
+        is_sunday = False
+        if tag.name == 'tr':
+            child = tag.find('td', class_="Sunday")
+            if child is not None:
+                # The class attribute is returned as a list of strings (or none)
+                if 'Sunday' in child['class'] and child.string == 'Sunday':
+                   is_sunday = True
 
-        rows = Selector(response=html).xpath(
-            '//html/body/div[@id="wrapper"]/div[@id="header"]/div[@id="main"]'
-            '/div[@id="content"]/div[@id="Calendar"]'
-            '/table[@summary="Liturgical Calendar for August 2017"]/tbody/tr'
-            '[td[@class="Sunday"]]'
-        )
+        return is_sunday
 
-        for row in rows:
-            print(row.extract())
-
-
-configure_logging({'LOG_LEVEL': logging.ERROR})
-process = CrawlerProcess({
-    'USER_AGENT': 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)'
-})
-
-process.crawl(LoewSpider)
-process.start()
+if __name__ == '__main__':
+    lo = LiturgyOffice()
+    lo.get_sundays_in('2017', 'Aug')
