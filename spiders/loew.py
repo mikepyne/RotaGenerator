@@ -5,7 +5,7 @@ import urllib.request
 
 class LiturgyOffice:
     """Get details of Sundays from the Liturgy Office"""
-    root_url = 'http://www.liturgyoffice.org.uk/Calendar/'
+    root_url = 'https://www.liturgyoffice.org.uk/Calendar/'
 
     def get_sundays_in(self, year, month):
         sunday_rows = []
@@ -63,5 +63,6 @@ class LiturgyOffice:
 
 if __name__ == '__main__':
     lo = LiturgyOffice()
-    print(lo.get_sundays_in(2017, 7))
-    print(lo.get_sundays_in(2017, 8))
+    print(lo.get_sundays_in(2017, 9))
+    print(lo.get_sundays_in(2017, 10))
+    print(lo.get_sundays_in(2017, 11))
