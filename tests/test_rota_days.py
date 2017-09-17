@@ -1,5 +1,6 @@
 import pytest
 from datetime import date
+import calendar
 from rota.rota_days import RotaDays
 
 
@@ -62,8 +63,12 @@ class TestRotaDays(object):
 
     def test_find_weekends_bad_params(self, rd):
         expected = []
-
         assert rd.find_weekends(2015, 5, 3) == expected
+
+    def test_find_weekends_bad_end_month(self, rd):
+        expected = []
+        with pytest.raises(calendar.IllegalMonthError):
+            rd.find_weekends(2015, 5, 2017)
 
 
 if __name__ == '__main__':

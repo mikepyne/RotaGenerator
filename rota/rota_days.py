@@ -3,6 +3,7 @@ import logging
 from datetime import date, timedelta
 import calendar
 
+
 class RotaDays:
     def __init__(self):
         self.logger = logging.getLogger('rotaGenerator.rota_days')
