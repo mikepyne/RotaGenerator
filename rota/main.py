@@ -10,12 +10,44 @@ from rota_days import RotaDays
 from mass import Mass
 
 
-if __name__ == '__main__':
-    with open(os.path.join('/', 'home', 'mike', 'Projects',
-                           'RotaGenerator', 'log_config.json')) as lcf:
-        lc = json.load(lcf)
-        logging.config.dictConfig(lc)
+# Logging configuration
+LC = {
+    "version": 1,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "level": "INFO",
+            "formatter": "screen",
+            "stream": "ext://sys.stdout"
+        },
+        "file": {
+            "class": "logging.FileHandler",
+            "filename": "rota.log",
+            "mode": "w",
+            "level": "DEBUG",
+            "formatter": "file"
+        }
+    },
+    "formatters": {
+        "screen": {
+            "format": "%(asctime)s %(message)s",
+            "datefmt": "%H:%M:%S"
+        },
+        "file": {
+            "format": "%(asctime)s %(name)s %(levelname)s %(funcName)s %(message)s"
+        }
+    },
+    "loggers": {
+        "rotaGenerator": {
+            "level": "DEBUG",
+            "handlers": ["console", "file"]
+        }
+    }
+}
 
+
+if __name__ == '__main__':
+    logging.config.dictConfig(LC)
     logger = logging.getLogger('rotaGenerator')
 
     logger.debug('=== Starting __main__')
@@ -27,7 +59,8 @@ if __name__ == '__main__':
                         '--end_year',
                         type=int,
                         help="Ending year, if different",
-                        nargs='?', default=None)
+                        nargs='?',
+                        default=None)
 
     args = parser.parse_args()
     logger.debug('... Parsed arguments: %s', args)
