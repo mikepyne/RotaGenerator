@@ -14,13 +14,15 @@ class RotaDays:
     # Another test case: December - February
 
     def find_weekends(self, start_year, start, end, end_year=None):
-        """Find each Saturday and Sunday in a particular rota period.
+        """Find each Sunday in a particular rota period.
 
         Parameters:
         start_year -- the year the starting month is in
         start -- the starting month
         end -- the ending month
         end_year -- the year the ending month is in, if different to start year
+
+        Returns a list of date for each Sunday in the target period
         """
         self.logger.debug('start_year=%s, start=%s, end=%s, end_year=%s',
                           start_year, start, end, end_year)
@@ -29,7 +31,7 @@ class RotaDays:
             end_year = start_year
             self.logger.debug('end_year=%s', end_year)
 
-        weekends = []
+        sundays = []
         current = date(start_year, start, 1)
         e = calendar.monthrange(end_year, end)[1] # monthrange returns two values
         last = date(end_year, end, e)
@@ -39,36 +41,50 @@ class RotaDays:
             if current.weekday() < 6:
                 current = current + timedelta(days=(6 - current.weekday()))
 
-            saturday = current - timedelta(days=1)
-            weekends.append(self.format_weekend(saturday, current))
+            sundays.append(current)
             current = current + timedelta(days=7)
 
-        return weekends
+        return sundays
 
-    def format_weekend(self, saturday, sunday):
-        """Format the string for a weekend
+    def format_weekends(self, sundays):
+        """Format all weekends into strings
 
         Parameters:
-        saturday -- the date of the saturday
-        sunday -- the date of the sunday
+        sundays -- dates of Sundays to format
+
+        Returns a list of strings of 'Saturday nth/Sunday mth Month'
+        """
+        formatted = []
+        for sunday in sundays:
+            formatted.append(self.format_weekend(sunday))
+
+        return formatted
+
+    def format_weekend(self, sunday):
+        """Format the string for a single weekend
+
+        Parameters:
+        sunday -- date of a sunday
 
         Currently uses a fixed format for the weekend. For example:
             - Saturday 31st December/Sunday 1st January
             - Saturday 11th/Sunday 12th February
-        """
-        self.logger.debug('saturday=%s, sunday=%s, ', saturday,
-                          sunday)
 
+        Returns the weekend as a formatted string
+        """
+        self.logger.debug('sunday=%s', sunday)
+
+        saturday = sunday - timedelta(days=1)
         sun = self.ie.ordinal(sunday.day)
         sat = self.ie.ordinal(saturday.day)
 
         if saturday.month == sunday.month:
-            weekend = '{a:%A} {b}/{c:%A} {d} {c:%B}'.format(a=saturday,
+            formatted = '{a:%A} {b}/{c:%A} {d} {c:%B}'.format(a=saturday,
                 b=sat, c=sunday, d=sun)
 
         else:
-            weekend = '{a:%A} {b} {a:%B}/{c:%A} {d} {c:%B}'.format(a=saturday,
+            formatted = '{a:%A} {b} {a:%B}/{c:%A} {d} {c:%B}'.format(a=saturday,
                 b=sat, c=sunday, d=sun)
 
-        self.logger.debug('returning: %s', weekend)
-        return weekend
+        self.logger.debug('returning: %s', formatted)
+        return formatted
