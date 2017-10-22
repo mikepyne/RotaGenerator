@@ -10,7 +10,7 @@ def lo():
 
 class TestMass_init(object):
     def test_build_url(self, lo):
-        assert lo._build_url(2017, 7) == 'http://www.liturgyoffice.org.uk/Calendar/2017/Jul.shtml'
+        assert lo._build_url(2017, 7) == 'https://www.liturgyoffice.org.uk/Calendar/2017/Jul.shtml'
 
     def test_build_url_bad_month(self, lo):
         with pytest.raises(ValueError):
