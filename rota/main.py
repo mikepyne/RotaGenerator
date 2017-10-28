@@ -65,6 +65,8 @@ if __name__ == '__main__':
     args = parser.parse_args()
     logger.debug('... Parsed arguments: %s', args)
     r = RotaDays()
+    sundays = r.find_weekends(args.start_year, args.start, args.end,
+                              args.end_year)
 
     try:
         config_fpath = os.path.join('/', 'home', 'mike', 'Projects',
@@ -82,5 +84,4 @@ if __name__ == '__main__':
     except Exception as e:
         logger.error("Error reading JSON: '%s'", e)
 
-    print('\n'.join(r.find_weekends(args.start_year, args.start, args.end,
-                                    args.end_year)))
+    print('\n'.join(r.format_weekends(sundays)))
