@@ -1,0 +1,12 @@
+Rota:
+ ☐ Figure out minimum processing for generating a rota @created(17-09-18 23:33)
+
+Spiders:
+ ☐ Cache data retrieved from Universalis @created(17-09-18 23:33)
+ ☐ Cache data retrieved from Liturgy Office @created(17-09-18 23:33)
+
+Packaging:
+ ☐ @high Install tox (https://tox.readthedocs.io/en/latest/) @created(17-10-29 23:23) @due(17-10-30 23:25)
+ ☐ @high Read and implement strategy from https://blog.ionelmc.ro/2014/05/25/python-packaging/ @created(17-10-29 23:24) @due(17-10-30 23:26)
+
+
