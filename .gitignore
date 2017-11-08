@@ -2,3 +2,6 @@ rota.sublime-workspace
 *.pyc
 *.log
 .cache/
+.tox/
+dist/
+MANIFEST
