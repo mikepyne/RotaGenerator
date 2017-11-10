@@ -1,5 +1,6 @@
 import pytest
 from unittest.mock import Mock
+from rota.reader import Reader, ReaderError
 from rota.mass import Mass, MassError
 
 

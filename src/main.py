@@ -6,8 +6,8 @@ import logging
 import logging.config
 from collections import OrderedDict
 
-from rota_days import RotaDays
-from mass import Mass
+from rota.rota_days import RotaDays
+from rota.mass import Mass
 
 
 # Logging configuration
