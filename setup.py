@@ -11,5 +11,6 @@ setup(
     author_email='mike@pyne.me.uk',
     url='https://github.com/mikepyne/RotaGenerator',
     packages=['rota', 'spiders'],
-    package_dir={'': 'src'}
+    package_dir={'': 'src'},
+    scripts=['src/rg.py'],
 )
