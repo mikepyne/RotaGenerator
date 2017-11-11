@@ -21,13 +21,17 @@ See requirements.txt for list of required packages.
 
 Missing packages can be installed using PyPi.
 
-## Running Tests
+## Testing
 
-In the project directory, use the command:
+Unit tests are written using [PyTest](https://docs.pytest.org/en/latest/).
 
-``
-python3 -m pytest tests/
-``
+[Tox](https://tox.readthedocs.io/en/latest/) is used to manage the testing
+environment and execute the unit tests.
+
+To execute the tests:
+
+    cd {project_dir}
+    tox
 
 ## Links
 
