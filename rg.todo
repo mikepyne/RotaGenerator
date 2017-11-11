@@ -1,8 +1,9 @@
 Rota:
  ☐ Figure out minimum processing for generating a rota @created(17-09-18 23:33)
+ ☐ Investigate iterating readers (https://stackoverflow.com/questions/23416381/circular-list-iterator-in-python) @created(17-11-11 23:24)
 
 Testing:
- ☐ @high Investigate patching to overcome mass/reader import @created(17-11-08 23:28) @due(17-11-10 23:28)
+ ✔ @high Investigate patching to overcome mass/reader import @created(17-11-08 23:28) @due(17-11-10 23:28) @done (17-11-11 23:23)
 
 Spiders:
  ☐ Cache data retrieved from Universalis @created(17-09-18 23:33)
