@@ -17,11 +17,15 @@ class Universalis:
         with request.urlopen(self._build_url(year)) as response:
             soup = BeautifulSoup(response.read(), "lxml")
             table = soup.find('table', id='yearly-calendar')
+            in_month = False
             for row in table.find_all('tr'):
                 if row.string == start_str:
                     # Set a flag, start looking for Sundays in the target month
-                    print(row)
+                    in_month = True
                     continue
+
+                if in_month:
+                    print(row.contents[0].string)
 
                 if row.string == stop_str:
                     # Got to the next month, so exit the loop

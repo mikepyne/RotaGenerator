@@ -34,7 +34,8 @@ LC = {
             "datefmt": "%H:%M:%S"
         },
         "file": {
-            "format": "%(asctime)s %(name)s %(levelname)s %(funcName)s %(message)s"
+            "format": "%(asctime)s %(name)s %(levelname)s %(funcName)s"
+                      "%(message)s"
         }
     },
     "loggers": {
@@ -76,7 +77,7 @@ if __name__ == '__main__':
         with open(config_fpath) as conf_file:
             loaded_data = json.load(conf_file, object_pairs_hook=OrderedDict)
             if len(loaded_data) is 0:
-                raise ConfigError('No configuration details available')
+                raise Exception('No configuration details available')
 
             for index in loaded_data:
                 m = Mass(index, loaded_data[index])

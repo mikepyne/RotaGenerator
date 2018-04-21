@@ -15,7 +15,7 @@ class TestRotaDays(object):
         expected = 'Saturday 31st December/Sunday 1st January'
         assert rd.format_weekend(Sunday) == expected
 
-    def test_format_weekend(self, rd):
+    def test_format_weekends(self, rd):
         weekends = [date(2017, 1, 1),
                     date(2017, 1, 8),
                     date(2017, 1, 15),

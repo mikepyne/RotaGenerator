@@ -1,9 +1,9 @@
-import logging
-from rota.reader import Reader, ReaderError
+# import logging
+from rota.reader import Reader
 
 
 class MassError(Exception):
-    def __init__(self, error, label = None):
+    def __init__(self, error, label=None):
         self.error = error
         self.label = label
 
@@ -105,7 +105,7 @@ class Mass:
         else:
             self.exclude = exclude
 
-    def get_reader(self, id = None):
+    def get_reader(self, id=None):
         """Get a reader object
 
         Gets the reader object indicated by the given ID. If no ID is given,
@@ -117,8 +117,8 @@ class Mass:
         if id is None:
             id = self.current_reader_id
             self.current_reader_id += 1
-            if id not in self.readers:
-                id = self.readers[0].id
+        else:
+            self.current_reader_id = id
 
         if id in self.readers:
             return self.readers[id]

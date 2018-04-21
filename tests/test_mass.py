@@ -187,7 +187,7 @@ class TestMass:
         mass.add_exclude(['Something'])
         assert mass.exclude == ['Something']
 
-    def test_get_reader(self, mass):
+    def test_get_readers(self, mass):
         r1 = Mock()
         r1.id = 1
         r1.name = 'Reader 1'
@@ -199,5 +199,5 @@ class TestMass:
         mass.add_reader(r2)
 
         assert mass.get_reader() == r1
-        assert mass.get_reader() == r2
-        assert mass.get_reader() == r1
+        assert mass.get_reader(2) == r2
+        assert mass.get_reader(1) == r1

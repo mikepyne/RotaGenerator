@@ -4,27 +4,27 @@
         "startfrom": 1,
         "exclude": [],
         "readers": {
-            "1": {
+            1: {
                 "name": "Gabrielle Bedford",
                 "exclude": []
             },
-            "2": {
+            2: {
                 "name": "Ruth Burgess",
                 "exclude": []
             },
-            "3": {
+            3: {
                 "name": "Veronica Chisholm",
                 "exclude": []
             },
-            "4": {
+            4: {
                 "name": "Bridget Pope",
                 "exclude": []
             },
-            "5": {
+            5: {
                 "name": "Mary Wilson",
                 "exclude": []
             },
-            "6": {
+            6: {
                 "name": "Philp",
                 "names": [
                     "Antoinette Philp",
@@ -32,11 +32,11 @@
                 ],
                 "exclude": []
             },
-            "7": {
+            7: {
                 "name": "Prue Fenn",
                 "exclude": []
             },
-            "8": {
+            8: {
                 "name": "Pyne",
                 "names": [
                     "Michael Pyne",
@@ -44,11 +44,11 @@
                 ],
                 "exclude": []
             },
-            "9": {
+            9: {
                 "name": "Sue Smith",
                 "exclude": []
             },
-            "10": {
+            10: {
                 "name": "Jain Cain",
                 "exclude": []
             }
@@ -59,57 +59,57 @@
         "startfrom": 1,
         "exclude": [],
         "readers": {
-            "1": {
+            1: {
                 "name": "Robin Bartlett",
                 "exclude": []
             },
-            "2": {
+            2: {
                 "name": "Karen Neville",
                 "exclude": []
             },
-            "3": {
+            3: {
                 "name": "David Gillingham",
                 "exclude": []
             },
-            "4": {
+            4: {
                 "name": "Sylvia Walker",
                 "exclude": []
             },
-            "5": {
+            5: {
                 "name": "Dominic Boeck",
                 "exclude": []
             },
-            "6": {
+            6: {
                 "names": [
                     "Joan Sargent",
                     "Bethany Sargent"
                 ],
                 "exclude": []
             },
-            "7": {
+            7: {
                 "name": "Anna Rainer",
                 "exclude": []
             },
-            "8": {
+            8: {
                 "name": "Marzena Elliot",
                 "exclude": []
             },
-            "9": {
+            9: {
                 "name": "Lucy Moran",
                 "exclude": []
             },
-            "10": {
+            10: {
                 "names": [
                    "Mike Pyne",
                    "Angharad Pyne"
                 ],
                 "exclude": []
             },
-            "11": {
+            11: {
                 "name": "Sue Smith",
                 "exclude": []
             },
-            "12": {
+            12: {
                 "name": "Jane Cain",
                 "exclude": []
             }

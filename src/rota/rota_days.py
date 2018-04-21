@@ -33,7 +33,7 @@ class RotaDays:
 
         sundays = []
         current = date(start_year, start, 1)
-        e = calendar.monthrange(end_year, end)[1] # monthrange returns two values
+        e = calendar.monthrange(end_year, end)[1]
         last = date(end_year, end, e)
         self.logger.debug('current=%s, last=%s', current, last)
 
@@ -79,12 +79,18 @@ class RotaDays:
         sat = self.ie.ordinal(saturday.day)
 
         if saturday.month == sunday.month:
-            formatted = '{a:%A} {b}/{c:%A} {d} {c:%B}'.format(a=saturday,
-                b=sat, c=sunday, d=sun)
+            formatted = '{a:%A} {b}/{c:%A} {d} {c:%B}'.format(
+                    a=saturday,
+                    b=sat,
+                    c=sunday,
+                    d=sun)
 
         else:
-            formatted = '{a:%A} {b} {a:%B}/{c:%A} {d} {c:%B}'.format(a=saturday,
-                b=sat, c=sunday, d=sun)
+            formatted = '{a:%A} {b} {a:%B}/{c:%A} {d} {c:%B}'.format(
+                a=saturday,
+                b=sat,
+                c=sunday,
+                d=sun)
 
         self.logger.debug('returning: %s', formatted)
         return formatted

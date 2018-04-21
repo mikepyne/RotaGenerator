@@ -63,6 +63,6 @@ class LiturgyOffice:
 
 if __name__ == '__main__':
     lo = LiturgyOffice()
-    print(lo.get_sundays_in(2017, 9))
-    print(lo.get_sundays_in(2017, 10))
-    print(lo.get_sundays_in(2017, 11))
+    print(lo.get_sundays_in(2017, 12))
+    print(lo.get_sundays_in(2018, 1))
+    print(lo.get_sundays_in(2018, 2))
