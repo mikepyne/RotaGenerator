@@ -1,15 +1,18 @@
 import logging
 
+
 class ReaderError(Exception):
-    def __init__(self, error, id = None):
+    def __init__(self, error, id=None):
         self.error = error
         self.id = id
 
     def __str__(self):
         return "{0}; ID: {1}".format(self.error, self.id)
 
+
 class Reader:
     def __init__(self, id, data):
+        self.logger = logging.getLogger('rotaGenerator.Reader')
         self.id = id
 
         if 'name' not in data and 'names' not in data:
@@ -38,11 +41,12 @@ class Reader:
             self.exclude = []
 
     def __repr__(self):
-        return("{0}({1:d}, '{2}', {3!r}, {4!r})".format(self.__class__.__name__,
-                                                        self.id,
-                                                        self.name,
-                                                        self.names,
-                                                        self.exclude))
+        return("{0}({1:d}, '{2}', {3!r}, {4!r})".format(
+            self.__class__.__name__,
+            self.id,
+            self.name,
+            self.names,
+            self.exclude))
 
     def __str__(self):
         string = '{0} - {1}'.format(self.id, self.name)
@@ -50,3 +54,16 @@ class Reader:
             string = '{0} - {1}'.format(self.id, str(self.names))
 
         return string
+
+    def get_name(self, slots):
+        if self.names:
+            num_names = len(self.names)
+            if num_names < slots:
+                return ', '.join(self.names)
+            elif num_names == slots:
+                return self.name
+            else:
+                self.logger.warn("More names than slots")
+                return self.name
+        else:
+            return self.name

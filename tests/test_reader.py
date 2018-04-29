@@ -19,7 +19,8 @@ class TestReader_init():
 
     @pytest.mark.parametrize("data", init_data, ids=init_ids)
     def test_init(self, data):
-        reader = Reader(1, data)
+        # Check no exceptions are thrown
+        reader = Reader(1, data)  # noqa: F841
 
     def test_init_neither_name_or_names(self):
         data = {}
@@ -27,7 +28,7 @@ class TestReader_init():
             ReaderError,
             match='Reader must have a name and/or names; ID: 1'
         ):
-            reader = Reader(1, data)
+            reader = Reader(1, data)  # noqa: F841
 
 
 class TestReader_str():
@@ -86,7 +87,7 @@ class TestReader_repr():
     ]
 
     @pytest.mark.parametrize("data, expected", test_data, ids=test_ids)
-    def test_repr(sel, data, expected):
+    def test_repr(self, data, expected):
         reader = Reader(1, data)
         assert repr(reader) == expected
 
@@ -95,3 +96,53 @@ class TestReader_repr():
         reader = Reader('A', data)
         with pytest.raises(ValueError):
             repr(reader)
+
+
+class TestReader_names():
+    """Test the names method"""
+
+    test_data = [
+        (
+            {
+                'name': 'Gabrielle',
+            },
+            2,
+            'Gabrielle'
+        ),
+        (
+            {
+                'name': 'Gabrielle',
+                'names': ['Albert', 'Bill']
+            },
+            2,
+            'Gabrielle'
+        ),
+        (
+            {
+                'name': 'Gabrielle',
+                'names': ['Jane', 'Jill']
+            },
+            1,
+            'Gabrielle'
+        ),
+        (
+            {
+                'name': 'Surname',
+                'names': ['Albert', 'Bill']
+            },
+            3,
+            'Albert, Bill'
+        )
+    ]
+
+    test_ids = [
+        'fewer_no_names',
+        'same',
+        'more',
+        'fewer_names'
+    ]
+
+    @pytest.mark.parametrize("data, slots, expected", test_data, ids=test_ids)
+    def test_names(self, data, slots, expected):
+        reader = Reader(1, data)
+        assert reader.get_name(slots) == expected

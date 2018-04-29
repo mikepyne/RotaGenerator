@@ -5,13 +5,15 @@ import calendar
 
 
 class RotaDays:
+
+    """Generate a list of Sundays in a rota period.
+
+    Weekday 0 is Monday; weekday 6 is Sunday
+    """
+
     def __init__(self):
         self.logger = logging.getLogger('rotaGenerator.rota_days')
         self.ie = inflect.engine()
-
-    # Weekday 0 is Monday; weekday 6 is Sunday
-    # Test case: Sat 28th Feb/Sun 1st March 2015
-    # Another test case: December - February
 
     def find_weekends(self, start_year, start, end, end_year=None):
         """Find each Sunday in a particular rota period.
