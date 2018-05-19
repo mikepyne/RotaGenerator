@@ -113,6 +113,9 @@ class Mass:
 
         Arguments:
         id -- the id of the reader to retrieve
+
+        Returns:
+        The desired reader object
         """
         if id is None:
             id = self.current_reader_id

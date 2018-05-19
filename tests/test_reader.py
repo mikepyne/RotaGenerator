@@ -1,4 +1,5 @@
 import pytest
+from datetime import date, datetime
 from rota.reader import Reader, ReaderError
 
 
@@ -8,13 +9,19 @@ class TestReader_init():
     init_data = [
         ({'name': 'Gabrielle'}),
         ({'name': 'Gabrielle', 'names': ['Burt', 'Ernie']}),
-        ({'names': ['Burt', 'Ernie']})
+        ({'names': ['Burt', 'Ernie']}),
+        ({'name': 'Alfred', 'exclude': []}),
+        ({'name': 'Jill', 'exclude': ['02/03/2018']}),
+        ({'name': 'Jill', 'exclude': ['02/03/2018', '03/04/2018']}),
     ]
 
     init_ids = [
         'name_only',
         'name_and_names',
-        'names_only'
+        'names_only',
+        'name_empty_exclude',
+        'name_valid_exclude',
+        'name_valid_multi_excludes',
     ]
 
     @pytest.mark.parametrize("data", init_data, ids=init_ids)
@@ -27,6 +34,26 @@ class TestReader_init():
         with pytest.raises(
             ReaderError,
             match='Reader must have a name and/or names; ID: 1'
+        ):
+            reader = Reader(1, data)  # noqa: F841
+
+    def test_init_names(self):
+        data = {'names': ['Alf', '']}
+        with pytest.raises(
+            ReaderError,
+            match='Empty name in names; ID: 1'
+        ):
+            reader = Reader(1, data)  # noqa: F841
+
+    def test_bad_exclude(self):
+        data = {
+            'name': 'Jerome',
+            'exclude': ['']
+        }
+
+        with pytest.raises(
+            ReaderError,
+            match='Bad value in excludes; ID: 1'
         ):
             reader = Reader(1, data)  # noqa: F841
 
@@ -66,6 +93,13 @@ class TestReader_repr():
         ),
         (
             {
+                'name': 'Harry',
+                'exclude': ['01/01/2001']
+            },
+            "Reader(1, 'Harry', [], ['01/01/2001'])"
+        ),
+        (
+            {
                 'names': ['Burt', 'Ernie'],
                 'exclude': ['01/01/2001']
             },
@@ -77,13 +111,22 @@ class TestReader_repr():
                 'names': ['Burt', 'Ernie']
             },
             "Reader(1, 'Gabrielle', ['Burt', 'Ernie'], [])"
-        )
+        ),
+        (
+            {
+                'name': 'Jennifer',
+                'exclude': ['01/02/2018', '02/03/2018']
+            },
+            "Reader(1, 'Jennifer', [], ['01/02/2018', '02/03/2018'])"
+        ),
     ]
 
     test_ids = [
         'all',
+        'no_names',
         'names_only',
-        'no_exlude'
+        'no_exclude',
+        'multiple_excludes',
     ]
 
     @pytest.mark.parametrize("data, expected", test_data, ids=test_ids)
@@ -146,3 +189,57 @@ class TestReader_names():
     def test_names(self, data, slots, expected):
         reader = Reader(1, data)
         assert reader.get_name(slots) == expected
+
+
+class TestReader_exclude():
+    '''Test the exclude method'''
+
+    test_data = [
+        (
+            {
+                'name': 'Gabrielle'
+            },
+            False
+        ),
+        (
+            {
+                'name': 'Albert',
+                'exclude': []
+            },
+            False
+        ),
+        (
+            {
+                'name': 'Bill',
+                'exclude': ['01/01/2018']
+            },
+            True
+        ),
+        (
+            {
+                'name': 'Sophia',
+                'exclude': ['01/02/2018']
+            },
+            False
+        )
+    ]
+
+    test_ids = [
+        'no_exclude',
+        'empty_exclude',
+        'excluded',
+        'not_excluded'
+    ]
+
+    @pytest.mark.parametrize("data, expected", test_data, ids=test_ids)
+    def test_exclude(self, data, expected):
+        reader = Reader(1, data)
+        assert reader.is_excluded(date(2018, 1, 1)) is expected
+
+    def test_exclude_datetime(self):
+        data = {
+            'name': 'Joffrey',
+            'exclude': ['01/02/2018']
+        }
+        reader = Reader(1, data)
+        assert reader.is_excluded(datetime(2018, 2, 1, 0, 0, 0)) is False

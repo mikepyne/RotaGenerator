@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 
 
 class ReaderError(Exception):
@@ -11,9 +12,38 @@ class ReaderError(Exception):
 
 
 class Reader:
-    def __init__(self, id, data):
+    """ A reader available for a mass
+
+    Instance variables:
+    id -- the numeric ID of the reader
+    name -- The name of the reader (either full name, or surname)
+    names -- The names for the reader
+    date_format -- The date format used to parse exclusions
+    exclude -- A list of dates the reader cannot make
+
+    A 'reader' may be a single person (in which case, only 'name' is required)
+    or may be multiple people (e.g. a family). In this case, the surname should
+    be specified for 'name', with individual names in 'names'.
+
+    The 'exclude' variable is a list of dates that the reader is unavailable
+    for. The dates are passed in as strings and are parsed into date objects.
+    The dates should be in either the default format of 'DD/MM/YYYY', or the
+    desired format should be specified in the date_format parameter on
+    construction an object. The date_format parameter follows the rules for
+    strftime and strptime in the python documentation.
+    """
+
+    def __init__(self, id, data, date_format='%d/%m/%Y'):
+        """Initialise a reader object
+
+        Arguments:
+        id -- the reader ID
+        data -- A dictonary containing the reader data (name, exclude, etc)
+        date_format -- Format of dates in the exclude list
+        """
         self.logger = logging.getLogger('rotaGenerator.Reader')
         self.id = id
+        self.date_format = date_format
 
         if 'name' not in data and 'names' not in data:
             raise ReaderError('Reader must have a name and/or names', self.id)
@@ -31,22 +61,32 @@ class Reader:
         try:
             for n in self.names:
                 if not n:
-                    raise ReaderError('Bad name in names', self.id)
+                    raise ReaderError('Empty name in names', self.id)
         except TypeError as e:
             raise ReaderError('Invalid names ({0})'.format(e), self.id)
 
+        self.exclude = []
         try:
-            self.exclude = data['exclude']
+            for d in data['exclude']:
+                self.exclude.append(
+                    datetime.strptime(d, self.date_format).date())
+
+        except (TypeError, ValueError):
+            raise ReaderError('Bad value in excludes', self.id)
         except KeyError:
             self.exclude = []
 
     def __repr__(self):
+        excludes = []
+        for d in self.exclude:
+            excludes.append(datetime.strftime(d, self.date_format))
+
         return("{0}({1:d}, '{2}', {3!r}, {4!r})".format(
             self.__class__.__name__,
             self.id,
             self.name,
             self.names,
-            self.exclude))
+            excludes))
 
     def __str__(self):
         string = '{0} - {1}'.format(self.id, self.name)
@@ -56,6 +96,18 @@ class Reader:
         return string
 
     def get_name(self, slots):
+        """Get the name of this reader
+
+        When a reader with multiple names has fewer names than slots, the list
+        of individual names is returned as a combined string. When the reader
+        has enough or more names, only the 'name' is returned.
+
+        Arguments:
+        slots -- the number of slots to be filled
+
+        Returns:
+        A string containing the name(s) of the reader
+        """
         if self.names:
             num_names = len(self.names)
             if num_names < slots:
@@ -67,3 +119,10 @@ class Reader:
                 return self.name
         else:
             return self.name
+
+    def is_excluded(self, check_date):
+        """Exclude reader from a particular event"""
+        try:
+            return check_date in self.exclude
+        except AttributeError:
+            return False

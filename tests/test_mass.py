@@ -1,6 +1,5 @@
 import pytest
 from unittest.mock import Mock
-from rota.reader import Reader, ReaderError
 from rota.mass import Mass, MassError
 
 
@@ -106,11 +105,11 @@ class TestMass_init(object):
                              ids=init_error_ids)
     def test_init_errors(self, label, data, expected):
         with pytest.raises(MassError, message=expected):
-            m = Mass(label, data)
+            m = Mass(label, data)   # noqa: F841
 
     @pytest.mark.parametrize("label, data", init_data, ids=init_ids)
     def test_init(self, label, data):
-        m = Mass(label, data)
+        m = Mass(label, data)   # noqa: F841
 
 
 class TestMass_repr:

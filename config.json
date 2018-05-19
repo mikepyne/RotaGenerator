@@ -1,4 +1,5 @@
 {
+    "date_format": "%d/%m/%Y",
     "saturday": {
         "needed": 2,
         "startfrom": 1,
