@@ -1,4 +1,5 @@
-# import logging
+import logging
+from rota.exclude import ExcludeMixin
 from rota.reader import Reader
 
 
@@ -11,7 +12,7 @@ class MassError(Exception):
         return "{0}; Label: {1}".format(self.error, self.label)
 
 
-class Mass:
+class Mass(ExcludeMixin):
     """Represents a mass readers are needed for
 
     Instance Variables:
@@ -22,7 +23,7 @@ class Mass:
     readers -- dictionary of readers available for the mass
     """
 
-    def __init__(self, label, data):
+    def __init__(self, label, data, date_format='%d/%m/%Y'):
         """Create the Mass object
 
         Arguments:
@@ -33,8 +34,14 @@ class Mass:
             * Check 'exclude'
             * Check 'readers'
         """
+        self.logger = logging.getLogger('rotaGenerator.Mass')
         self.label = label
         self.readers = {}
+        try:
+            ExcludeMixin.__init__(self, data['exclude'], date_format)
+        except KeyError:
+            ExcludeMixin.__init__(self, [], date_format)
+
         if not self.label:
             raise (MassError('Bad label'))
 
@@ -44,11 +51,6 @@ class Mass:
         except KeyError as e:
             raise MassError("Required key is missing ({0})".format(e),
                             self.label)
-
-        try:
-            self.exclude = data['exclude']
-        except KeyError:
-            self.exclude = []
 
         try:
             for r in data['readers']:
@@ -83,7 +85,7 @@ class Mass:
                 self.label,
                 self.needed,
                 self.start_from,
-                self.exclude,
+                self.excludes_as_string(),
                 self.readers))
 
     def add_reader(self, reader):
@@ -93,17 +95,6 @@ class Mass:
         reader -- [Reader] the reader to add
         """
         self.readers[reader.id] = reader
-
-    def add_exclude(self, exclude):
-        """Add a list of masses that don't need readers
-
-        Arguments:
-        excludes -- [list] Masses that don't need readers
-        """
-        if exclude is None:
-            self.exclude = []
-        else:
-            self.exclude = exclude
 
     def get_reader(self, id=None):
         """Get a reader object

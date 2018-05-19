@@ -16,17 +16,20 @@ class TestRotaDays(object):
         assert rd.format_weekend(Sunday) == expected
 
     def test_format_weekends(self, rd):
+        # Include a 'special' weekend (28/02/2015 - 01/03/2015).
         weekends = [date(2017, 1, 1),
                     date(2017, 1, 8),
                     date(2017, 1, 15),
                     date(2017, 1, 22),
-                    date(2017, 1, 29)]
+                    date(2017, 1, 29),
+                    date(2015, 3, 1)]
 
         expected = ['Saturday 31st December/Sunday 1st January',
                     'Saturday 7th/Sunday 8th January',
                     'Saturday 14th/Sunday 15th January',
                     'Saturday 21st/Sunday 22nd January',
-                    'Saturday 28th/Sunday 29th January']
+                    'Saturday 28th/Sunday 29th January',
+                    'Saturday 28th February/Sunday 1st March']
 
         assert rd.format_weekends(weekends) == expected
 
@@ -80,10 +83,5 @@ class TestRotaDays(object):
         assert rd.find_weekends(2015, 5, 3) == expected
 
     def test_find_weekends_bad_end_month(self, rd):
-        expected = []
         with pytest.raises(calendar.IllegalMonthError):
             rd.find_weekends(2015, 5, 2017)
-
-
-if __name__ == '__main__':
-    unittest.main()

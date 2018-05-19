@@ -1,6 +1,7 @@
 import pytest
 from datetime import date, datetime
 from rota.reader import Reader, ReaderError
+from rota.exclude import ExcludeError
 
 
 class TestReader_init():
@@ -52,8 +53,8 @@ class TestReader_init():
         }
 
         with pytest.raises(
-            ReaderError,
-            match='Bad value in excludes; ID: 1'
+            ExcludeError,
+            match='Bad value in excludes'
         ):
             reader = Reader(1, data)  # noqa: F841
 
@@ -189,57 +190,3 @@ class TestReader_names():
     def test_names(self, data, slots, expected):
         reader = Reader(1, data)
         assert reader.get_name(slots) == expected
-
-
-class TestReader_exclude():
-    '''Test the exclude method'''
-
-    test_data = [
-        (
-            {
-                'name': 'Gabrielle'
-            },
-            False
-        ),
-        (
-            {
-                'name': 'Albert',
-                'exclude': []
-            },
-            False
-        ),
-        (
-            {
-                'name': 'Bill',
-                'exclude': ['01/01/2018']
-            },
-            True
-        ),
-        (
-            {
-                'name': 'Sophia',
-                'exclude': ['01/02/2018']
-            },
-            False
-        )
-    ]
-
-    test_ids = [
-        'no_exclude',
-        'empty_exclude',
-        'excluded',
-        'not_excluded'
-    ]
-
-    @pytest.mark.parametrize("data, expected", test_data, ids=test_ids)
-    def test_exclude(self, data, expected):
-        reader = Reader(1, data)
-        assert reader.is_excluded(date(2018, 1, 1)) is expected
-
-    def test_exclude_datetime(self):
-        data = {
-            'name': 'Joffrey',
-            'exclude': ['01/02/2018']
-        }
-        reader = Reader(1, data)
-        assert reader.is_excluded(datetime(2018, 2, 1, 0, 0, 0)) is False

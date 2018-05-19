@@ -1,6 +1,7 @@
 import pytest
 from unittest.mock import Mock
 from rota.mass import Mass, MassError
+from rota.exclude import ExcludeError
 
 
 @pytest.fixture()
@@ -131,7 +132,7 @@ class TestMass_repr:
             {
                 'needed': 2,
                 'startfrom': 1,
-                'exclude': ['A'],
+                'exclude': ['01/01/2018'],
                 'readers':{
                     1: {
                         "name": "Gabrielle Bedford",
@@ -140,7 +141,7 @@ class TestMass_repr:
                 }
             },
             # Long string split over two lines
-            "Mass('saturday', 2, 1, ['A'], "
+            "Mass('saturday', 2, 1, ['01/01/2018'], "
             "{1: Reader(1, 'Gabrielle Bedford', [], [])})"
         )
     ]
@@ -177,14 +178,6 @@ class TestMass:
         tr.name = 'A Reader'
         mass.add_reader(tr)
         assert mass.readers[1] == tr
-
-    def test_add_exclude_none(self, mass):
-        mass.add_exclude(None)
-        assert mass.exclude == []
-
-    def test_add_exclude(self, mass):
-        mass.add_exclude(['Something'])
-        assert mass.exclude == ['Something']
 
     def test_get_readers(self, mass):
         r1 = Mock()

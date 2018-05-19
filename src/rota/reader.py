@@ -1,5 +1,5 @@
 import logging
-from datetime import datetime
+from rota.exclude import ExcludeMixin
 
 
 class ReaderError(Exception):
@@ -11,7 +11,7 @@ class ReaderError(Exception):
         return "{0}; ID: {1}".format(self.error, self.id)
 
 
-class Reader:
+class Reader(ExcludeMixin):
     """ A reader available for a mass
 
     Instance variables:
@@ -43,7 +43,10 @@ class Reader:
         """
         self.logger = logging.getLogger('rotaGenerator.Reader')
         self.id = id
-        self.date_format = date_format
+        try:
+            ExcludeMixin.__init__(self, data['exclude'], date_format)
+        except KeyError:
+            ExcludeMixin.__init__(self, [], date_format)
 
         if 'name' not in data and 'names' not in data:
             raise ReaderError('Reader must have a name and/or names', self.id)
@@ -65,28 +68,13 @@ class Reader:
         except TypeError as e:
             raise ReaderError('Invalid names ({0})'.format(e), self.id)
 
-        self.exclude = []
-        try:
-            for d in data['exclude']:
-                self.exclude.append(
-                    datetime.strptime(d, self.date_format).date())
-
-        except (TypeError, ValueError):
-            raise ReaderError('Bad value in excludes', self.id)
-        except KeyError:
-            self.exclude = []
-
     def __repr__(self):
-        excludes = []
-        for d in self.exclude:
-            excludes.append(datetime.strftime(d, self.date_format))
-
         return("{0}({1:d}, '{2}', {3!r}, {4!r})".format(
             self.__class__.__name__,
             self.id,
             self.name,
             self.names,
-            excludes))
+            self.excludes_as_string()))
 
     def __str__(self):
         string = '{0} - {1}'.format(self.id, self.name)
@@ -119,10 +107,3 @@ class Reader:
                 return self.name
         else:
             return self.name
-
-    def is_excluded(self, check_date):
-        """Exclude reader from a particular event"""
-        try:
-            return check_date in self.exclude
-        except AttributeError:
-            return False
