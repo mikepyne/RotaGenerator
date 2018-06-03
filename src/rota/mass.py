@@ -35,6 +35,7 @@ class Mass(ExcludeMixin):
             * Check 'readers'
         """
         self.logger = logging.getLogger('rotaGenerator.Mass')
+        self.logger.debug("=== Mass.__init__")
         self.label = label
         self.readers = {}
         try:

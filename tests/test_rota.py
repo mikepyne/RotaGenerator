@@ -1,4 +1,5 @@
 import pytest
+from unittest.mock import Mock
 from rota.rota import Rota
 
 
@@ -7,9 +8,9 @@ def rota():
     return Rota()
 
 
-class TestRota(object):
-    def test_assign_readers(self, rota):
-        data = {
+@pytest.fixture()
+def data():
+    return {
             "needed": 2,
             "startfrom": 1,
             "readers": {
@@ -24,6 +25,12 @@ class TestRota(object):
             }
         }
 
-        expected = {"1": 'Gabrielle Bedford'}
 
-        assert rota.assign_readers(1, data) == expected
+class TestRota_addMass(object):
+    def test_addMass(self):
+        m = Mock()
+        r = Rota()
+        r.add_mass(m)
+
+        assert len(r.masses) == 1
+        assert r.masses[0] == m
