@@ -1,7 +1,8 @@
 import pytest
-from unittest.mock import Mock
+from unittest.mock import MagicMock, patch
 from rota.mass import Mass, MassError
-from rota.exclude import ExcludeError
+from rota.reader import Reader
+# from rota.exclude import ExcludeError
 
 
 @pytest.fixture()
@@ -173,17 +174,17 @@ class TestMass:
         assert mass.get_reader(1) == 'Reader'
 
     def test_add_reader(self, mass):
-        tr = Mock()
+        tr = MagicMock()
         tr.id = 1
         tr.name = 'A Reader'
         mass.add_reader(tr)
         assert mass.readers[1] == tr
 
     def test_get_readers(self, mass):
-        r1 = Mock()
+        r1 = MagicMock()
         r1.id = 1
         r1.name = 'Reader 1'
-        r2 = Mock()
+        r2 = MagicMock()
         r2.id = 2
         r2.name = 'Reader 2'
 
@@ -193,3 +194,26 @@ class TestMass:
         assert mass.get_reader() == r1
         assert mass.get_reader(2) == r2
         assert mass.get_reader(1) == r1
+
+
+class TestMass_allocate:
+    def test_allocate(self, mass):
+        a = MagicMock()
+        a.id = 1
+        a.get_name.return_value = ('Reader 1', False)
+        b = MagicMock()
+        b.id = 2
+        b.get_name.return_value = ('Reader 2', False)
+
+        mass.add_reader(a)
+        mass.add_reader(b)
+
+        expected = ['Reader 1', 'Reader 2']
+
+        assert mass.allocate(1) == expected
+
+        # TODO: Fix how the readers names are allocated to a slot.
+        #    Reader.get_name tries to figure out if there are more (or fewer)
+        #    readers than required. What it needs to do is return the number
+        #    of slots filled up, then mass.allocate can work out if it needs to
+        #    allocate more to the same occasion.

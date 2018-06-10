@@ -94,16 +94,17 @@ class Reader(ExcludeMixin):
         slots -- the number of slots to be filled
 
         Returns:
-        A string containing the name(s) of the reader
+        A string containing the name(s) of the reader and True if the reader
+        fills the available slots or false if not.
         """
         if self.names:
             num_names = len(self.names)
             if num_names < slots:
-                return ', '.join(self.names)
+                return ', '.join(self.names), False
             elif num_names == slots:
-                return self.name
+                return self.name, True
             else:
                 self.logger.warn("More names than slots")
-                return self.name
+                return self.name, True
         else:
-            return self.name
+            return self.name, slots == 1

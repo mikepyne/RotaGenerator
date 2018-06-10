@@ -11,3 +11,17 @@ class Rota:
 
     def add_mass(self, mass):
         self.masses.append(mass)
+
+    def allocate(self, count):
+        """Allocate readers
+
+        Match up occasions and readers.
+
+        Arguments:
+        count -- Number of occasions
+
+        Returns:
+        Don't know yet.
+        """
+        for mass in self.masses:
+            mass.allocate()

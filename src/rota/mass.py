@@ -119,3 +119,23 @@ class Mass(ExcludeMixin):
             return self.readers[id]
         else:
             raise MassError('No reader for ID: {0:d}'.format(id))
+
+    def allocate(self, count):
+        """Allocate readers for a number of masses
+
+        Arguments:
+        count -- Number of masses to allocate for
+
+        Returns:
+        Not sure yet
+        """
+        allocated = []
+        for x in range(0, count):
+            while True:
+                r = self.get_reader()
+                name, more = r.get_name(self.needed)
+                allocated.append(name)
+                if more is False:
+                    break
+
+        return allocated
