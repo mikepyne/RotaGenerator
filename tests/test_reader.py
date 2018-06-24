@@ -152,7 +152,7 @@ class TestReader_names():
             },
             2,
             'Gabrielle',
-            False
+            1
         ),
         (
             {
@@ -161,7 +161,7 @@ class TestReader_names():
             },
             2,
             'Gabrielle',
-            True
+            0
         ),
         (
             {
@@ -170,7 +170,7 @@ class TestReader_names():
             },
             1,
             'Gabrielle',
-            True
+            0
         ),
         (
             {
@@ -179,7 +179,7 @@ class TestReader_names():
             },
             3,
             'Albert, Bill',
-            False
+            1
         )
     ]
 
@@ -190,10 +190,10 @@ class TestReader_names():
         'fewer_names'
     ]
 
-    @pytest.mark.parametrize("data, slots, exp_name, exp_full", test_data,
+    @pytest.mark.parametrize("data, slots, exp_name, exp_remaining", test_data,
                              ids=test_ids)
-    def test_names(self, data, slots, exp_name, exp_full):
+    def test_names(self, data, slots, exp_name, exp_remaining):
         reader = Reader(1, data)
         name, full = reader.get_name(slots)
         assert name == exp_name
-        assert full is exp_full
+        assert full is exp_remaining

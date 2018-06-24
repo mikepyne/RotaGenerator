@@ -133,9 +133,9 @@ class Mass(ExcludeMixin):
         for x in range(0, count):
             while True:
                 r = self.get_reader()
-                name, more = r.get_name(self.needed)
+                name, remaining = r.get_name(self.needed)
                 allocated.append(name)
-                if more is False:
+                if remaining == 0:
                     break
 
         return allocated

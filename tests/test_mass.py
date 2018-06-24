@@ -197,13 +197,13 @@ class TestMass:
 
 
 class TestMass_allocate:
-    def test_allocate(self, mass):
+    def test_allocate_2_slots_2_readers(self, mass):
         a = MagicMock()
         a.id = 1
-        a.get_name.return_value = ('Reader 1', False)
+        a.get_name.return_value = ('Reader 1', 1)
         b = MagicMock()
         b.id = 2
-        b.get_name.return_value = ('Reader 2', False)
+        b.get_name.return_value = ('Reader 2', 0)
 
         mass.add_reader(a)
         mass.add_reader(b)
@@ -212,8 +212,68 @@ class TestMass_allocate:
 
         assert mass.allocate(1) == expected
 
-        # TODO: Fix how the readers names are allocated to a slot.
-        #    Reader.get_name tries to figure out if there are more (or fewer)
-        #    readers than required. What it needs to do is return the number
-        #    of slots filled up, then mass.allocate can work out if it needs to
-        #    allocate more to the same occasion.
+    def test_allocate_3_slots_3_readers(self):
+        mass = Mass(
+            'saturday',
+            {
+                'needed': 3,
+                'startfrom': 1,
+                'exclude': [],
+                'readers': {}
+            }
+        )
+
+        a = MagicMock()
+        a.id = 1
+        a.get_name.return_value = ("One", 2)
+        b = MagicMock()
+        b.id = 2
+        b.get_name.return_value = ("Two A, Two B", 0)
+
+        mass.add_reader(a)
+        mass.add_reader(b)
+
+        expected = ['One', 'Two A, Two B']
+
+        assert mass.allocate(1) == expected
+
+    def test_allocate_2_slots_3_readers(self, mass):
+        a = MagicMock()
+        a.id = 1
+        a.get_name.return_value = ("One", 2)
+        b = MagicMock()
+        b.id = 2
+        b.get_name.return_value = ("Two", 0)
+
+        mass.add_reader(a)
+        mass.add_reader(b)
+
+        expected = ['One', 'Two']
+
+        assert mass.allocate(1) == expected
+
+    def test_allocate_3_slots_2_readers(self):
+        mass = Mass(
+            'saturday',
+            {
+                'needed': 3,
+                'startfrom': 1,
+                'exclude': [],
+                'readers': {}
+            }
+        )
+
+        a = MagicMock()
+        a.id = 1
+        a.get_name.return_value = ("One", 2)
+        b = MagicMock()
+        b.id = 2
+        b.get_name.return_value = ("Two", 1)
+
+        mass.add_reader(a)
+        mass.add_reader(b)
+
+        expected = 'Not enough readers for a single mass'
+
+        # with pytest.raises(Exception, message=expected):
+        mass.allocate(1)
