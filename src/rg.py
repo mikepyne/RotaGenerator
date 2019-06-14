@@ -6,6 +6,7 @@ import logging
 import logging.config
 from collections import OrderedDict
 
+from spiders.universalis import Universalis
 from rota.rota_days import RotaDays
 from rota.mass import Mass
 
@@ -68,6 +69,9 @@ if __name__ == '__main__':
     r = RotaDays()
     sundays = r.find_weekends(args.start_year, args.start, args.end,
                               args.end_year)
+
+    # u = Universalis()
+    # u.get_sundays_in(args.start_year, args.start)
 
     try:
         config_fpath = os.path.join('/', 'home', 'mike', 'Projects',
