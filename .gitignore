@@ -5,3 +5,6 @@ rota.sublime-workspace
 .tox/
 dist/
 MANIFEST
+source_docs/
+CMakeLists.txt.user
+

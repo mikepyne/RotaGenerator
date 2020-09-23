@@ -1,6 +1,8 @@
 #include <spdlog/spdlog.h>
 
 #include "addvolunteer.h"
+#include "volunteers.h"
+#include "volunteer.h"
 
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
@@ -18,9 +20,17 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_pushButton_clicked()
+
+void MainWindow::on_add_volunteer_clicked()
 {
     spdlog::debug("In the click");
     AddVolunteer av;
-    av.exec();
+    if (av.exec() == QDialog::Accepted)
+    {
+        Volunteers vols;
+        vols.load("~/Projects/RotaGenerator");
+        // TODO: construct volunteer from the dialog
+        auto details = av.volunteerDetails();
+        vols.add(details);
+    }
 }

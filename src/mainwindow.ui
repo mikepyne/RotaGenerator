@@ -16,9 +16,9 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
-     <widget class="QPushButton" name="pushButton">
+     <widget class="QPushButton" name="add_volunteer">
       <property name="text">
-       <string>PushButton</string>
+       <string>Add volunteer</string>
       </property>
      </widget>
     </item>

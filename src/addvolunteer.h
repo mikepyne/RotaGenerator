@@ -3,9 +3,14 @@
 
 #include <QDialog>
 
+#include <array>
+
+
 namespace Ui {
 class AddVolunteer;
 }
+
+using Details = std::array<std::string, 5>;
 
 class AddVolunteer : public QDialog
 {
@@ -20,16 +25,19 @@ public:
 
     int exec();
 
+    Details volunteerDetails();
+
 private slots:
-    void on_first_name_editingFinished();
 
-    void on_last_name_editingFinished();
+    void on_first_name_textChanged(const QString &arg1);
 
-    void on_email_editingFinished();
+    void on_last_name_textEdited(const QString &arg1);
 
-    void on_phone_home_editingFinished();
+    void on_phone_home_textChanged(const QString &arg1);
 
-    void on_phone_mobile_editingFinished();
+    void on_phone_mobile_textChanged(const QString &arg1);
+
+    void on_email_textChanged(const QString &arg1);
 
 private:
     Ui::AddVolunteer *ui;
