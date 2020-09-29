@@ -1,6 +1,6 @@
 #include <spdlog/spdlog.h>
 
-#include "addvolunteer.h"
+#include "volunteerdlg.h"
 #include "volunteers.h"
 #include "volunteer.h"
 
@@ -24,7 +24,7 @@ MainWindow::~MainWindow()
 void MainWindow::on_add_volunteer_clicked()
 {
     spdlog::debug("In the click");
-    AddVolunteer av;
+    VolunteerDlg av;
     if (av.exec() == QDialog::Accepted)
     {
         Volunteers vols;

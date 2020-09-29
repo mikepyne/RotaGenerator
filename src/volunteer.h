@@ -82,13 +82,23 @@ public:
     );
     /// @}
 
+    /// \brief Comparison operator
+    /// \param[in] source Volunteer to compare to
+    bool operator==(
+        const Volunteer& source
+    );
+
     /// \brief Serialise to JSON
     /// \param[out] j json to write to
-    void to_json(json& j);
+    void to_json(
+        json& j
+    );
 
     /// \brief De-serialise from JSON
     /// \param[in] j to read from
-    void from_json(json& j);
+    void from_json(
+        json& j
+    );
 
 private:
     std::string first_name {""};    ///< First name

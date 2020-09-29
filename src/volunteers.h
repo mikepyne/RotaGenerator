@@ -39,6 +39,9 @@ public:
         Volunteer vol
     );
 
+    /// \brief Count of volunteers
+    int count() {return volunteers.size();}
+
 private:
     static constexpr auto fname{"volunteers.txt"};  ///< Name of the volunteers file
 

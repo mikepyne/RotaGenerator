@@ -1,15 +1,15 @@
 add_executable(RotaGenerator
-main.cpp
-mainwindow.cpp
-mainwindow.h
-mainwindow.ui
-addvolunteer.cpp
-addvolunteer.h
-addvolunteer.ui
-volunteer.cpp
-volunteer.h
-volunteers.cpp
-volunteers.h
+    main.cpp
+    mainwindow.cpp
+    mainwindow.h
+    mainwindow.ui
+    volunteerdlg.cpp
+    volunteerdlg.h
+    volunteerdlg.ui
+    volunteer.cpp
+    volunteer.h
+    volunteers.cpp
+    volunteers.h
 )
 
 target_link_libraries(RotaGenerator PRIVATE Qt5::Widgets)
@@ -22,7 +22,7 @@ if(DOXYGEN_FOUND)
     set(DOXYGEN_GENERATE_MAN NO)
     set(DOXYGEN_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/source_docs)
     set(DOXYGEN_SOURCE_BROWSER YES)
-    set(DOXYGEN_EXTRACT_PRIVATE YES)
+    set(DOXYGEN_EXTRACT_PRIVATE NO)
     set(DOXYGEN_EXCLUDE_PATTERNS
         */tests/*
         */*.py

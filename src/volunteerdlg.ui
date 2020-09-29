@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>AddVolunteer</class>
- <widget class="QDialog" name="AddVolunteer">
+ <class>VolunteerDlg</class>
+ <widget class="QDialog" name="VolunteerDlg">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -114,7 +114,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>AddVolunteer</receiver>
+   <receiver>VolunteerDlg</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -130,7 +130,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>AddVolunteer</receiver>
+   <receiver>VolunteerDlg</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

@@ -3,14 +3,14 @@
 #include <QRegularExpression>
 #include <QRegularExpressionValidator>
 
-#include "addvolunteer.h"
-#include "ui_addvolunteer.h"
+#include "volunteerdlg.h"
+#include "ui_volunteerdlg.h"
 
-AddVolunteer::AddVolunteer(QWidget *parent) :
+VolunteerDlg::VolunteerDlg(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::AddVolunteer)
+    ui(new Ui::VolunteerDlg)
 {
-    spdlog::trace("AddVolunteer");
+    spdlog::trace("VolunteerDlg");
     ui->setupUi(this);
 
     QRegularExpression phone_num("0\\d{2}[ -]\\d{4}[ -]\\d{4}|0\\d{3}[ -]\\d{3}[ -]\\d{4}|0\\d{4}[ -]\\d{5,6}");
@@ -25,18 +25,18 @@ AddVolunteer::AddVolunteer(QWidget *parent) :
     ui->email->setValidator(ev);
 }
 
-AddVolunteer::~AddVolunteer()
+VolunteerDlg::~VolunteerDlg()
 {
     delete ui;
 }
 
-int AddVolunteer::exec()
+int VolunteerDlg::exec()
 {
     enableControls();
     return QDialog::exec();
 }
 
-void AddVolunteer::enableControls()
+void VolunteerDlg::enableControls()
 {
     spdlog::trace("enableControls");
 
@@ -52,7 +52,7 @@ void AddVolunteer::enableControls()
     button->setEnabled(enable);
 }
 
-Details AddVolunteer::volunteerDetails()
+Details VolunteerDlg::volunteerDetails()
 {
     Details details {ui->first_name->text().toStdString(),
                      ui->last_name->text().toStdString(),
@@ -63,27 +63,27 @@ Details AddVolunteer::volunteerDetails()
     return details;
 }
 
-void AddVolunteer::on_first_name_textChanged([[maybe_unused]] const QString &arg1)
+void VolunteerDlg::on_first_name_textChanged([[maybe_unused]] const QString &arg1)
 {
     enableControls();
 }
 
-void AddVolunteer::on_last_name_textEdited([[maybe_unused]] const QString &arg1)
+void VolunteerDlg::on_last_name_textChanged([[maybe_unused]] const QString &arg1)
 {
     enableControls();
 }
 
-void AddVolunteer::on_phone_home_textChanged([[maybe_unused]] const QString &arg1)
+void VolunteerDlg::on_phone_home_textChanged([[maybe_unused]] const QString &arg1)
 {
     enableControls();
 }
 
-void AddVolunteer::on_phone_mobile_textChanged([[maybe_unused]] const QString &arg1)
+void VolunteerDlg::on_phone_mobile_textChanged([[maybe_unused]] const QString &arg1)
 {
     enableControls();
 }
 
-void AddVolunteer::on_email_textChanged([[maybe_unused]] const QString &arg1)
+void VolunteerDlg::on_email_textChanged([[maybe_unused]] const QString &arg1)
 {
     enableControls();
 }

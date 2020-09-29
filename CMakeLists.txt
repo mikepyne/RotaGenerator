@@ -9,6 +9,8 @@ project(
 
 include(FetchContent)
 
+enable_testing()
+
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(CMAKE_AUTOUIC ON)
@@ -30,6 +32,11 @@ FetchContent_Declare(
     GIT_TAG         v3.9.1
 )
 
+if (NOT json_POPULATED)
+    FetchContent_Populate(json)
+    add_subdirectory(${json_SOURCE_DIR} ${json_BINARY_DIR} EXCLUDE_FROM_ALL)
+endif()
+
 FetchContent_Declare(
     catch2
     GIT_REPOSITORY  https://github.com/catchorg/Catch2.git
@@ -45,6 +52,11 @@ set(SPDLOG_BUILD_EXAMPLE OFF CACHE INTERNAL "")
 set(SPDLOG_BUILD_TESTS OFF CACHE INTERNAL "")
 set(SPDLOG_INSTALL OFF CACHE INTERNAL "")
 
+set(CATCH_BUILD_TESTING OFF)
+set(CATCH_BUILD_EXAMPLES OFF)
+set(CATCH_INSTALL_DOCS OFF)
+set(CATCH_INSTALL_HELPERS OFF)
+
 include_directories(
     "${json_SOURCE_DIR}/include"
     "${spdlog_SOURCE_DIR}/include"
@@ -54,3 +66,4 @@ include_directories(
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
 add_subdirectory(src)
+add_subdirectory(tests)

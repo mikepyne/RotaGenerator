@@ -35,6 +35,17 @@ Volunteer& Volunteer::operator=(
     return *this;
 }
 
+bool Volunteer::operator==(
+    const Volunteer& source
+)
+{
+    return first_name == source.first_name &&
+           last_name == source.last_name &&
+           phone_home == source.phone_home &&
+           phone_mobile == source.phone_mobile &&
+           email == source.email;
+}
+
 void Volunteer::to_json(json& j)
 {
     j = json {{"First Name", first_name},

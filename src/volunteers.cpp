@@ -3,6 +3,8 @@
 #include <fstream>
 #include <nlohmann/json.hpp>
 
+#include "volunteer.h"
+
 using nlohmann::json;
 
 void Volunteers::load(
@@ -39,6 +41,8 @@ void Volunteers::add(
     Volunteer vol
 )
 {
-    // TODO: Check for duplicates
-    volunteers.push_back(vol);
+    if (std::find(std::begin(volunteers), std::end(volunteers), vol) == std::end(volunteers))
+    {
+        volunteers.push_back(vol);
+    }
 }
