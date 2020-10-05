@@ -5,7 +5,7 @@
 
 TEST_CASE("Don't add duplicates", "[volunteers]")
 {
-    Volunteer v("First name", "Last name", "home", "mobile", "email");
+    Volunteer v(1, "First name", "Last name", "home", "mobile", "email");
 
     Volunteers vol;
 

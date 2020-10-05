@@ -20,7 +20,6 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-
 void MainWindow::on_add_volunteer_clicked()
 {
     spdlog::debug("In the click");
@@ -29,8 +28,9 @@ void MainWindow::on_add_volunteer_clicked()
     {
         Volunteers vols;
         vols.load("~/Projects/RotaGenerator");
-        // TODO: construct volunteer from the dialog
-        auto details = av.volunteerDetails();
-        vols.add(details);
+        // TODO: Get names, etc. from dialog and create a Volunteer.
+        // Add it, getting a new ID for it along the way.
+//        auto details = av.volunteerDetails();
+//        vols.add(details);
     }
 }

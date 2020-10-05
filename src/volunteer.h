@@ -22,7 +22,8 @@ public:
     /// \param[in] v To copy from
     Volunteer(
         const Volunteer& v
-    ) : first_name(v.first_name),
+    ) : id(v.id),
+        first_name(v.first_name),
         last_name(v.last_name),
         phone_home(v.phone_home),
         phone_mobile(v.phone_mobile),
@@ -32,19 +33,22 @@ public:
     /// \param[in] v To move from
     Volunteer(
         const Volunteer&& v
-    ) : first_name(std::move(v.first_name)),
+    ) : id(std::move(v.id)),
+        first_name(std::move(v.first_name)),
         last_name(std::move(v.last_name)),
         phone_home(std::move(v.phone_home)),
         phone_mobile(std::move(v.phone_mobile)),
         email(std::move(v.email)) {};
 
-    /// \brief Construct from individual strings
+    /// \brief Construct a volunteer from individual details
+    /// \param[in] i ID
     /// \param[in] f First name
     /// \param[in] l Last name
     /// \param[in] h Home phone number
     /// \param[in] m Mobile phone number
     /// \param[in] e Email address
     Volunteer(
+        int i,
         std::string f,
         std::string l,
         std::string h,
@@ -55,13 +59,6 @@ public:
         phone_home(h),
         phone_mobile(m),
         email(e) {};
-
-    /// \brief Construct from an array of 5 strings
-    /// \param[in] detail Volunteer details: First name, last name, Home phone,
-    ///                   Mobile phone, Email address
-    Volunteer(
-        const std::array<std::string, 5>& detail
-    );
     ///@}
 
     ~Volunteer() = default;
@@ -84,9 +81,18 @@ public:
 
     /// \brief Comparison operator
     /// \param[in] source Volunteer to compare to
+    /// \return true if the name, phone numbers and email match the source. ID
+    /// is not included in the comparison.
     bool operator==(
         const Volunteer& source
-    );
+    ) const;
+
+    /// \brief Inequality operator
+    /// \param[in] source Volunteer to compare with
+    /// \return true if the two Volunteers do not match
+    bool operator!=(
+        const Volunteer& source
+    ) const;
 
     /// \brief Serialise to JSON
     /// \param[out] j json to write to
@@ -101,6 +107,7 @@ public:
     );
 
 private:
+    int id {0};                     ///< Volunteer ID
     std::string first_name {""};    ///< First name
     std::string last_name {""};     ///< Last name
     std::string phone_home {""};    ///< Home phone number

@@ -1,4 +1,7 @@
-add_executable(RotaGenerator
+add_executable(RotaGenerator)
+
+target_sources(RotaGenerator
+    PRIVATE
     main.cpp
     mainwindow.cpp
     mainwindow.h
@@ -10,6 +13,12 @@ add_executable(RotaGenerator
     volunteer.h
     volunteers.cpp
     volunteers.h
+    rota.cpp
+    rota.h
+    rotadetails.cpp
+    rotadetails.h
+    event.cpp
+    event.h
 )
 
 target_link_libraries(RotaGenerator PRIVATE Qt5::Widgets)

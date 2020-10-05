@@ -1,14 +1,13 @@
-set(SOURCES
+add_executable(test_rg)
+
+target_sources(test_rg
+    PRIVATE
+    main.cpp
+    test_volunteers.cpp
+    test_volunteer.cpp
     ${CMAKE_SOURCE_DIR}/src/volunteers.cpp
     ${CMAKE_SOURCE_DIR}/src/volunteer.cpp
 )
-
-set(TEST_SOURCES
-    main.cpp
-    test_volunteers.cpp
-)
-
-add_executable(test_rg ${SOURCES} ${TEST_SOURCES})
 
 target_include_directories(
     test_rg
