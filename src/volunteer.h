@@ -2,10 +2,16 @@
 #define VOLUNTEER_H
 
 #include <string>
-#include <array>
 #include <nlohmann/json.hpp>
 
 using nlohmann::json;
+
+constexpr auto key_id {"id"};
+constexpr auto key_first {"firstName"};
+constexpr auto key_last {"lastName"};
+constexpr auto key_home {"homePhone"};
+constexpr auto key_mobile {"mobilePhone"};
+constexpr auto key_email {"email"};
 
 /// \class Volunteer
 /// \brief Details of a volunteer
@@ -54,7 +60,8 @@ public:
         std::string h,
         std::string m,
         std::string e
-    ) : first_name(f),
+    ) : id(i),
+        first_name(f),
         last_name(l),
         phone_home(h),
         phone_mobile(m),

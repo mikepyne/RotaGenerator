@@ -46,20 +46,20 @@ bool Volunteer::operator!=(
 
 void Volunteer::to_json(json& j)
 {
-    j = json {{"ID", id},
-              {"First Name", first_name},
-              {"Last Name", last_name},
-              {"Home Phone", phone_home},
-              {"Mobile Phone", phone_mobile},
-              {"Email", email}};
+    j = json {{key_id, id},
+              {key_first, first_name},
+              {key_last, last_name},
+              {key_home, phone_home},
+              {key_mobile, phone_mobile},
+              {key_email, email}};
 }
 
 void Volunteer::from_json(json& j)
 {
-    id = j.at("ID");
-    first_name = j.at("First Name");
-    last_name = j.at("Last Name");
-    phone_home = j.at("Home Phone");
-    phone_mobile = j.at("Mobile Phone");
-    email = j.at("Email");
+    id = j.at(key_id);
+    first_name = j.at(key_first);
+    last_name = j.at(key_last);
+    phone_home = j.at(key_home);
+    phone_mobile = j.at(key_mobile);
+    email = j.at(key_email);
 }
