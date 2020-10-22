@@ -1,12 +1,12 @@
-#define CATCH_CONFIG_RUNNER
-#include <catch2/catch.hpp>
 #include <spdlog/spdlog.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
+#include <gtest/gtest.h>
 
 int main(
     int argc,
     char** argv
 )
 {
-    return Catch::Session().run(argc, argv);
+    ::testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
 }

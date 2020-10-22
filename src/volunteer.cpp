@@ -46,12 +46,14 @@ bool Volunteer::operator!=(
 
 void Volunteer::to_json(json& j)
 {
-    j = json {{key_id, id},
-              {key_first, first_name},
-              {key_last, last_name},
-              {key_home, phone_home},
-              {key_mobile, phone_mobile},
-              {key_email, email}};
+    j = json {
+        {key_id, id},
+        {key_first, first_name},
+        {key_last, last_name},
+        {key_home, phone_home},
+        {key_mobile, phone_mobile},
+        {key_email, email}
+    };
 }
 
 void Volunteer::from_json(json& j)

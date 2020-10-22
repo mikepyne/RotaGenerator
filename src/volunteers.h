@@ -2,11 +2,12 @@
 #define VOLUNTEERS_H
 
 #include <string>
-#include <filesystem>
-
+#include <iostream>
 #include <vector>
 
 #include "volunteer.h"
+
+static std::string_view volunteers_fname{"volunteers.txt"};
 
 /// \class Volunteers
 /// \brief Collection of Volunteer objects
@@ -16,21 +17,19 @@ public:
     Volunteers() = default;
 
     /// \brief Load from file
-    /// \param[in] path Path to the volunteers file
+    /// \param[in] in Stream to read volunteers from
     ///
-    /// Load volunteers from a text file (volunteers.txt) containing a list of
-    /// volunteers. The path contains the location of the file.
+    /// Read volunteers from a stream
     void load(
-        std::filesystem::path path
+        std::istream& in
     );
 
     /// \brief Save to file
-    /// \param[in] path Save volunteers to file
+    /// \param[in] out Stream to write volunteers to
     ///
-    /// Save the list of volunteers to the volunteers.txt file. The path
-    /// contains the location of the file.
+    /// Write the volunteers to the stream
     void save(
-        std::filesystem::path path
+        std::ostream& out
     );
 
     /// \brief Add a volunteer to the collection
@@ -43,8 +42,6 @@ public:
     int count() {return volunteers.size();}
 
 private:
-    static constexpr auto fname{"volunteers.txt"};  ///< Name of the volunteers file
-
     std::vector<Volunteer> volunteers;  ///< The volunteers
 };
 

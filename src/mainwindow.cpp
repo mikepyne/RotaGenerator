@@ -27,7 +27,7 @@ void MainWindow::on_add_volunteer_clicked()
     if (av.exec() == QDialog::Accepted)
     {
         Volunteers vols;
-        vols.load("~/Projects/RotaGenerator");
+//        vols.load("~/Projects/RotaGenerator");
         // TODO: Get names, etc. from dialog and create a Volunteer.
         // Add it, getting a new ID for it along the way.
 //        auto details = av.volunteerDetails();

@@ -101,6 +101,10 @@ public:
         const Volunteer& source
     ) const;
 
+    /// \brief Get the ID for this volunteer
+    /// \return the ID
+    int get_id() const {return id;};
+
     /// \brief Serialise to JSON
     /// \param[out] j json to write to
     void to_json(

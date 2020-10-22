@@ -1,9 +1,10 @@
-#include <catch2/catch.hpp>
+#include <gtest/gtest.h>
+#include <gmock/gmock.h>
 
 #include "volunteer.h"
 #include "volunteers.h"
 
-TEST_CASE("Don't add duplicates", "[volunteers]")
+TEST(Volunteers, NoDuplicates)
 {
     Volunteer v(1, "First name", "Last name", "home", "mobile", "email");
 
@@ -12,5 +13,19 @@ TEST_CASE("Don't add duplicates", "[volunteers]")
     vol.add(v);
     vol.add(v);
 
-    REQUIRE(vol.count() == 1);
+    EXPECT_EQ(vol.count(), 1);
+}
+
+TEST(Volunteers, Save)
+{
+    Volunteer v(1, "First", "Last", "Home", "Mobile", "Email");
+    Volunteer v2(2, "Christian", "Surname", "One", "Two", "m@p");
+
+    Volunteers vol;
+    vol.add(v);
+    vol.add(v2);
+
+    std::ostringstream out;
+    vol.save(out);
+
 }

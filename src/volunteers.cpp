@@ -8,11 +8,9 @@
 using nlohmann::json;
 
 void Volunteers::load(
-    std::filesystem::path path
+    std::istream& in
 )
 {
-    path /= fname;
-    std::ifstream in(path);
     if (in.good())
     {
         json all;
@@ -27,12 +25,14 @@ void Volunteers::load(
 }
 
 void Volunteers::save(
-    std::filesystem::path path
+    std::ostream& out
 )
 {
-    path /= fname;
-    std::ofstream out(path, std::ios_base::trunc);
     json j;
+    for (auto v: volunteers)
+    {
+         v.to_json(j);
+    }
     out << j << std::endl;
 
 }
