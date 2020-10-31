@@ -1,31 +1,33 @@
-#include <gtest/gtest.h>
-#include <gmock/gmock.h>
+#include <string_view>
 
-#include "volunteer.h"
-#include "volunteers.h"
+#include "test_volunteers.h"
 
-TEST(Volunteers, NoDuplicates)
+void TestVolunteers::SetUp()
 {
-    Volunteer v(1, "First name", "Last name", "home", "mobile", "email");
-
-    Volunteers vol;
-
-    vol.add(v);
-    vol.add(v);
-
-    EXPECT_EQ(vol.count(), 1);
+    v1 = Volunteer(1, "First name", "Last name", "home", "mobile", "email");
+    v2 = Volunteer(2, "Christian", "Surname", "One", "Two", "m@p");
 }
 
-TEST(Volunteers, Save)
+TEST_F(TestVolunteers, NoDuplicates)
 {
-    Volunteer v(1, "First", "Last", "Home", "Mobile", "Email");
-    Volunteer v2(2, "Christian", "Surname", "One", "Two", "m@p");
+    vols.add(v1);
+    vols.add(v1);
 
-    Volunteers vol;
-    vol.add(v);
-    vol.add(v2);
+    EXPECT_EQ(vols.count(), 1);
+}
 
-    std::ostringstream out;
-    vol.save(out);
+TEST_F(TestVolunteers, Save)
+{
+    std::stringstream expected;
+    expected << R"({"email":"m@p","firstName":"Christian","homePhone":"One",)"
+             << R"("id":2,"lastName":"Surname","mobilePhone":"Two"})"
+             << std::endl;
 
+    vols.add(v1);
+    vols.add(v2);
+
+    std::stringstream out;
+    vols.save(out);
+
+    EXPECT_EQ(out.str(), expected.str());
 }
