@@ -1,9 +1,8 @@
-#include <gtest/gtest.h>
 #include <nlohmann/json.hpp>
 
-#include "volunteer.h"
+#include "test_volunteer.h"
 
-TEST(Volunteer, Comparison)
+TEST_F(TestVolunteer, Comparison)
 {
     Volunteer a(1, "First", "Last", "Home", "Mobile", "Email");
     Volunteer b(2, "First", "Last", "Home", "Mobile", "Email");
@@ -14,9 +13,9 @@ TEST(Volunteer, Comparison)
     EXPECT_NE(a, c);
 }
 
-TEST(Volunteer, ToJson)
+TEST_F(TestVolunteer, ToJson)
 {
-    Volunteer a(1, "First", "Last", "Home", "Mobile", "Email");
+    v = Volunteer(1, "First", "Last", "Home", "Mobile", "Email");
 
     nlohmann::json expected
     {
@@ -29,12 +28,12 @@ TEST(Volunteer, ToJson)
     };
 
     nlohmann::json j;
-    a.to_json(j);
+    v.to_json(j);
 
     EXPECT_EQ(j, expected);
 }
 
-TEST(Volunteer, FromJson)
+TEST_F(TestVolunteer, FromJson)
 {
     nlohmann::json from
     {
@@ -48,10 +47,8 @@ TEST(Volunteer, FromJson)
 
     Volunteer expected(1, "First", "Last", "Home", "Mobile", "Email");
 
-    Volunteer a;
+    v.from_json(from);
 
-    a.from_json(from);
-
-    EXPECT_EQ(a.get_id(), 1);
-    EXPECT_EQ(a, expected);
+    EXPECT_EQ(v.get_id(), 1);
+    EXPECT_EQ(v, expected);
 }

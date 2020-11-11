@@ -26,7 +26,9 @@ target_sources(test_rg
     test_volunteers.cpp
     test_volunteers.h
     test_volunteer.cpp
+    test_volunteer.h
     test_event.cpp
+    test_event.h
     ${CMAKE_SOURCE_DIR}/src/volunteers.cpp
     ${CMAKE_SOURCE_DIR}/src/volunteer.cpp
     ${CMAKE_SOURCE_DIR}/src/event.cpp

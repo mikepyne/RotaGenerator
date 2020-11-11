@@ -23,6 +23,9 @@ constexpr auto key_vols_needed {"volsNeeded"};
 class Event
 {
 public:
+    /// \name Constructors
+    /// @{
+
     /// \brief Default constructor
     Event() = default;
 
@@ -41,6 +44,56 @@ public:
         description(d),
         vols_needed(v) {};
 
+    /// \brief Copy constructor
+    /// \param[in] e To copy from
+    Event(
+        const Event& e
+    ) : id(e.id),
+        label(e.label),
+        description(e.description),
+        vols_needed(e.vols_needed) {};
+
+    /// \brief Move constructor
+    /// \param[in] e To move from
+    Event(
+        const Event&& e
+    ) : id(std::move(e.id)),
+        label(std::move(e.label)),
+        description(std::move(e.description)),
+        vols_needed(std::move(e.vols_needed)) {};
+    ///@}
+
+    /// \name Assignment operators
+    /// @{
+
+    /// \brief Copy assignment
+    /// \param[in] e To copy from
+    Event& operator=(
+        const Event& e
+    );
+
+    /// \brief Move assignment
+    /// \param[in] e To move from
+    Event& operator=(
+        const Event&& e
+    );
+    /// @}
+
+    /// \brief Equality operator
+    /// \param[in] source Event to compare to
+    /// \return true if the label, description and number of volunteers match.
+    /// The ID is not included in the comparison
+    bool operator==(
+        const Event& source
+    ) const;
+
+    /// \brief Inequality operator
+    /// \param[in] source Event to compare to
+    /// \return true if the two Events do not match
+    bool operator!=(
+        const Event& source
+    ) const;
+
     /// \brief Serialise to JSON
     /// \param[out] j json object to write to
     void to_json(
@@ -52,6 +105,26 @@ public:
     void from_json(
         json& j
     );
+
+    /// \name Properties
+    /// @{
+
+    /// \brief Get the ID for this event
+    /// \return the ID
+    int get_id() {return id;};
+
+    /// \brief Get the label for this event
+    /// \return the label
+    std::string get_label() {return label;};
+
+    /// \brief Get the description for this event
+    /// \return the description
+    std::string get_description() {return description;};
+
+    /// \brief Get the number of volunteers for this event
+    /// \return the number of volunteers
+    int get_vols_needed() {return vols_needed;};
+    /// @}
 
 private:
     int id {0};                     ///< ID of the event

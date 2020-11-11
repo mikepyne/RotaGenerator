@@ -7,6 +7,12 @@
 
 #include "mainwindow.h"
 
+/// \mainpage %Rota Generator
+///
+/// \section Introduction
+///
+/// Generate rotas for events.
+
 void initialise_logging(
 //    const std::string& name
 )
