@@ -19,6 +19,8 @@ target_sources(RotaGenerator
     rotadetails.h
     event.cpp
     event.h
+    events.cpp
+    events.h
 )
 
 target_link_libraries(RotaGenerator PRIVATE Qt5::Widgets)
@@ -27,7 +29,7 @@ find_package(Doxygen
     REQUIRED dot)
 
 if(DOXYGEN_FOUND)
-    set(DOXYGEN_GENERATE_HTML YES)
+    set(DOXYGEN_GENERATE_HTML NO)
     set(DOXYGEN_GENERATE_MAN NO)
     set(DOXYGEN_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/source_docs)
     set(DOXYGEN_SOURCE_BROWSER YES)
@@ -35,6 +37,9 @@ if(DOXYGEN_FOUND)
     set(DOXYGEN_EXCLUDE_PATTERNS
         */tests/*
         */*.py
+        */${json_SOURCE_DIR}/*
+        */${spdlog_SOURCE_DIR}/*
+        */${googletest_SOURCE_DIR}/*
     )
 
     doxygen_add_docs(

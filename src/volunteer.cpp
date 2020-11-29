@@ -1,5 +1,6 @@
 #include "volunteer.h"
 
+
 Volunteer& Volunteer::operator=(
     const Volunteer& v
 )
@@ -44,24 +45,31 @@ bool Volunteer::operator!=(
     return !(*this == source);
 }
 
-void Volunteer::to_json(json& j)
+json Volunteer::to_json() const
 {
-    j = json {
-        {key_id, id},
-        {key_first, first_name},
-        {key_last, last_name},
-        {key_home, phone_home},
-        {key_mobile, phone_mobile},
-        {key_email, email}
+    json j {
+        {id, {
+                {key_first, first_name},
+                {key_last, last_name},
+                {key_home, phone_home},
+                {key_mobile, phone_mobile},
+                {key_email, email}
+            }
+        }
     };
+    std::string dump = j.dump();
+    return j;
 }
 
-void Volunteer::from_json(json& j)
+void Volunteer::from_json(const json& j)
 {
-    id = j.at(key_id);
-    first_name = j.at(key_first);
-    last_name = j.at(key_last);
-    phone_home = j.at(key_home);
-    phone_mobile = j.at(key_mobile);
-    email = j.at(key_email);
+    for (auto& [key, value]: j.items())
+    {
+        id = key;
+        first_name = value.at(key_first);
+        last_name = value.at(key_last);
+        phone_home = value.at(key_home);
+        phone_mobile = value.at(key_mobile);
+        email = value.at(key_email);
+    }
 }

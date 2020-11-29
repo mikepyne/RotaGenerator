@@ -10,13 +10,12 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(googletest)
 
-set(BUILD_GMOCK OFF CACHE BOOL "" FORCE)
-set(BUILD_GTEST OFF CACHE BOOL "" FORCE)
-
 include_directories(
     "${googletest_SOURCE_DIR}/googletest/include"
     "${googletest_SOURCE_DIR}/googlemock/include"
 )
+
+include(GoogleTest)
 
 add_executable(test_rg)
 
@@ -37,7 +36,7 @@ target_sources(test_rg
 target_include_directories(
     test_rg
     PUBLIC ${CMAKE_SOURCE_DIR}/src
-#    ${spdlog_SOURCE_DIR}/include
+    ${spdlog_SOURCE_DIR}/include
 )
 
 target_link_libraries(
@@ -51,8 +50,6 @@ target_compile_features(
     cxx_std_17
 )
 
-add_test(
-    NAME test_rg
-    COMMAND test_rg
-    WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+gtest_discover_tests(
+    test_rg
 )

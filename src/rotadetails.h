@@ -1,6 +1,8 @@
 #ifndef ROTADETAILS_H
 #define ROTADETAILS_H
 
+#include "volunteers.h"
+
 /// \class RotaDetails
 /// \brief Details for a rota
 ///

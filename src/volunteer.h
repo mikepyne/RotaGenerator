@@ -54,7 +54,7 @@ public:
     /// \param[in] m Mobile phone number
     /// \param[in] e Email address
     Volunteer(
-        int i,
+        std::string i,
         std::string f,
         std::string l,
         std::string h,
@@ -66,11 +66,24 @@ public:
         phone_home(h),
         phone_mobile(m),
         email(e) {};
+
+    /// \brief Construct a volunteer from an array of details
+    /// \param details Array containing the details
+    ///
+    /// The array will contain five strings, ordered first name, last name, home
+    /// phone, mobile phone, email
+    Volunteer(
+        const std::array<std::string, 5>& details
+    ) : first_name(details[0]),
+        last_name(details[1]),
+        phone_home(details[2]),
+        phone_mobile(details[3]),
+        email(details[4]) {};
     ///@}
 
     ~Volunteer() = default;
 
-    /// \name Assignment Operators
+    /// \name Operators
     /// @{
 
     /// \brief Copy assignment
@@ -84,7 +97,6 @@ public:
     Volunteer& operator=(
         const Volunteer&& v
     );
-    /// @}
 
     /// \brief Comparison operator
     /// \param[in] source Volunteer to compare to
@@ -100,25 +112,78 @@ public:
     bool operator!=(
         const Volunteer& source
     ) const;
+    /// @}
+
+    /// \name Properties
+    /// @{
 
     /// \brief Get the ID for this volunteer
     /// \return the ID
-    int get_id() const {return id;};
+    const std::string& get_id() const {return id;};
+
+    /// \brief Set the ID for this volunteer
+    void set_id(
+        int i
+    ) {id = i;}
+
+    /// \brief Get the first name for this volunteer
+    /// \return the first name
+    const std::string& get_first_name() const {return first_name;};
+
+    /// \brief Set the first name for this volunteer
+    void set_first_name(
+        const std::string& fn
+    ) {first_name = fn;}
+
+    /// \brief Get the last name for this volunteer
+    /// \return the second name
+    const std::string& get_last_name() const {return last_name;};
+
+    /// \brief Set the last name for this volunteer
+    void set_last_name(
+        const std::string& sn
+    ) {last_name = sn;}
+
+    /// \brief Get the first name for this volunteer
+    /// \return the first name
+    const std::string& get_phone_home() const {return phone_home;};
+
+    /// \brief Set the home phone for this volunteer
+    void set_phone_home(
+        const std::string& ph
+    ) {phone_home = ph;}
+
+    /// \brief Get the first name for this volunteer
+    /// \return the first name
+    const std::string& get_phone_mobile() const {return phone_mobile;};
+
+    /// \brief Set the mobile phone for this volunteer
+    void set_phone_mobile(
+        const std::string& pm
+    ) {phone_mobile = pm;}
+
+    /// \brief Get the first name for this volunteer
+    /// \return the first name
+    const std::string& get_email() const {return email;};
+
+    /// \brief Set the email for this volunteer
+    void set_email(
+        const std::string& e
+    ) {email = e;}
+
+    ///@}
 
     /// \brief Serialise to JSON
-    /// \param[out] j json to write to
-    void to_json(
-        json& j
-    );
+    json to_json() const;
 
     /// \brief De-serialise from JSON
     /// \param[in] j to read from
     void from_json(
-        json& j
+        const json& j
     );
 
 private:
-    int id {0};                     ///< Volunteer ID
+    std::string id {""};            ///< Volunteer ID
     std::string first_name {""};    ///< First name
     std::string last_name {""};     ///< Last name
     std::string phone_home {""};    ///< Home phone number
