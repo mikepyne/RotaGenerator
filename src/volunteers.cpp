@@ -1,9 +1,8 @@
-#include "volunteers.h"
-
 #include <fstream>
+#include <string>
 #include <nlohmann/json.hpp>
 
-#include "volunteer.h"
+#include "volunteers.h"
 
 using nlohmann::json;
 
@@ -11,15 +10,16 @@ void Volunteers::load(
     std::istream& in
 )
 {
-    if (in.good())
+    in.peek();
+    if (in.good() && !in.eof())
     {
         json all;
         in >> all;
-        for (auto v: all)
+        for (auto& [k, v]: all.items())
         {
+            std::cout << v.dump(4) << std::endl;
             Volunteer vol;
-            vol.from_json(all);
-            volunteers.push_back(vol);
+            volunteers.emplace(std::make_pair(k, v));
         }
     }
 }
@@ -28,21 +28,33 @@ void Volunteers::save(
     std::ostream& out
 )
 {
-    json j;
-    for (auto v: volunteers)
-    {
-         v.to_json(j);
-    }
+    json j = volunteers;
     out << j << std::endl;
-
+    out.flush();
 }
 
-void Volunteers::add(
+bool Volunteers::add(
     Volunteer vol
 )
 {
-    if (std::find(std::begin(volunteers), std::end(volunteers), vol) == std::end(volunteers))
+    for (auto& [k, v]: volunteers)
     {
-        volunteers.push_back(vol);
+        if (v == vol)
+        {
+            return false;
+        }
     }
+    auto id = 1;
+    std::string new_key {std::to_string(id)};
+    if (volunteers.size() > 0)
+    {
+        auto last_key = volunteers.crbegin()->first;
+        id = std::stoi(last_key) + 1;
+        new_key = std::to_string(id);
+    }
+    if (volunteers.count(new_key) == 0)
+    {
+        volunteers.emplace(std::make_pair(new_key, vol));
+    }
+    return true;
 }

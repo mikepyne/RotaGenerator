@@ -3,9 +3,10 @@
 
 #include <string>
 #include <iostream>
-#include <vector>
+#include <map>
 
 #include "volunteer.h"
+
 
 static std::string_view volunteers_fname{"volunteers.txt"};
 
@@ -34,7 +35,8 @@ public:
 
     /// \brief Add a volunteer to the collection
     /// \param[in] vol Volunteer to add
-    void add(
+    /// \returns true if the volunteer was added
+    bool add(
         Volunteer vol
     );
 
@@ -42,7 +44,7 @@ public:
     int count() {return volunteers.size();}
 
 private:
-    std::vector<Volunteer> volunteers;  ///< The volunteers
+    std::map<std::string, Volunteer> volunteers;  ///< The volunteers
 };
 
 #endif // VOLUNTEERS_H
