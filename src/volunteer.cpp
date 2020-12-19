@@ -1,5 +1,15 @@
 #include "volunteer.h"
 
+Volunteer::Volunteer(
+    const json& v
+)
+{
+    firstName = v.at("firstName");
+    lastName = v.at("lastName");
+    phoneHome = v.at("phoneHome");
+    phoneMobile = v.at("phoneMobile");
+    email = v.at("email");
+}
 
 Volunteer& Volunteer::operator=(
     const Volunteer& v
@@ -22,6 +32,18 @@ Volunteer& Volunteer::operator=(
     phoneHome = std::move(v.phoneHome);
     phoneMobile = std::move(v.phoneMobile);
     email = std::move(v.email);
+    return *this;
+}
+
+Volunteer& Volunteer::operator=(
+    const json& v
+)
+{
+    firstName = v.at("firstName");
+    lastName = v.at("lastName");
+    phoneHome = v.at("phoneHome");
+    phoneMobile = v.at("phoneMobile");
+    email = v.at("email");
     return *this;
 }
 

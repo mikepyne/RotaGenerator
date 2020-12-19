@@ -19,10 +19,10 @@ TEST_F(TestVolunteers, NoDuplicates)
 TEST_F(TestVolunteers, Save)
 {
     std::stringstream expected;
-    expected << R"({"1":{"email":"email","firstName":"First Name",)"
-             << R"("homePhone":"home","lastName":"Last name",)"
-             << R"("mobilePhone":"mobile},{"2":{"email":"m@p","firstName":"Christian",)"
-             << R"("homePhone":"One","lastName":"Surname","mobilePhone":"Two"}})"
+    expected << R"({"1":{"email":"email","firstName":"First name",)"
+             << R"("lastName":"Last name","phoneHome":"home",)"
+             << R"("phoneMobile":"mobile"},"2":{"email":"m@p","firstName":"Christian",)"
+             << R"("lastName":"Surname","phoneHome":"One","phoneMobile":"Two"}})"
              << std::endl;
 
     vols.add(v1);
@@ -46,11 +46,22 @@ TEST_F(TestVolunteers, Load)
 {
     std::stringstream in;
     in << R"({"1": {"email":"email","firstName":"First Name",)"
-       << R"("homePhone":"home","lastName":"Last name",)"
-       << R"("mobilePhone":"mobile},"2": {"email":"m@p","firstName":"Christian",)"
-       << R"("homePhone":"One","lastName":"Surname",)"
-       << R"("mobilePhone":"Two"}})";
+       << R"("phoneHome":"home","lastName":"Last name",)"
+       << R"("phoneMobile":"mobile"},"2": {"email":"m@p","firstName":"Christian",)"
+       << R"("phoneHome":"One","lastName":"Surname",)"
+       << R"("phoneMobile":"Two"}})";
 
     EXPECT_NO_THROW(vols.load(in));
     EXPECT_EQ(vols.count(), 2);
+}
+
+TEST_F(TestVolunteers, LoadBadKey)
+{
+    std::stringstream in;
+    in << R"({"1": {"email":"email","firstName":"First Name",)"
+       << R"("homePhone":"home","lastName":"Last name",)"
+       << R"("phoneMobile":"mobile"}})";
+
+    EXPECT_THROW(vols.load(in), json::out_of_range);
+    EXPECT_EQ(vols.count(), 0);
 }

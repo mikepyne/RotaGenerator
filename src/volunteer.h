@@ -17,6 +17,12 @@ public:
     /// \brief Default constructor
     Volunteer() = default;
 
+    /// \brief Construct from JSON
+    /// \param[in] v JSON to construct from
+    Volunteer(
+        const json& v
+    );
+
     /// \brief Copy constructor
     /// \param[in] v To copy from
     Volunteer(
@@ -84,6 +90,12 @@ public:
     /// \param[in] v Volunteer to move from
     Volunteer& operator=(
         const Volunteer&& v
+    );
+
+    /// \brief Assignment from JSON
+    /// \param[in] v JSON to assign from
+    Volunteer& operator=(
+        const json& v
     );
 
     /// \brief Comparison operator

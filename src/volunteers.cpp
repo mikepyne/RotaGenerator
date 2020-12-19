@@ -1,6 +1,7 @@
 #include <fstream>
 #include <string>
 #include <nlohmann/json.hpp>
+#include <spdlog/spdlog.h>
 
 #include "volunteers.h"
 
@@ -17,8 +18,7 @@ void Volunteers::load(
         in >> all;
         for (auto& [k, v]: all.items())
         {
-            std::cout << v.dump(4) << std::endl;
-            Volunteer vol;
+            Volunteer vol(v);
             volunteers.emplace(std::make_pair(k, v));
         }
     }
