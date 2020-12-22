@@ -10,5 +10,5 @@ set(JSON_BuildTests OFF CACHE INTERNAL "")
 set(JSON_Install OFF CACHE INTERNAL "")
 
 include_directories(
-    "{json_SOURCE_DIR}/include"
+    "${json_SOURCE_DIR}/include"
 )

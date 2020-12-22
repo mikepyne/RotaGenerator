@@ -18,33 +18,11 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-FetchContent_Declare(
-    spdlog
-    GIT_REPOSITORY https://github.com/gabime/spdlog.git
-    GIT_TAG v1.7.0
-)
-
-FetchContent_Declare(
-    json
-    GIT_REPOSITORY  https://github.com/nlohmann/json.git
-    GIT_TAG         v3.9.1
-)
-
-FetchContent_MakeAvailable(spdlog json)
-
-set(JSON_BuildTests OFF CACHE INTERNAL "")
-set(JSON_Install OFF CACHE INTERNAL "")
-
-set(SPDLOG_BUILD_EXAMPLE OFF CACHE INTERNAL "")
-set(SPDLOG_BUILD_TESTS OFF CACHE INTERNAL "")
-set(SPDLOG_INSTALL OFF CACHE INTERNAL "")
-
-include_directories(
-    "${json_SOURCE_DIR}/include"
-    "${spdlog_SOURCE_DIR}/include"
-)
-
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
+
+include(json.cmake)
+include(spdlog.cmake)
+include(googletest.cmake)
 
 add_subdirectory(src)
 add_subdirectory(tests)
