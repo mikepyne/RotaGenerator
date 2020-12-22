@@ -1,4 +1,3 @@
-enable_testing()
 
 add_executable(test_rg)
 
@@ -24,8 +23,7 @@ target_include_directories(
 
 target_link_libraries(
     test_rg
-    gtest
-    gmock
+    Catch2::Catch2
 )
 
 target_compile_features(
@@ -34,6 +32,7 @@ target_compile_features(
     cxx_std_17
 )
 
-gtest_discover_tests(
-    test_rg
+add_test(
+    NAME test_rg
+    COMMAND test_rg -r xml
 )

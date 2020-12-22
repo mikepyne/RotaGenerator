@@ -43,6 +43,12 @@ public:
     /// \brief Count of volunteers
     int count() {return volunteers.size();}
 
+    /// \brief Get a volunteer
+    /// \param id of the volunteer to get
+    Volunteer& at(
+        const std::string& id
+    );
+
 private:
     std::map<std::string, Volunteer> volunteers;  ///< The volunteers
 };

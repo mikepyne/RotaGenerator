@@ -1,23 +1,23 @@
+#include <catch2/catch.hpp>
 #include <nlohmann/json.hpp>
 
 #include "test_volunteer.h"
 
 
-TEST_F(TestVolunteer, Comparison)
+TEST_CASE("Compare Volunteer", "[Volunteer]")
 {
-    Volunteer a("First", "Last", "Home", "Mobile", "Email");
-    Volunteer b("First", "Last", "Home", "Mobile", "Email");
+    Volunteer a {"First", "Last", "Home", "Mobile", "Email"};
+    Volunteer b {"First", "Last", "Home", "Mobile", "Email"};
 
-    Volunteer c("Forename", "Surname", "Home", "Mobile", "Email");
+    Volunteer c {"Forename", "Surname", "Home", "Mobile", "Email"};
 
-    EXPECT_EQ(a, b);
-    EXPECT_NE(a, c);
+    CHECK(a == b);
+    CHECK_FALSE(a == c);
 }
 
-TEST_F(TestVolunteer, ToJson)
+TEST_CASE("Volunteer To Json", "[Volunteer]")
 {
-    v = Volunteer("First", "Last", "Home", "Mobile", "Email");
-
+    Volunteer a {"First", "Last", "Home", "Mobile", "Email"};
     nlohmann::json expected {
         {"email", "Email"},
         {"firstName", "First"},
@@ -26,11 +26,11 @@ TEST_F(TestVolunteer, ToJson)
         {"phoneMobile", "Mobile"},
     };
 
-    nlohmann::json j = v;
-    EXPECT_EQ(j, expected);
+    nlohmann::json j = a;
+    REQUIRE(j == expected);
 }
 
-TEST_F(TestVolunteer, FromJson)
+TEST_CASE("Volunteer From Json", "[Volunteer]")
 {
     std::string expected_id {"1"};
     nlohmann::json from {
@@ -41,13 +41,16 @@ TEST_F(TestVolunteer, FromJson)
         {"email", "Email"}
     };
 
-    Volunteer expected("First", "Last", "Home", "Mobile", "Email");
+    Volunteer v = from;
 
-    v = from;
-    EXPECT_EQ(v, expected);
+    REQUIRE(v.get_first_name() == "First");
+    REQUIRE(v.get_last_name() == "Last");
+    REQUIRE(v.get_phone_home() == "Home");
+    REQUIRE(v.get_phone_mobile() == "Mobile");
+    REQUIRE(v.get_email() == "Email");
 }
 
-TEST_F(TestVolunteer, ConstuctFromJson)
+TEST_CASE("Construct from Json", "[Volunteer]")
 {
     nlohmann::json from {
         {"firstName", "First"},
@@ -57,29 +60,16 @@ TEST_F(TestVolunteer, ConstuctFromJson)
         {"email", "Email"},
     };
 
-    Volunteer expected("First", "Last", "Home", "Mobile", "Email");
-    v = Volunteer(from);
+    Volunteer v = Volunteer(from);
 
-    EXPECT_EQ(expected, v);
+    REQUIRE(v.get_first_name() == "First");
+    REQUIRE(v.get_last_name() == "Last");
+    REQUIRE(v.get_phone_home() == "Home");
+    REQUIRE(v.get_phone_mobile() == "Mobile");
+    REQUIRE(v.get_email() == "Email");
 }
 
-TEST_F(TestVolunteer, AssignFromJson)
-{
-    nlohmann::json from {
-        {"firstName", "First"},
-        {"lastName", "Last"},
-        {"phoneHome", "Home"},
-        {"phoneMobile", "Mobile"},
-        {"email", "Email"},
-    };
-
-    Volunteer expected("First", "Last", "Home", "Mobile", "Email");
-    v = from;
-
-    EXPECT_EQ(expected, v);
-}
-
-TEST_F(TestVolunteer, ConstructFromJsonBadKey)
+TEST_CASE("Construct with bad key", "[Volunteer]")
 {
     nlohmann::json from {
         {"firstName", "First"},
@@ -88,10 +78,11 @@ TEST_F(TestVolunteer, ConstructFromJsonBadKey)
         {"phoneMobile", "Mobile"},
         {"email", "Email"},
     };
-    EXPECT_THROW((Volunteer(from)), nlohmann::json::out_of_range);
+
+    REQUIRE_THROWS_AS(Volunteer(from), nlohmann::json::out_of_range);
 }
 
-TEST_F(TestVolunteer, AssignFromJsonBadKey)
+TEST_CASE("Assign with bad key", "[Volunteer]")
 {
     nlohmann::json from {
         {"firstName", "First"},
@@ -100,5 +91,6 @@ TEST_F(TestVolunteer, AssignFromJsonBadKey)
         {"phoneMobile", "Mobile"},
         {"email", "Email"},
     };
-    EXPECT_THROW(v = from, nlohmann::json::out_of_range);
+    Volunteer v;
+    REQUIRE_THROWS_AS(v = from, nlohmann::json::out_of_range);
 }

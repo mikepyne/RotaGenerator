@@ -58,3 +58,10 @@ bool Volunteers::add(
     }
     return true;
 }
+
+Volunteer& Volunteers::at(
+    const std::string& id
+)
+{
+    return volunteers.at(id);
+}

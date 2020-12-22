@@ -9,6 +9,8 @@ project(
 
 include(FetchContent)
 
+enable_testing()
+
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(CMAKE_AUTOUIC ON)
@@ -22,7 +24,8 @@ find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
 include(json.cmake)
 include(spdlog.cmake)
-include(googletest.cmake)
+include(catch2.cmake)
+include(trompeloeil.cmake)
 
 add_subdirectory(src)
 add_subdirectory(tests)
