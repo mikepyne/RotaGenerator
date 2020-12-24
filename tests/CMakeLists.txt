@@ -4,6 +4,7 @@ add_executable(test_rg)
 target_sources(test_rg
     PRIVATE
     main.cpp
+    mock_volunteer.cpp
     test_volunteers.cpp
     test_volunteers.h
     test_volunteer.cpp

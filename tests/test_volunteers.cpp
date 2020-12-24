@@ -1,7 +1,9 @@
-#include <sstream>
+    #include <sstream>
 #include <string_view>
 #include <catch2/catch.hpp>
+#include <trompeloeil.hpp>
 
+#include "mock_volunteer.h"
 #include "test_volunteers.h"
 
 
@@ -40,48 +42,69 @@ TEST_CASE("Load volunteers with a bad key", "[Volunteers]")
     CHECK(vols.count() == 0);
 }
 
-// void TestVolunteers::SetUp()
-// {
-//     v1 = Volunteer("First name", "Last name", "home", "mobile", "email");
-//     v2 = Volunteer("Christian", "Surname", "One", "Two", "m@p");
-// }
+TEST_CASE("No duplicate Volunteers", "[Volunteers]")
+{
+    Volunteers vols;
+    MockVolunteer v1;
+    MockVolunteer v2;
 
-// TEST_F(TestVolunteers, NoDuplicates)
-// {
-//     EXPECT_TRUE(vols.add(v1));
-//     EXPECT_FALSE(vols.add(v1));
-//     EXPECT_EQ(vols.count(), 1);
-// }
+    REQUIRE(vols.add(v1));
+    REQUIRE_FALSE(vols.add(v1));
 
-// TEST_F(TestVolunteers, Save)
-// {
-//     std::stringstream expected;
-//     expected << R"({"1":{"email":"email","firstName":"First name",)"
-//              << R"("lastName":"Last name","phoneHome":"home",)"
-//              << R"("phoneMobile":"mobile"},"2":{"email":"m@p","firstName":"Christian",)"
-//              << R"("lastName":"Surname","phoneHome":"One","phoneMobile":"Two"}})"
-//              << std::endl;
+    REQUIRE(vols.count() == 1);
+}
 
-//     vols.add(v1);
-//     vols.add(v2);
+TEST_CASE("Save Empty Volunteers", "[Volunteers]")
+{
+    std::stringstream expected;
+    expected << "{}" << std::endl;
+    std::stringstream out;
+    Volunteers vols;
+    vols.save(out);
+     REQUIRE(out.str() == expected.str());
+}
 
-//     std::stringstream out;
-//     vols.save(out);
+TEST_CASE("Save Volunteers", "[Volunteers]")
+{
+    std::stringstream expected;
+    expected << R"({"1":{"email":"email","firstName":"First name",)"
+             << R"("lastName":"Last name","phoneHome":"home",)"
+             << R"("phoneMobile":"mobile"},"2":{"email":"m@p",)"
+             << R"("firstName":"Christian","lastName":"Surname",)"
+             << R"("phoneHome":"One","phoneMobile":"Two"}})"
+             << std::endl;
 
-//     EXPECT_EQ(out.str(), expected.str());
-// }
+    Volunteer v1("First name", "Last name", "home", "mobile", "email");
+    Volunteer v2("Christian", "Surname", "One", "Two", "m@p");;
+    std::stringstream out;
+    Volunteers vols;
+    vols.add(v1);
+    vols.add(v2);
+    vols.save(out);
+
+    REQUIRE(out.str() == expected.str());
+}
 
 
-// TEST_F(TestVolunteers, GetVolunteer)
-// {
-//     vols.add(v1);
-//     vols.add(v2);
-//     EXPECT_EQ(vols.at("1"), v1);
-// }
+TEST_CASE("Getting a Volunteer", "[Volunteers]")
+{
+    Volunteers vols;
+    Volunteer v1("First name", "Last name", "home", "mobile", "email");
+    Volunteer v2("Christian", "Surname", "One", "Two", "m@p");
 
-// TEST_F(TestVolunteers, GetVolunteerBadID)
-// {
-//     vols.add(v1);
-//     vols.add(v2);
-//     EXPECT_EQ(vols.at("3"), v1);
-// }
+    vols.add(v1);
+    vols.add(v2);
+
+    REQUIRE(vols.count() == 2);
+
+    SECTION("Good ID")
+    {
+        REQUIRE(vols.at("1") == v1);
+        REQUIRE(vols.at("2") == v2);
+    }
+
+    SECTION("Bad ID")
+    {
+        REQUIRE_THROWS_AS(vols.at("3"), std::out_of_range);
+    }
+}

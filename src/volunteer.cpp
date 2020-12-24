@@ -51,16 +51,23 @@ bool Volunteer::operator==(
     const Volunteer& source
 ) const
 {
-    return firstName == source.firstName &&
-           lastName == source.lastName &&
-           phoneHome == source.phoneHome &&
-           phoneMobile == source.phoneMobile &&
-           email == source.email;
+    return eq(source);
 }
 
 bool Volunteer::operator!=(
     const Volunteer& source
 ) const
 {
-    return !(*this == source);
+    return !eq(source);
+}
+
+bool Volunteer::eq(
+    const Volunteer& source
+) const
+{
+    return firstName == source.firstName &&
+           lastName == source.lastName &&
+           phoneHome == source.phoneHome &&
+           phoneMobile == source.phoneMobile &&
+           email == source.email;
 }

@@ -168,6 +168,14 @@ public:
     NLOHMANN_DEFINE_TYPE_INTRUSIVE(Volunteer, firstName, lastName,
                                    phoneHome, phoneMobile, email);
 
+protected:
+    /// \brief Compare another Volunteer with this one
+    /// \param rhs the other Volunteer
+    /// \return true if the two Volunteer objects match
+    virtual bool eq(
+        const Volunteer& rhs
+    ) const;
+
 private:
     std::string firstName {""};    ///< First name
     std::string lastName {""};     ///< Last name
