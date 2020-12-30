@@ -49,6 +49,21 @@ public:
         const std::string& id
     );
 
+    /// \brief Erase a volunteer
+    /// \param id of the volunteer to erase
+    /// \returns the number of elements erased
+    int erase(
+        const std::string& id
+    );
+
+    /// \brief Update a volunteer
+    /// \param id of the volunteer to update
+    /// \param v the updated volunteer
+    void update(
+        const std::string& id,
+        const Volunteer& v
+    );
+
 private:
     std::map<std::string, Volunteer> volunteers;  ///< The volunteers
 };

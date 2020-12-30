@@ -2,13 +2,12 @@
 
 Volunteer::Volunteer(
     const json& v
-)
+) : firstName(v.at("firstName")),
+    lastName(v.at("lastName")),
+    phoneHome(v.at("phoneHome")),
+    phoneMobile(v.at("phoneMobile")),
+    email(v.at("email"))
 {
-    firstName = v.at("firstName");
-    lastName = v.at("lastName");
-    phoneHome = v.at("phoneHome");
-    phoneMobile = v.at("phoneMobile");
-    email = v.at("email");
 }
 
 Volunteer& Volunteer::operator=(

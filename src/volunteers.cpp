@@ -65,3 +65,18 @@ Volunteer& Volunteers::at(
 {
     return volunteers.at(id);
 }
+
+int Volunteers::erase(
+    const std::string& id
+)
+{
+    return volunteers.erase(id);
+}
+
+void Volunteers::update(
+    const std::string& id,
+    const Volunteer& v
+)
+{
+    volunteers.at(id) = v;
+}

@@ -1,4 +1,4 @@
-    #include <sstream>
+#include <sstream>
 #include <string_view>
 #include <catch2/catch.hpp>
 #include <trompeloeil.hpp>
@@ -106,5 +106,59 @@ TEST_CASE("Getting a Volunteer", "[Volunteers]")
     SECTION("Bad ID")
     {
         REQUIRE_THROWS_AS(vols.at("3"), std::out_of_range);
+    }
+}
+
+TEST_CASE("Deleting a volunteer", "[Volunteers]")
+{
+    Volunteers vols;
+    Volunteer v1("First name", "Last name", "home", "mobile", "email");
+    Volunteer v2("Christian", "Surname", "One", "Two", "m@p");
+
+    vols.add(v1);
+    vols.add(v2);
+
+    REQUIRE(vols.count() == 2);
+
+    SECTION("Good ID")
+    {
+        REQUIRE(vols.erase("1") == 1);
+        REQUIRE(vols.count() == 1);
+        REQUIRE_THROWS_AS(vols.at("1"), std::out_of_range);
+    }
+
+    SECTION("Bad ID")
+    {
+        REQUIRE(vols.erase("3") == 0);
+        REQUIRE(vols.count() == 2);
+    }
+}
+
+TEST_CASE("Edit a volunteer", "[Volunteers]")
+{
+    Volunteers vols;
+    Volunteer v1("First name", "Last name", "home", "mobile", "email");
+    Volunteer v2("Christian", "Surname", "One", "Two", "m@p");
+
+    vols.add(v1);
+    vols.add(v2);
+
+    REQUIRE(vols.count() == 2);
+
+    SECTION("Edit Good ID")
+    {
+        Volunteer v = vols.at("1");
+
+        v.set_first_name("New first name");
+        vols.update("1", v);
+
+        Volunteer w = vols.at("1");
+        REQUIRE(w.get_first_name() == "New first name");
+    }
+
+    SECTION("Edit Bad ID")
+    {
+        REQUIRE_THROWS_AS(vols.update("3", v1), std::out_of_range);
+        REQUIRE(vols.count() == 2);
     }
 }
