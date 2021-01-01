@@ -30,37 +30,32 @@ public:
     Event() = default;
 
     /// \brief Constructor
-    /// \param[in] i ID
     /// \param[in] l Label
     /// \param[in] d Description
     /// \param[in] v Volunteers needed
     Event(
-        int i,
-        std::string l,
-        std::string d,
+        const std::string& l,
+        const std::string& d,
         int v
-    ) : id(i),
-        label(l),
+    ) : label(l),
         description(d),
-        vols_needed(v) {};
+        volsNeeded(v) {};
 
     /// \brief Copy constructor
     /// \param[in] e To copy from
     Event(
         const Event& e
-    ) : id(e.id),
-        label(e.label),
+    ) : label(e.label),
         description(e.description),
-        vols_needed(e.vols_needed) {};
+        volsNeeded(e.volsNeeded) {};
 
     /// \brief Move constructor
     /// \param[in] e To move from
     Event(
         const Event&& e
-    ) : id(std::move(e.id)),
-        label(std::move(e.label)),
+    ) : label(std::move(e.label)),
         description(std::move(e.description)),
-        vols_needed(std::move(e.vols_needed)) {};
+        volsNeeded(std::move(e.volsNeeded)) {};
     ///@}
 
     /// \name Assignment operators
@@ -94,24 +89,8 @@ public:
         const Event& source
     ) const;
 
-    /// \brief Serialise to JSON
-    /// \param[out] j json object to write to
-    void to_json(
-        json& j
-    );
-
-    /// \brief De-serialise from JSON
-    /// \param[in] j json object to read from
-    void from_json(
-        json& j
-    );
-
     /// \name Properties
     /// @{
-
-    /// \brief Get the ID for this event
-    /// \return the ID
-    int get_id() {return id;};
 
     /// \brief Get the label for this event
     /// \return the label
@@ -123,14 +102,17 @@ public:
 
     /// \brief Get the number of volunteers for this event
     /// \return the number of volunteers
-    int get_vols_needed() {return vols_needed;};
+    int get_vols_needed() {return volsNeeded;};
     /// @}
 
+    /// \brief Nlohmann JSON boilerplate
+    NLOHMANN_DEFINE_TYPE_INTRUSIVE(Event, label, description,
+                                   volsNeeded);
+
 private:
-    int id {0};                     ///< ID of the event
     std::string label {""};         ///< Simple label for the event
     std::string description {""};   ///< Longer description of the event
-    int vols_needed {0};            ///< How many volunteers needed for the event
+    int volsNeeded {0};             ///< How many volunteers needed for the event
 };
 
 #endif // EVENT_H

@@ -35,9 +35,9 @@ void MainWindow::on_add_volunteer_clicked()
         {
             spdlog::debug("Opened file");
             vols.load(data);
-            auto details = av.volunteerDetails();
-            vols.add(details);
-            vols.save(data);
+            // auto details = av.volunteerDetails();
+            // vols.add(details);
+            // vols.save(data);
         }
     }
 }

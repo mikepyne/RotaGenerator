@@ -11,14 +11,14 @@ void Events::load(
 {
     if (in.good())
     {
-        json all;
-        in >> all;
-        for (auto e: all)
-        {
-            Event event;
-            event.from_json(all);
-            add(event);
-        }
+        // json all;
+        // in >> all;
+        // for (auto e: all)
+        // {
+        //     Event event;
+        //     event.from_json(all);
+        //     add(event);
+        // }
     }
 }
 
@@ -26,17 +26,17 @@ void Events::save(
     std::ostream& out
 )
 {
-    json j;
-    for (auto e: events)
-    {
-        e.second.to_json(j);
-    }
-    out << j << std::endl;
+    // json j;
+    // for (auto e: events)
+    // {
+    //     e.second.to_json(j);
+    // }
+    // out << j << std::endl;
 }
 
 void Events::add(
     Event event
 )
 {
-    events.emplace(std::make_pair(event.get_id(), event));
+    // events.emplace(std::make_pair(event.get_id(), event));
 }

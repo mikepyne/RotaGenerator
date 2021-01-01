@@ -15,7 +15,7 @@ TEST_CASE("Load from empty stream", "[Volunteers]")
     CHECK(vols.count() == 0);
 }
 
-TEST_CASE("Load volunteers", "[Volunteers")
+TEST_CASE("Load volunteers", "[Volunteers]")
 {
     Volunteers vols;
     std::stringstream in;

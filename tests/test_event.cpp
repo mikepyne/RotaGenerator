@@ -3,49 +3,75 @@
 
 #include "test_event.h"
 
-TEST_CASE("Comparing Events", "[Events]")
+TEST_CASE("Comparing Events", "[Event]")
 {
-    Event a {1, "label", "description", 2};
-    Event b {2, "label", "description", 2};
-    Event c {1, "lbl", "desc", 1};
+    Event a {"label", "description", 2};
+    Event b {"label", "description", 2};
+    Event c {"lbl", "desc", 1};
 
     CHECK(a == b);
     CHECK_FALSE(a == c);
 }
 
-TEST_CASE("Event to Json", "[Events]")
+TEST_CASE("Event to Json", "[Event]")
 {
-    Event a {1, "label", "description", 2};
+    Event a {"label", "description", 2};
 
     nlohmann::json expected
     {
-        {"id", 1},
         {"label", "label"},
         {"description", "description"},
         {"volsNeeded", 2}
     };
 
-    nlohmann::json j;
-    a.to_json(j);
+    nlohmann::json j = a;
 
     REQUIRE(j == expected);
 }
 
-TEST_CASE("Event from Json", "[Events]")
+TEST_CASE("Event From Json", "[Event]")
 {
     nlohmann::json from
     {
-        {"id", 1},
         {"label", "label"},
         {"description", "description"},
         {"volsNeeded", 2}
     };
 
     Event a;
-    a.from_json(from);
+    SECTION("Assign")
+    {
+        a = from;
+    }
 
-    CHECK(a.get_id() == 1);
+    SECTION("Construct")
+    {
+        a = Event(from);
+    }
+
     CHECK(a.get_label() == "label");
     CHECK(a.get_description() == "description");
     CHECK(a.get_vols_needed() == 2);
 }
+
+TEST_CASE("Event with a Bad Key", "[Event]")
+{
+    nlohmann::json from
+    {
+        {"label", "label"},
+        {"desc", "description"},
+        {"volsNeeded", 2}
+    };
+
+    SECTION("Construct")
+    {
+        REQUIRE_THROWS_AS(Event(from), nlohmann::json::out_of_range);
+    }
+
+    SECTION("Assign")
+    {
+        Event e;
+        REQUIRE_THROWS_AS(e = from, nlohmann::json::out_of_range);
+    }
+}
+

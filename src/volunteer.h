@@ -50,11 +50,11 @@ public:
     /// \param[in] m Mobile phone number
     /// \param[in] e Email address
     Volunteer(
-        std::string f,
-        std::string l,
-        std::string h,
-        std::string m,
-        std::string e
+        const std::string& f,
+        const std::string& l,
+        const std::string& h,
+        const std::string& m,
+        const std::string& e
     ) : firstName(f),
         lastName(l),
         phoneHome(h),
@@ -66,7 +66,7 @@ public:
     ///
     /// The array will contain five strings, ordered first name, last name, home
     /// phone, mobile phone, email
-    Volunteer(
+    explicit Volunteer(
         const std::array<std::string, 5>& details
     ) : firstName(details[0]),
         lastName(details[1]),

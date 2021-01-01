@@ -33,7 +33,4 @@ target_compile_features(
     cxx_std_17
 )
 
-add_test(
-    NAME test_rg
-    COMMAND test_rg -r xml
-)
+catch_discover_tests(test_rg)
