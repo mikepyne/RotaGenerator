@@ -9,6 +9,8 @@ target_sources(RotaGenerator
     volunteerdlg.cpp
     volunteerdlg.h
     volunteerdlg.ui
+    rotadata.cpp
+    rotadata.h
     volunteer.cpp
     volunteer.h
     volunteers.cpp
