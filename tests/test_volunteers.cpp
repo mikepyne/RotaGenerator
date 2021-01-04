@@ -7,7 +7,7 @@
 #include "test_volunteers.h"
 
 
-TEST_CASE("Load from empty stream", "[Volunteers]")
+TEST_CASE("Load empty volunteers", "[Volunteers]")
 {
     Volunteers vols;
     std::stringstream in;

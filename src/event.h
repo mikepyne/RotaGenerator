@@ -96,13 +96,32 @@ public:
     /// \return the label
     std::string get_label() {return label;};
 
+    /// \brief Set the label for this event
+    /// \param l the new label
+    void set_label(
+        const std::string& l
+    ) {label = l;};
+
     /// \brief Get the description for this event
     /// \return the description
     std::string get_description() {return description;};
 
+    /// \brief Set the description for this event
+    /// \param l the new description
+    void set_description(
+        const std::string& d
+    ) {description = d;};
+
     /// \brief Get the number of volunteers for this event
     /// \return the number of volunteers
     int get_vols_needed() {return volsNeeded;};
+
+    /// \brief Set the label for this event
+    /// \param n the number of volunteers
+    void set_vols_needed(
+        const std::string& n
+    ) {label = n;};
+
     /// @}
 
     /// \brief Nlohmann JSON boilerplate
