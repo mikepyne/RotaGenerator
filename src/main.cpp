@@ -44,6 +44,9 @@ int main(int argc, char *argv[])
     initialise_logging();
     spdlog::debug("Starting Rota Generator");
     QApplication a(argc, argv);
+    a.setOrganizationName("Rota");
+    a.setOrganizationDomain("Rotas");
+    a.setApplicationName("RotaGenerator");
     MainWindow w;
     w.show();
     spdlog::debug("Done");

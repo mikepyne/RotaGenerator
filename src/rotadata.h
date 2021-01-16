@@ -3,18 +3,26 @@
 
 #include <map>
 #include <fstream>
+#include <type_traits>
 
 #include <nlohmann/json.hpp>
 
+#include "event.h"
+#include "volunteer.h"
 
+/// \brief Collection of data items
+/// \tparam T an individual data item
+///
+/// A data item is a Volunteer or an Event. This template is a collection of
+/// data items.
 template <class T>
 class RotaData
 {
 public:
     /// \brief Load from file
-    /// \param[in] in Stream to read volunteers from
+    /// \param[in] in Stream to read items from
     ///
-    /// Read volunteers from a stream
+    /// Read items from a stream
     void load(
         std::iostream& in
     );
@@ -22,38 +30,38 @@ public:
     /// \brief Save to file
     /// \param[in] out Stream to write volunteers to
     ///
-    /// Write the volunteers to the stream
+    /// Write the items to the stream
     void save(
         std::iostream& out
     );
 
-    /// \brief Add a Volunteer to the collection
-    /// \param[in] vol Volunteer to add
-    /// \returns true if the Volunteer was added
+    /// \brief Add an item to the collection
+    /// \param[in] item to add
+    /// \returns true if the item was added
     bool add(
         const T& item
     );
 
-    /// \brief Count of volunteers
+    /// \brief Count of items
     int count() const {return data.size();};
 
-    /// \brief Get a Volunteer
-    /// \param id of the Volunteer to get
-    /// \returns the requested Volunteer
+    /// \brief Get an item
+    /// \param id of the item to get
+    /// \returns the requested item
     T& at(
         const std::string& id
     );
 
-    /// \brief Erase a Volunteer
-    /// \param id of the Volunteer to erase
+    /// \brief Erase an item
+    /// \param id of the item to erase
     /// \returns the number of elements erased
     int erase(
         const std::string& id
     );
 
-    /// \brief Update a Volunteer
-    /// \param id of the Volunteer to update
-    /// \param v the updated Volunteer
+    /// \brief Update an item
+    /// \param id of the item to update
+    /// \param value the updated item
     void update(
         const std::string& id,
         const T& value

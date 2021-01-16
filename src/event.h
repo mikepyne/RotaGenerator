@@ -107,7 +107,7 @@ public:
     std::string get_description() {return description;};
 
     /// \brief Set the description for this event
-    /// \param l the new description
+    /// \param d the new description
     void set_description(
         const std::string& d
     ) {description = d;};
