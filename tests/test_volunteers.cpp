@@ -6,10 +6,12 @@
 #include "mock_volunteer.h"
 #include "test_volunteers.h"
 
+#include "rotadata.h"
 
 TEST_CASE("Load empty volunteers", "[Volunteers]")
 {
-    Volunteers vols;
+    RotaData<Volunteer> vols;
+//    Volunteers vols;
     std::stringstream in;
     REQUIRE_NOTHROW(vols.load(in));
     CHECK(vols.count() == 0);
@@ -17,7 +19,7 @@ TEST_CASE("Load empty volunteers", "[Volunteers]")
 
 TEST_CASE("Load volunteers", "[Volunteers]")
 {
-    Volunteers vols;
+    RotaData<Volunteer> vols;
     std::stringstream in;
 
     in << R"({"1": {"email":"email","firstName":"First Name",)"
@@ -32,7 +34,7 @@ TEST_CASE("Load volunteers", "[Volunteers]")
 
 TEST_CASE("Load volunteers with a bad key", "[Volunteers]")
 {
-    Volunteers vols;
+    RotaData<Volunteer> vols;
     std::stringstream in;
     in << R"({"1": {"email":"email","firstName":"First Name",)"
        << R"("homePhone":"home","lastName":"Last name",)"
@@ -44,7 +46,7 @@ TEST_CASE("Load volunteers with a bad key", "[Volunteers]")
 
 TEST_CASE("No duplicate Volunteers", "[Volunteers]")
 {
-    Volunteers vols;
+    RotaData<Volunteer> vols;
     MockVolunteer v1;
     MockVolunteer v2;
 
@@ -59,9 +61,9 @@ TEST_CASE("Save Empty Volunteers", "[Volunteers]")
     std::stringstream expected;
     expected << "{}" << std::endl;
     std::stringstream out;
-    Volunteers vols;
+    RotaData<Volunteer> vols;
     vols.save(out);
-     REQUIRE(out.str() == expected.str());
+    REQUIRE(out.str() == expected.str());
 }
 
 TEST_CASE("Save Volunteers", "[Volunteers]")
@@ -77,7 +79,7 @@ TEST_CASE("Save Volunteers", "[Volunteers]")
     Volunteer v1("First name", "Last name", "home", "mobile", "email");
     Volunteer v2("Christian", "Surname", "One", "Two", "m@p");;
     std::stringstream out;
-    Volunteers vols;
+    RotaData<Volunteer> vols;
     vols.add(v1);
     vols.add(v2);
     vols.save(out);
@@ -88,7 +90,7 @@ TEST_CASE("Save Volunteers", "[Volunteers]")
 
 TEST_CASE("Getting a Volunteer", "[Volunteers]")
 {
-    Volunteers vols;
+    RotaData<Volunteer> vols;
     Volunteer v1("First name", "Last name", "home", "mobile", "email");
     Volunteer v2("Christian", "Surname", "One", "Two", "m@p");
 
@@ -111,7 +113,7 @@ TEST_CASE("Getting a Volunteer", "[Volunteers]")
 
 TEST_CASE("Deleting a volunteer", "[Volunteers]")
 {
-    Volunteers vols;
+    RotaData<Volunteer> vols;
     Volunteer v1("First name", "Last name", "home", "mobile", "email");
     Volunteer v2("Christian", "Surname", "One", "Two", "m@p");
 
@@ -136,7 +138,7 @@ TEST_CASE("Deleting a volunteer", "[Volunteers]")
 
 TEST_CASE("Edit a volunteer", "[Volunteers]")
 {
-    Volunteers vols;
+    RotaData<Volunteer> vols;
     Volunteer v1("First name", "Last name", "home", "mobile", "email");
     Volunteer v2("Christian", "Surname", "One", "Two", "m@p");
 

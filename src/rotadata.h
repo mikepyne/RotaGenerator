@@ -48,9 +48,9 @@ public:
     /// \brief Get an item
     /// \param id of the item to get
     /// \returns the requested item
-    T& at(
+    const T& at(
         const std::string& id
-    );
+    ) const;
 
     /// \brief Erase an item
     /// \param id of the item to erase
@@ -127,9 +127,9 @@ bool RotaData<T>::add(
 }
 
 template <class T>
-T& RotaData<T>::at(
+const T& RotaData<T>::at(
     const std::string& id
-)
+) const
 {
     return data.at(id);
 }

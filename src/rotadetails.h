@@ -1,7 +1,6 @@
 #ifndef ROTADETAILS_H
 #define ROTADETAILS_H
 
-#include "volunteers.h"
 
 /// \class RotaDetails
 /// \brief Details for a rota
@@ -27,8 +26,6 @@ public:
 
 private:
     int id {0};                 ///< ID for the rota
-    // Events events;           ///< List of events for the rota
-    // Volunteers volunteers;   ///< List of volunteers for the rota
 };
 
 #endif // ROTADETAILS_H

@@ -2,13 +2,15 @@
 #include <string_view>
 #include <catch2/catch.hpp>
 
-#include "events.h"
+#include "event.h"
 #include "test_events.h"
+
+#include "rotadata.h"
 
 
 TEST_CASE("Load empty events", "[Events]")
 {
-    Events events;
+    RotaData<Event> events;
     std::stringstream in;
     REQUIRE_NOTHROW(events.load(in));
     CHECK(events.count() == 0);
@@ -16,7 +18,7 @@ TEST_CASE("Load empty events", "[Events]")
 
 TEST_CASE("Load events", "[Events]")
 {
-    Events events;
+    RotaData<Event> events;
     std::stringstream in;
 
     in << R"({"1":{"label":"label","description":"Description",)"
@@ -29,7 +31,7 @@ TEST_CASE("Load events", "[Events]")
 
 TEST_CASE("Load Events with a bad key", "[Events]")
 {
-    Events events;
+    RotaData<Event> events;
     std::stringstream in;
     in << R"({"1":{"notlabel":"label","description":"Description",)"
        << R"("volsNeeded":1}})";
@@ -40,7 +42,7 @@ TEST_CASE("Load Events with a bad key", "[Events]")
 
 TEST_CASE("No duplicate Events", "[Events]")
 {
-    Events events;
+    RotaData<Event> events;
     Event e1;
     Event e2;
 
@@ -55,7 +57,7 @@ TEST_CASE("Save Empty Events", "[Events]")
     std::stringstream expected;
     expected << "{}" << std::endl;
     std::stringstream out;
-    Events events;
+    RotaData<Event> events;
     events.save(out);
     REQUIRE(out.str() == expected.str());
 }
@@ -71,7 +73,7 @@ TEST_CASE("Save Events", "[Events]")
     Event e1("label", "Description", 1);;
     Event e2("lbl", "desc", 3);
     std::stringstream out;
-    Events events;
+    RotaData<Event> events;
     events.add(e1);
     events.add(e2);
     events.save(out);
@@ -82,7 +84,7 @@ TEST_CASE("Save Events", "[Events]")
 
 TEST_CASE("Getting an Event", "[Events]")
 {
-    Events events;
+    RotaData<Event> events;
     Event e1("label", "description", 1);
     Event e2("lbl", "desc", 3);
 
@@ -105,7 +107,7 @@ TEST_CASE("Getting an Event", "[Events]")
 
 TEST_CASE("Deleting an Event", "[Events]")
 {
-    Events events;
+    RotaData<Event> events;
     Event e1("label", "description", 1);
     Event e2("lbl", "desc", 3);
 
@@ -130,7 +132,7 @@ TEST_CASE("Deleting an Event", "[Events]")
 
 TEST_CASE("Edit an Event", "[Events]")
 {
-    Events events;
+    RotaData<Event> events;
     Event e1("label", "description", 1);
     Event e2("lbl", "desc", 3);
 

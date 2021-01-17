@@ -1,8 +1,7 @@
-#ifndef TEST_VOLUNTEERS_H
-#define TEST_VOLUNTEERS_H
+#ifndef TEST_EVENTS_H
+#define TEST_EVENTS_H
 
-#include "volunteer.h"
-#include "volunteers.h"
+#include "event.h"
 
 
-#endif // TEST_VOLUNTEERS_H
+#endif // TEST_EVENTS_H

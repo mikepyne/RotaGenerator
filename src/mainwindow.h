@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 
+#include "volunteersmodel.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -24,7 +26,16 @@ public:
 private slots:
     void on_add_volunteer_clicked();
 
+    void on_volunteers_toggled(
+        bool checked
+    );
+
+    void on_events_toggled(
+        bool checked
+    );
+
 private:
-    Ui::MainWindow *ui; ///< The UI object
+    Ui::MainWindow* ui; ///< The UI object
+    VolunteersModel volunteers;
 };
 #endif // MAINWINDOW_H

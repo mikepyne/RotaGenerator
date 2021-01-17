@@ -15,16 +15,12 @@ target_sources(RotaGenerator
     rotadata.h
     volunteer.cpp
     volunteer.h
-    volunteers.cpp
-    volunteers.h
     rota.cpp
     rota.h
     rotadetails.cpp
     rotadetails.h
     event.cpp
     event.h
-    events.cpp
-    events.h
 )
 
 target_link_libraries(RotaGenerator PRIVATE Qt5::Widgets)
