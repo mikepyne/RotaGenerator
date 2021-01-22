@@ -94,7 +94,7 @@ public:
 
     /// \brief Get the label for this event
     /// \return the label
-    std::string get_label() {return label;};
+    std::string get_label() const {return label;};
 
     /// \brief Set the label for this event
     /// \param l the new label
@@ -104,7 +104,7 @@ public:
 
     /// \brief Get the description for this event
     /// \return the description
-    std::string get_description() {return description;};
+    std::string get_description() const {return description;};
 
     /// \brief Set the description for this event
     /// \param d the new description
@@ -114,7 +114,7 @@ public:
 
     /// \brief Get the number of volunteers for this event
     /// \return the number of volunteers
-    int get_vols_needed() {return volsNeeded;};
+    int get_vols_needed() const {return volsNeeded;};
 
     /// \brief Set the label for this event
     /// \param n the number of volunteers

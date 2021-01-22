@@ -1,9 +1,15 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <memory>
+
 #include <QMainWindow>
 
+#include "rotadata.h"
+#include "volunteer.h"
 #include "volunteersmodel.h"
+#include "event.h"
+#include "eventsmodel.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -36,6 +42,13 @@ private slots:
 
 private:
     Ui::MainWindow* ui; ///< The UI object
-    VolunteersModel volunteers;
+    std::shared_ptr<RotaData<Volunteer>> volunteers {std::make_shared<RotaData<Volunteer>>()};
+    VolunteersModel volunteers_model {volunteers};
+    std::shared_ptr<RotaData<Event>> events {std::make_shared<RotaData<Event>>()};
+    EventsModel events_model {events};
+
+    void loadVolunteers();
+
+    void loadEvents();
 };
 #endif // MAINWINDOW_H

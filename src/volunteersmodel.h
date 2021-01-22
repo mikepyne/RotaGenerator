@@ -1,10 +1,13 @@
 #ifndef VOLUNTEERSMODEL_H
 #define VOLUNTEERSMODEL_H
 
+#include <memory>
+
 #include <QAbstractTableModel>
 
 #include "rotadata.h"
 #include "volunteer.h"
+
 
 /// \class VolunteersModel
 /// \brief Model for displaying Volunteers on a view.
@@ -14,7 +17,13 @@
 class VolunteersModel : public QAbstractTableModel
 {
 public:
-    VolunteersModel();
+    VolunteersModel() = delete;
+
+    /// \brief Construct the model
+    /// \param vols the list of volunteers
+    VolunteersModel(
+        std::shared_ptr<RotaData<Volunteer>> vols
+    ) : volunteers(vols) {};
 
     /// \brief Get the header for the view
     QVariant headerData(
@@ -37,7 +46,7 @@ public:
     QVariant data(
         const QModelIndex& index,
         int role = Qt::DisplayRole
-    ) const;
+    ) const override;
 
 //    bool setData(
 //        const QModelIndex& index,
@@ -50,7 +59,7 @@ public:
 //    ) const override;
 
 private:
-    RotaData<Volunteer> volunteers;
+    std::shared_ptr<RotaData<Volunteer>> volunteers;
 };
 
 #endif // VOLUNTEERSMODEL_H

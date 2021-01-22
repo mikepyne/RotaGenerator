@@ -11,6 +11,8 @@ target_sources(RotaGenerator
     volunteerdlg.ui
     volunteersmodel.cpp
     volunteersmodel.h
+    eventsmodel.cpp
+    eventsmodel.h
     rotadata.cpp
     rotadata.h
     volunteer.cpp

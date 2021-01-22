@@ -62,6 +62,9 @@
       </item>
       <item row="0" column="1">
        <widget class="QStackedWidget" name="stack">
+        <property name="currentIndex">
+         <number>1</number>
+        </property>
         <widget class="QWidget" name="volunteersPage">
          <layout class="QGridLayout" name="gridLayout_2">
           <item row="0" column="0">
@@ -110,7 +113,17 @@
           </item>
          </layout>
         </widget>
-        <widget class="QWidget" name="eventsPage"/>
+        <widget class="QWidget" name="eventsPage">
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="0" column="0">
+           <widget class="QTableView" name="eventsView">
+            <attribute name="verticalHeaderVisible">
+             <bool>false</bool>
+            </attribute>
+           </widget>
+          </item>
+         </layout>
+        </widget>
        </widget>
       </item>
      </layout>
