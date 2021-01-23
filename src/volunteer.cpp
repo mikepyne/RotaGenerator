@@ -1,8 +1,10 @@
 #include "volunteer.h"
 
 Volunteer::Volunteer(
+    const std::string& id,
     const json& v
-) : firstName(v.at("firstName")),
+) : id(id),
+    firstName(v.at("firstName")),
     lastName(v.at("lastName")),
     phoneHome(v.at("phoneHome")),
     phoneMobile(v.at("phoneMobile")),
@@ -14,6 +16,7 @@ Volunteer& Volunteer::operator=(
     const Volunteer& v
 )
 {
+    id = v.id;
     firstName = v.firstName;
     lastName = v.lastName;
     phoneHome = v.phoneHome;
@@ -26,6 +29,7 @@ Volunteer& Volunteer::operator=(
     const Volunteer&& v
 )
 {
+    id = std::move(v.id);
     firstName = std::move(v.firstName);
     lastName = std::move(v.lastName);
     phoneHome = std::move(v.phoneHome);

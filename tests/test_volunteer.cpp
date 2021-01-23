@@ -80,3 +80,12 @@ TEST_CASE("Volunteer with a Bad Key", "[Volunteer]")
         REQUIRE_THROWS_AS(v = from, nlohmann::json::out_of_range);
     }
 }
+
+TEST_CASE("Volunteer's Name", "[Volunteer]")
+{
+    auto v = Volunteer();
+    v.set_first_name("John");
+    v.set_last_name("Smith");
+
+    REQUIRE(v.get_name() == "John Smith");
+}

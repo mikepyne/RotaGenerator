@@ -56,7 +56,6 @@ QVariant VolunteersModel::data(
     int role
 ) const
 {
-    Q_UNUSED(index);
     if (role == Qt::DisplayRole)
     {
         // Calculating the ID from the row index might be a bad idea.
@@ -65,17 +64,13 @@ QVariant VolunteersModel::data(
         switch (index.column())
         {
             case 0:
-            {
-                auto n = v.get_first_name() + " " + v.get_last_name();
-                return QString::fromUtf8(n.c_str());
-            }
+                return QString::fromUtf8(v.get_name().c_str());
             case 1:
                 return QString::fromUtf8(v.get_phone_home().c_str());
             case 2:
                 return QString::fromUtf8(v.get_phone_mobile().c_str());
             case 3:
                 return QString::fromUtf8(v.get_email().c_str());
-                break;
             default:
                 break;
         }

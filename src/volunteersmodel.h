@@ -59,7 +59,7 @@ public:
 //    ) const override;
 
 private:
-    std::shared_ptr<RotaData<Volunteer>> volunteers;
+    std::shared_ptr<RotaData<Volunteer>> volunteers;    ///< Volunteers
 };
 
 #endif // VOLUNTEERSMODEL_H

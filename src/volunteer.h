@@ -20,6 +20,7 @@ public:
     /// \brief Construct from JSON
     /// \param[in] v JSON to construct from
     Volunteer(
+        const std::string& id,
         const json& v
     );
 
@@ -27,7 +28,8 @@ public:
     /// \param[in] v To copy from
     Volunteer(
         const Volunteer& v
-    ) : firstName(v.firstName),
+    ) : id(v.id),
+        firstName(v.firstName),
         lastName(v.lastName),
         phoneHome(v.phoneHome),
         phoneMobile(v.phoneMobile),
@@ -37,7 +39,8 @@ public:
     /// \param[in] v To move from
     Volunteer(
         const Volunteer&& v
-    ) : firstName(std::move(v.firstName)),
+    ) : id(std::move(v.id)),
+        firstName(std::move(v.firstName)),
         lastName(std::move(v.lastName)),
         phoneHome(std::move(v.phoneHome)),
         phoneMobile(std::move(v.phoneMobile)),
@@ -117,6 +120,10 @@ public:
     /// \name Properties
     /// @{
 
+    /// \brief Get the ID for this volunteer
+    /// \return the ID
+    const std::string& get_id() const {return id;};
+
     /// \brief Get the first name for this volunteer
     /// \return the first name
     const std::string& get_first_name() const {return firstName;};
@@ -164,6 +171,11 @@ public:
 
     ///@}
 
+    /// \brief Get combined first and last name
+    const std::string get_name() const {
+        return firstName + " " + lastName;
+    };
+
     /// \brief Nlohmann JSON boilerplate
     NLOHMANN_DEFINE_TYPE_INTRUSIVE(Volunteer, firstName, lastName,
                                    phoneHome, phoneMobile, email);
@@ -177,10 +189,11 @@ protected:
     ) const;
 
 private:
-    std::string firstName {""};    ///< First name
-    std::string lastName {""};     ///< Last name
-    std::string phoneHome {""};    ///< Home phone number
-    std::string phoneMobile {""};  ///< Mobile phone number
+    std::string id {""};            ///< Volunteer ID
+    std::string firstName {""};     ///< First name
+    std::string lastName {""};      ///< Last name
+    std::string phoneHome {""};     ///< Home phone number
+    std::string phoneMobile {""};   ///< Mobile phone number
     std::string email {""};         ///< Email address
 };
 

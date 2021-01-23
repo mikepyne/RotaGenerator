@@ -29,6 +29,13 @@ public:
     /// \brief Default constructor
     Event() = default;
 
+    /// \brief Construct from JSON
+    /// \param[in] e JSON to construct from
+    Event(
+        const std::string& id,
+        const json& e
+    );
+
     /// \brief Constructor
     /// \param[in] l Label
     /// \param[in] d Description
@@ -45,7 +52,8 @@ public:
     /// \param[in] e To copy from
     Event(
         const Event& e
-    ) : label(e.label),
+    ) : id(e.id),
+        label(e.label),
         description(e.description),
         volsNeeded(e.volsNeeded) {};
 
@@ -53,7 +61,8 @@ public:
     /// \param[in] e To move from
     Event(
         const Event&& e
-    ) : label(std::move(e.label)),
+    ) : id(std::move(e.id)),
+        label(std::move(e.label)),
         description(std::move(e.description)),
         volsNeeded(std::move(e.volsNeeded)) {};
     ///@}
@@ -129,6 +138,7 @@ public:
                                    volsNeeded);
 
 private:
+    std::string id {""};            ///< Event ID
     std::string label {""};         ///< Simple label for the event
     std::string description {""};   ///< Longer description of the event
     int volsNeeded {0};             ///< How many volunteers needed for the event

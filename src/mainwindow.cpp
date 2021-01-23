@@ -30,12 +30,14 @@ MainWindow::MainWindow(
     ui->volunteersView->setModel(&volunteers_model);
     ui->volunteersView->horizontalHeader()->setStretchLastSection(true);
     ui->volunteersView->verticalHeader()->hide();
+    ui->volunteersView->resizeColumnsToContents();
 
     loadEvents();
 
     ui->eventsView->setModel(&events_model);
     ui->eventsView->horizontalHeader()->setStretchLastSection(true);
     ui->eventsView->verticalHeader()->hide();
+    ui->eventsView->resizeColumnsToContents();
 }
 
 MainWindow::~MainWindow()
