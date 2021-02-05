@@ -5,9 +5,9 @@ FetchContent_Declare(
     GIT_SHALLOW     true
 )
 
-FetchContent_MakeAvailable(trompeloeil)
-
 set(TROMPELOEIL_INSTALL_DOCS OFF CACHE_INTERNAL "")
+
+FetchContent_MakeAvailable(trompeloeil)
 
 include_directories(
     "${trompeloeil_SOURCE_DIR}/include/catch2")

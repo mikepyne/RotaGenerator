@@ -21,8 +21,8 @@ TEST_CASE("Load events", "[Events]")
     RotaData<Event> events;
     std::stringstream in;
 
-    in << R"({"1":{"label":"label","description":"Description",)"
-       << R"("volsNeeded":1},"2":{"label":"lbl","description":"desc",)"
+    in << R"({"1":{"id":1,"label":"label","description":"Description",)"
+       << R"("volsNeeded":1},"2":{"id":2,"label":"lbl","description":"desc",)"
        << R"("volsNeeded":3}})";
 
     REQUIRE_NOTHROW(events.load(in));
@@ -46,8 +46,8 @@ TEST_CASE("No duplicate Events", "[Events]")
     Event e1;
     Event e2;
 
-    REQUIRE(events.add(e1));
-    REQUIRE_FALSE(events.add(e1));
+    REQUIRE(events.add(e1) == 0);
+    REQUIRE_FALSE(events.add(e1) == -1);
 
     REQUIRE(events.count() == 1);
 }
@@ -65,13 +65,13 @@ TEST_CASE("Save Empty Events", "[Events]")
 TEST_CASE("Save Events", "[Events]")
 {
     std::stringstream expected;
-    expected << R"({"1":{"description":"Description","label":"label",)"
-             << R"("volsNeeded":1},"2":{"description":"desc","label":"lbl",)"
-             << R"("volsNeeded":3}})"
+    expected << R"({"1":{"description":"Description","id":1,"label":"label",)"
+             << R"("volsNeeded":1},"2":{"description":"desc","id":2,)"
+             << R"("label":"lbl","volsNeeded":3}})"
              << std::endl;
 
-    Event e1("label", "Description", 1);;
-    Event e2("lbl", "desc", 3);
+    Event e1(1, "label", "Description", 1);;
+    Event e2(2, "lbl", "desc", 3);
     std::stringstream out;
     RotaData<Event> events;
     events.add(e1);
@@ -85,8 +85,8 @@ TEST_CASE("Save Events", "[Events]")
 TEST_CASE("Getting an Event", "[Events]")
 {
     RotaData<Event> events;
-    Event e1("label", "description", 1);
-    Event e2("lbl", "desc", 3);
+    Event e1(1, "label", "description", 1);
+    Event e2(2, "lbl", "desc", 3);
 
     events.add(e1);
     events.add(e2);
@@ -95,21 +95,21 @@ TEST_CASE("Getting an Event", "[Events]")
 
     SECTION("Good ID")
     {
-        REQUIRE(events.at("1") == e1);
-        REQUIRE(events.at("2") == e2);
+        REQUIRE(events.at(1) == e1);
+        REQUIRE(events.at(2) == e2);
     }
 
     SECTION("Bad ID")
     {
-        REQUIRE_THROWS_AS(events.at("3"), std::out_of_range);
+        REQUIRE_THROWS_AS(events.at(3), std::out_of_range);
     }
 }
 
 TEST_CASE("Deleting an Event", "[Events]")
 {
     RotaData<Event> events;
-    Event e1("label", "description", 1);
-    Event e2("lbl", "desc", 3);
+    Event e1(1, "label", "description", 1);
+    Event e2(2, "lbl", "desc", 3);
 
     events.add(e1);
     events.add(e2);
@@ -118,14 +118,14 @@ TEST_CASE("Deleting an Event", "[Events]")
 
     SECTION("Good ID")
     {
-        REQUIRE(events.erase("1") == 1);
+        REQUIRE(events.erase(1) == 1);
         REQUIRE(events.count() == 1);
-        REQUIRE_THROWS_AS(events.at("1"), std::out_of_range);
+        REQUIRE_THROWS_AS(events.at(1), std::out_of_range);
     }
 
     SECTION("Bad ID")
     {
-        REQUIRE(events.erase("3") == 0);
+        REQUIRE(events.erase(3) == 0);
         REQUIRE(events.count() == 2);
     }
 }
@@ -133,8 +133,8 @@ TEST_CASE("Deleting an Event", "[Events]")
 TEST_CASE("Edit an Event", "[Events]")
 {
     RotaData<Event> events;
-    Event e1("label", "description", 1);
-    Event e2("lbl", "desc", 3);
+    Event e1(1, "label", "description", 1);
+    Event e2(2, "lbl", "desc", 3);
 
     events.add(e1);
     events.add(e2);
@@ -143,17 +143,17 @@ TEST_CASE("Edit an Event", "[Events]")
 
     SECTION("Edit Good ID")
     {
-        Event e = events.at("1");
+        Event e = events.at(1);
         e.set_label("New Label");
-        events.update("1", e);
+        events.update(2, e);
 
-        Event w = events.at("1");
+        Event w = events.at(1);
         REQUIRE(w.get_label() == "New Label");
     }
 
     SECTION("Edit Bad ID")
     {
-        REQUIRE_THROWS_AS(events.update("3", e1), std::out_of_range);
+        REQUIRE_THROWS_AS(events.update(3, e1), std::out_of_range);
         REQUIRE(events.count() == 2);
     }
 }

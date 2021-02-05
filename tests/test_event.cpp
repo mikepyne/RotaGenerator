@@ -5,9 +5,9 @@
 
 TEST_CASE("Comparing Events", "[Event]")
 {
-    Event a {"label", "description", 2};
-    Event b {"label", "description", 2};
-    Event c {"lbl", "desc", 1};
+    Event a {1, "label", "description", 2};
+    Event b {2, "label", "description", 2};
+    Event c {3, "lbl", "desc", 1};
 
     CHECK(a == b);
     CHECK_FALSE(a == c);
@@ -15,10 +15,11 @@ TEST_CASE("Comparing Events", "[Event]")
 
 TEST_CASE("Event to Json", "[Event]")
 {
-    Event a {"label", "description", 2};
+    Event a {1, "label", "description", 2};
 
     nlohmann::json expected
     {
+        {"id", 1},
         {"label", "label"},
         {"description", "description"},
         {"volsNeeded", 2}
@@ -33,6 +34,7 @@ TEST_CASE("Event From Json", "[Event]")
 {
     nlohmann::json from
     {
+        {"id", 1},
         {"label", "label"},
         {"description", "description"},
         {"volsNeeded", 2}

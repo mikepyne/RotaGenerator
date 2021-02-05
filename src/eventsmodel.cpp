@@ -18,10 +18,12 @@ QVariant EventsModel::headerData(
         switch (section)
         {
             case 0:
-                return "Label";
+                return "ID";
             case 1:
-                return "Description";
+                return "Label";
             case 2:
+                return "Description";
+            case 3:
                 return "Number of Volunteers";
             default:
                 break;
@@ -43,7 +45,7 @@ int EventsModel::columnCount(
 ) const
 {
     Q_UNUSED(parent);
-    return 3;
+    return 4;
 }
 
 QVariant EventsModel::data(
@@ -54,18 +56,17 @@ QVariant EventsModel::data(
     Q_UNUSED(index);
     if (role == Qt::DisplayRole)
     {
-        // Calculating the ID from the row index might be a bad idea.
-        const std::string id = std::to_string(index.row() + 1);
+        auto id = index.row() + 1;
         const auto e = events->at(id);
         switch (index.column())
         {
             case 0:
-            {
-                return QString::fromUtf8(e.get_label().c_str());
-            }
+                return e.get_id();
             case 1:
-                return QString::fromUtf8(e.get_description().c_str());
+                return QString::fromUtf8(e.get_label().c_str());
             case 2:
+                return QString::fromUtf8(e.get_description().c_str());
+            case 3:
                 return e.get_vols_needed();
             default:
                 break;

@@ -6,10 +6,10 @@
 
 TEST_CASE("Compare Volunteer", "[Volunteer]")
 {
-    Volunteer a {"First", "Last", "Home", "Mobile", "Email"};
-    Volunteer b {"First", "Last", "Home", "Mobile", "Email"};
+    Volunteer a {1, "First", "Last", "Home", "Mobile", "Email"};
+    Volunteer b {2, "First", "Last", "Home", "Mobile", "Email"};
 
-    Volunteer c {"Forename", "Surname", "Home", "Mobile", "Email"};
+    Volunteer c {3, "Forename", "Surname", "Home", "Mobile", "Email"};
 
     CHECK(a == b);
     CHECK_FALSE(a == c);
@@ -17,8 +17,9 @@ TEST_CASE("Compare Volunteer", "[Volunteer]")
 
 TEST_CASE("Volunteer To Json", "[Volunteer]")
 {
-    Volunteer a {"First", "Last", "Home", "Mobile", "Email"};
+    Volunteer a {1, "First", "Last", "Home", "Mobile", "Email"};
     nlohmann::json expected {
+        {"id", 1},
         {"email", "Email"},
         {"firstName", "First"},
         {"lastName", "Last"},
@@ -33,6 +34,7 @@ TEST_CASE("Volunteer To Json", "[Volunteer]")
 TEST_CASE("Volunteer From Json", "[Volunteer]")
 {
     nlohmann::json from {
+        {"id", 1},
         {"firstName", "First"},
         {"lastName", "Last"},
         {"phoneHome", "Home"},
@@ -52,6 +54,7 @@ TEST_CASE("Volunteer From Json", "[Volunteer]")
         v = Volunteer(from);
     }
 
+    REQUIRE(v.get_id() == 1);
     REQUIRE(v.get_first_name() == "First");
     REQUIRE(v.get_last_name() == "Last");
     REQUIRE(v.get_phone_home() == "Home");
@@ -62,6 +65,7 @@ TEST_CASE("Volunteer From Json", "[Volunteer]")
 TEST_CASE("Volunteer with a Bad Key", "[Volunteer]")
 {
     nlohmann::json from {
+        {"id", 1},
         {"firstName", "First"},
         {"lastName", "Last"},
         {"homePhone", "Home"},

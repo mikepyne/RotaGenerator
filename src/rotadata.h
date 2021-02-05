@@ -4,11 +4,14 @@
 #include <map>
 #include <fstream>
 #include <type_traits>
+#include <algorithm>
 
 #include <nlohmann/json.hpp>
 
 #include "event.h"
 #include "volunteer.h"
+
+constexpr auto data_lbl = "data";
 
 /// \brief Collection of data items
 /// \tparam T an individual data item
@@ -22,7 +25,8 @@ public:
     /// \brief Load from file
     /// \param[in] in Stream to read items from
     ///
-    /// Read items from a stream
+    /// Read items from a stream containing JSON.
+    /// The JSON will contain an array named either "Volunteers" or "Events".
     void load(
         std::iostream& in
     );
@@ -37,38 +41,44 @@ public:
 
     /// \brief Add an item to the collection
     /// \param[in] item to add
-    /// \returns true if the item was added
-    bool add(
-        const T& item
+    /// \returns the id of the new item
+    ///
+    /// TODO: How to handle the new id?
+    /// Get next ID method?
+    /// item is not const, because the ID will be set before adding it to the
+    /// list.
+    int add(
+        T& item
     );
 
     /// \brief Count of items
-    int count() const {return data.size();};
+    int count() const;
 
     /// \brief Get an item
     /// \param id of the item to get
     /// \returns the requested item
-    const T& at(
-        const std::string& id
-    ) const;
+    T at(
+        int id
+    );
 
     /// \brief Erase an item
     /// \param id of the item to erase
     /// \returns the number of elements erased
     int erase(
-        const std::string& id
+        int id
     );
 
     /// \brief Update an item
     /// \param id of the item to update
     /// \param value the updated item
     void update(
-        const std::string& id,
+        int id,
         const T& value
     );
 
-private:
-    std::map<std::string, T> data;
+protected:
+    nlohmann::json  data;           ///< The data
+    int             next_id {1};    ///< Next ID to use
 };
 
 template <class T>
@@ -79,14 +89,17 @@ void RotaData<T>::load(
     in.peek();
     if (in.good() && !in.eof())
     {
-        nlohmann::json all;
-        in >> all;
-        for (auto& [key, value]: all.items())
-        {
-            T item(value);
-            data.emplace(std::make_pair(key, item));
-        }
+        in >> data;
     }
+    auto id = [&next_id = next_id](nlohmann::json j)
+    {
+        int current = j.at("id");
+        if (current > next_id)
+        {
+            next_id = current + 1;
+        }
+    };
+    std::for_each(std::begin(data[data_lbl]), std::end(data[data_lbl]), id);
 }
 
 template <class T>
@@ -94,57 +107,69 @@ void RotaData<T>::save(
     std::iostream& out
 )
 {
-    nlohmann::json j = data;
-    out << j << std::endl;
+    out << data;
     out.flush();
 }
 
 template <class T>
-bool RotaData<T>::add(
-    const T& item
+int RotaData<T>::add(
+    T& item
 )
 {
-    for (auto& [key, value]: data)
+    // Check for duplicate
+    auto f = std::find_if(std::begin(data[data_lbl]), std::end(data[data_lbl]),
+                          [&item](nlohmann::json j){return item == T(j);});
+
+    if (f == std::end(data[data_lbl]))
     {
-        if (value == item)
-        {
-            return false;
-        }
+        item.set_id(next_id);
+        next_id++;
+        data["data"].push_back(item);
+        return item.get_id();
     }
-    auto id = 1;
-    std::string new_key {std::to_string(id)};
-    if (data.size() > 0)
-    {
-        auto last_key = data.crbegin()->first;
-        id = std::stoi(last_key) + 1;
-        new_key = std::to_string(id);
-    }
-    if (data.count(new_key) == 0)
-    {
-        data.emplace(std::make_pair(new_key, item));
-    }
-    return true;
+    return -1;
 }
 
 template <class T>
-const T& RotaData<T>::at(
-    const std::string& id
-) const
+int RotaData<T>::count() const
 {
-    return data.at(id);
+    try
+    {
+        return data["data"].size();
+    }
+    catch (nlohmann::json::type_error& e)
+    {
+        return 0;
+    }
+}
+
+template <class T>
+T RotaData<T>::at(
+    int id
+)
+{
+    auto f = std::find_if(std::begin(data[data_lbl]), std::end(data[data_lbl]),
+                          [&id](nlohmann::json& j){return j.at("id") == id;});
+
+    if (f != std::end(data[data_lbl]))
+    {
+        T item {*f};
+        return item;
+    }
+    throw(std::runtime_error("Failed to find"));
 }
 
 template <class T>
 int RotaData<T>::erase(
-    const std::string& id
+    int id
 )
 {
-    return data.erase(id);
+    return -1;
 }
 
 template <class T>
 void RotaData<T>::update(
-    const std::string& id,
+    int id,
     const T& item
 )
 {

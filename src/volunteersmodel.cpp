@@ -21,12 +21,14 @@ QVariant VolunteersModel::headerData(
         switch (section)
         {
             case 0:
-                return "Name";
+                return"ID";
             case 1:
-                return "Home Phone";
+                return "Name";
             case 2:
-                return "Mobile Phone";
+                return "Home Phone";
             case 3:
+                return "Mobile Phone";
+            case 4:
                 return "Email";
             default:
                 break;
@@ -48,7 +50,7 @@ int VolunteersModel::columnCount(
 ) const
 {
     Q_UNUSED(parent);
-    return 4;
+    return 5;
 }
 
 QVariant VolunteersModel::data(
@@ -59,17 +61,19 @@ QVariant VolunteersModel::data(
     if (role == Qt::DisplayRole)
     {
         // Calculating the ID from the row index might be a bad idea.
-        const std::string id = std::to_string(index.row() + 1);
+        auto id = index.row() + 1;
         const auto v = volunteers->at(id);
         switch (index.column())
         {
             case 0:
-                return QString::fromUtf8(v.get_name().c_str());
+                return v.get_id();
             case 1:
-                return QString::fromUtf8(v.get_phone_home().c_str());
+                return QString::fromUtf8(v.get_name().c_str());
             case 2:
-                return QString::fromUtf8(v.get_phone_mobile().c_str());
+                return QString::fromUtf8(v.get_phone_home().c_str());
             case 3:
+                return QString::fromUtf8(v.get_phone_mobile().c_str());
+            case 4:
                 return QString::fromUtf8(v.get_email().c_str());
             default:
                 break;

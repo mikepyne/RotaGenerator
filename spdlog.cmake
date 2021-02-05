@@ -4,11 +4,11 @@ FetchContent_Declare(
     GIT_TAG v1.8.2
 )
 
-FetchContent_MakeAvailable(spdlog)
-
 set(SPDLOG_BUILD_EXAMPLE OFF CACHE INTERNAL "")
 set(SPDLOG_BUILD_TESTS OFF CACHE INTERNAL "")
 set(SPDLOG_INSTALL OFF CACHE INTERNAL "")
+
+FetchContent_MakeAvailable(spdlog)
 
 include_directories(
     "${spdlog_SOURCE_DIR}/include"

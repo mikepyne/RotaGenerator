@@ -6,10 +6,6 @@
 
 using nlohmann::json;
 
-constexpr auto key_id {"id"};
-constexpr auto key_label {"label"};
-constexpr auto key_description {"description"};
-constexpr auto key_vols_needed {"volsNeeded"};
 
 /// \class Event
 /// \brief Describes an event that needs volunteers
@@ -32,19 +28,21 @@ public:
     /// \brief Construct from JSON
     /// \param[in] e JSON to construct from
     Event(
-        const std::string& id,
         const json& e
     );
 
     /// \brief Constructor
+    /// \param[in] id ID of the event
     /// \param[in] l Label
     /// \param[in] d Description
     /// \param[in] v Volunteers needed
     Event(
+        int id,
         const std::string& l,
         const std::string& d,
         int v
-    ) : label(l),
+    ) : id(id),
+        label(l),
         description(d),
         volsNeeded(v) {};
 
@@ -101,6 +99,14 @@ public:
     /// \name Properties
     /// @{
 
+    /// \brief Get the ID for this event
+    int get_id() const {return id;};
+
+    /// \brief Set the ID for this volunteer
+    void set_id(
+        int id
+    ) {id = id;}
+
     /// \brief Get the label for this event
     /// \return the label
     std::string get_label() const {return label;};
@@ -134,14 +140,14 @@ public:
     /// @}
 
     /// \brief Nlohmann JSON boilerplate
-    NLOHMANN_DEFINE_TYPE_INTRUSIVE(Event, label, description,
+    NLOHMANN_DEFINE_TYPE_INTRUSIVE(Event, id, label, description,
                                    volsNeeded);
 
 private:
-    std::string id {""};            ///< Event ID
+    int         id {0};             ///< Event ID
     std::string label {""};         ///< Simple label for the event
     std::string description {""};   ///< Longer description of the event
-    int volsNeeded {0};             ///< How many volunteers needed for the event
+    int         volsNeeded {0};     ///< How many volunteers needed for the event
 };
 
 #endif // EVENT_H

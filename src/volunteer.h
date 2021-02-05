@@ -20,7 +20,6 @@ public:
     /// \brief Construct from JSON
     /// \param[in] v JSON to construct from
     Volunteer(
-        const std::string& id,
         const json& v
     );
 
@@ -47,35 +46,26 @@ public:
         email(std::move(v.email)) {};
 
     /// \brief Construct a volunteer from individual details
+    /// \param[in] id ID
     /// \param[in] f First name
     /// \param[in] l Last name
     /// \param[in] h Home phone number
     /// \param[in] m Mobile phone number
     /// \param[in] e Email address
     Volunteer(
+        int id,
         const std::string& f,
         const std::string& l,
         const std::string& h,
         const std::string& m,
         const std::string& e
-    ) : firstName(f),
+    ) : id(id),
+        firstName(f),
         lastName(l),
         phoneHome(h),
         phoneMobile(m),
         email(e) {};
 
-    /// \brief Construct a volunteer from an array of details
-    /// \param details Array containing the details
-    ///
-    /// The array will contain five strings, ordered first name, last name, home
-    /// phone, mobile phone, email
-    explicit Volunteer(
-        const std::array<std::string, 5>& details
-    ) : firstName(details[0]),
-        lastName(details[1]),
-        phoneHome(details[2]),
-        phoneMobile(details[3]),
-        email(details[4]) {};
     ///@}
 
     ~Volunteer() = default;
@@ -122,7 +112,13 @@ public:
 
     /// \brief Get the ID for this volunteer
     /// \return the ID
-    const std::string& get_id() const {return id;};
+    virtual int get_id() const {return id;};
+
+    /// \brief Set the ID for this volunteer
+    /// \param i the new ID
+    void set_id(
+        int i
+    ) {id = i;};
 
     /// \brief Get the first name for this volunteer
     /// \return the first name
@@ -177,7 +173,7 @@ public:
     };
 
     /// \brief Nlohmann JSON boilerplate
-    NLOHMANN_DEFINE_TYPE_INTRUSIVE(Volunteer, firstName, lastName,
+    NLOHMANN_DEFINE_TYPE_INTRUSIVE(Volunteer, id, firstName, lastName,
                                    phoneHome, phoneMobile, email);
 
 protected:
@@ -189,7 +185,7 @@ protected:
     ) const;
 
 private:
-    std::string id {""};            ///< Volunteer ID
+    int         id {0};             ///< Volunteer ID
     std::string firstName {""};     ///< First name
     std::string lastName {""};      ///< Last name
     std::string phoneHome {""};     ///< Home phone number

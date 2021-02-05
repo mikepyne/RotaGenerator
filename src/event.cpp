@@ -1,9 +1,8 @@
 #include "event.h"
 
 Event::Event(
-    const std::string& id,
     const json& e
-) : id(id),
+) : id(e.at("id")),
     label(e.at("label")),
     description(e.at("description")),
     volsNeeded(e.at("volsNeeded"))

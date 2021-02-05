@@ -1,9 +1,8 @@
 #include "volunteer.h"
 
 Volunteer::Volunteer(
-    const std::string& id,
     const json& v
-) : id(id),
+) : id(v.at("id")),
     firstName(v.at("firstName")),
     lastName(v.at("lastName")),
     phoneHome(v.at("phoneHome")),
@@ -42,6 +41,7 @@ Volunteer& Volunteer::operator=(
     const json& v
 )
 {
+    id = v.at("id");
     firstName = v.at("firstName");
     lastName = v.at("lastName");
     phoneHome = v.at("phoneHome");
