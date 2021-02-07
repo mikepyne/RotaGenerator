@@ -23,6 +23,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
 include(json.cmake)
+include(fmt.cmake)
 include(spdlog.cmake)
 include(catch2.cmake)
 include(trompeloeil.cmake)

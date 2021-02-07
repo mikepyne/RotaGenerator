@@ -8,6 +8,7 @@
 
 #include <nlohmann/json.hpp>
 
+#include "rgexception.h"
 #include "event.h"
 #include "volunteer.h"
 
@@ -63,8 +64,8 @@ public:
 
     /// \brief Erase an item
     /// \param id of the item to erase
-    /// \returns the number of elements erased
-    int erase(
+    /// \returns true if the item is erased
+    bool erase(
         int id
     );
 
@@ -135,7 +136,7 @@ int RotaData<T>::count() const
 {
     try
     {
-        return data["data"].size();
+        return data[data_lbl].size();
     }
     catch (nlohmann::json::type_error& e)
     {
@@ -156,15 +157,23 @@ T RotaData<T>::at(
         T item {*f};
         return item;
     }
-    throw(std::runtime_error("Failed to find"));
+    throw(RGException(RGException::errors::invalid, id));
 }
 
 template <class T>
-int RotaData<T>::erase(
+bool RotaData<T>::erase(
     int id
 )
 {
-    return -1;
+    auto f = std::find_if(std::begin(data[data_lbl]), std::end(data[data_lbl]),
+                          [&id](nlohmann::json& j){return j.at("id") == id;});
+
+    if (f != std::end(data[data_lbl]))
+    {
+        data[data_lbl].erase(f);
+        return true;
+    }
+    return false;
 }
 
 template <class T>
@@ -173,7 +182,21 @@ void RotaData<T>::update(
     const T& item
 )
 {
-    data.at(id) = item;
+    auto d = std::find_if(std::begin(data[data_lbl]), std::end(data[data_lbl]),
+                          [&id, &item](nlohmann::json& j){return item == T(j);});
+
+    auto f = std::find_if(std::begin(data[data_lbl]), std::end(data[data_lbl]),
+                          [&id](nlohmann::json& j){return j.at("id") == id;});
+
+    if (d != std::end(data[data_lbl]))
+    {
+        throw RGException(RGException::errors::duplicate, id, T(*d).get_id());
+    }
+    if (f == std::end(data[data_lbl]))
+    {
+        throw RGException(RGException::errors::invalid, id, -1);
+    }
+    *f = item;
 }
 
 #endif // ROTADATA_H

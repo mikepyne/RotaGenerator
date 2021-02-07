@@ -23,9 +23,16 @@ target_sources(RotaGenerator
     rotadetails.h
     event.cpp
     event.h
+    rgexception.cpp
+    rgexception.h
 )
 
-target_link_libraries(RotaGenerator PRIVATE Qt5::Widgets)
+target_link_libraries(
+    RotaGenerator
+    PRIVATE
+    Qt5::Widgets
+    fmt
+)
 
 find_package(Doxygen
     REQUIRED dot)

@@ -9,6 +9,8 @@
 
 #include "rotadata.h"
 
+using Catch::Matchers::Message;
+
 TEST_CASE("Loading volunteers", "[Volunteers]")
 {
     RotaData<MockVolunteer> vols;
@@ -128,7 +130,8 @@ TEST_CASE("Getting a Volunteer", "[Volunteers]")
 
     SECTION("Bad ID")
     {
-        REQUIRE_THROWS_AS(vols.at(3), nlohmann::json::out_of_range);
+        REQUIRE_THROWS_MATCHES(vols.at(3), RGException,
+                               Message("Invalid ID (3)"));
     }
 }
 
@@ -145,14 +148,15 @@ TEST_CASE("Deleting a volunteer", "[Volunteers]")
 
     SECTION("Good ID")
     {
-        REQUIRE(vols.erase(1) == 1);
+        REQUIRE(vols.erase(1));
         REQUIRE(vols.count() == 1);
-        REQUIRE_THROWS_AS(vols.at(1), std::out_of_range);
+        REQUIRE_THROWS_MATCHES(vols.at(1), RGException,
+                               Message("Invalid ID (1)"));
     }
 
     SECTION("Bad ID")
     {
-        REQUIRE(vols.erase(3) == 0);
+        REQUIRE_FALSE(vols.erase(3));
         REQUIRE(vols.count() == 2);
     }
 }
@@ -181,7 +185,22 @@ TEST_CASE("Edit a volunteer", "[Volunteers]")
 
     SECTION("Edit Bad ID")
     {
-        REQUIRE_THROWS_AS(vols.update(1, v1), std::out_of_range);
+        Volunteer v3(3, "Jelly", "Crainer", "01234 567890", "07912 345678",
+                     "jelly@crainer.com");
+
+        REQUIRE_THROWS_MATCHES(vols.update(3, v3), RGException,
+                               Message("Invalid ID (3)"));
+
+        REQUIRE(vols.count() == 2);
+    }
+
+    SECTION("Duplicate an existing item")
+    {
+        REQUIRE_THROWS_MATCHES(
+            vols.update(2, v1),
+            RGException,
+            Message("Unable to update item 2; duplicate at 1."));
+
         REQUIRE(vols.count() == 2);
     }
 }

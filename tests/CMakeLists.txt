@@ -14,9 +14,11 @@ target_sources(test_rg
     test_event.h
     test_events.cpp
     test_events.h
+    test_exceptions.cpp
     ${CMAKE_SOURCE_DIR}/src/rotadata.cpp
     ${CMAKE_SOURCE_DIR}/src/volunteer.cpp
     ${CMAKE_SOURCE_DIR}/src/event.cpp
+    ${CMAKE_SOURCE_DIR}/src/rgexception.cpp
 )
 
 target_include_directories(
@@ -28,6 +30,7 @@ target_include_directories(
 target_link_libraries(
     test_rg
     Catch2::Catch2
+    fmt
 )
 
 target_compile_features(
