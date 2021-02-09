@@ -5,7 +5,7 @@ Event::Event(
 ) : id(e.at("id")),
     label(e.at("label")),
     description(e.at("description")),
-    volsNeeded(e.at("volsNeeded"))
+    volsNeeded(e["volsNeeded"].get<int>())
 {
 }
 
@@ -35,14 +35,21 @@ bool Event::operator==(
     const Event& source
 ) const
 {
-    return label == source.label &&
-           description == source.description &&
-           volsNeeded == source.volsNeeded;
+    return eq(source);
 }
 
 bool Event::operator!=(
     const Event &source
 ) const
 {
-    return !(*this == source);
+    return !eq(source);
+}
+
+bool Event::eq(
+    const Event& source
+) const
+{
+    return label == source.label &&
+           description == source.description &&
+           volsNeeded == source.volsNeeded;
 }

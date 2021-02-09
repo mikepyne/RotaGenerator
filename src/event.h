@@ -100,7 +100,7 @@ public:
     /// @{
 
     /// \brief Get the ID for this event
-    int get_id() const {return id;};
+    virtual int get_id() const {return id;};
 
     /// \brief Set the ID for this volunteer
     void set_id(
@@ -142,6 +142,17 @@ public:
     /// \brief Nlohmann JSON boilerplate
     NLOHMANN_DEFINE_TYPE_INTRUSIVE(Event, id, label, description,
                                    volsNeeded);
+
+protected:
+    /// \brief Compare another event with this one
+    /// \param rhs the other Event
+    /// \return true if the two Event objects match
+    ///
+    /// Used from the equality operators; defined separately so it can be
+    /// mocked.
+    virtual bool eq(
+        const Event& rhs
+    ) const;
 
 private:
     int         id {0};             ///< Event ID

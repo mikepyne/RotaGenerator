@@ -180,6 +180,9 @@ protected:
     /// \brief Compare another Volunteer with this one
     /// \param rhs the other Volunteer
     /// \return true if the two Volunteer objects match
+    ///
+    /// Used from the equality operators; defined separately so it can be
+    /// mocked.
     virtual bool eq(
         const Volunteer& rhs
     ) const;

@@ -6,6 +6,8 @@ target_sources(test_rg
     main.cpp
     mock_volunteer.cpp
     mock_volunteer.h
+    mock_event.cpp
+    mock_event.h
     test_volunteers.cpp
     test_volunteers.h
     test_volunteer.cpp
