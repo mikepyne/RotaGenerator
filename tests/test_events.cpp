@@ -58,6 +58,15 @@ TEST_CASE("Loading events", "[Events]")
 
         REQUIRE(events.count() == 1);
     }
+
+    SECTION("Bad JSON")
+    {
+        in << R"({"data": [{"id":1"label":"label","description":"Description",)"
+           << R"("volsNeeded":1)}]})";
+
+        REQUIRE_THROWS_AS(events.load(in), nlohmann::json::parse_error);
+    }
+
 }
 
 TEST_CASE("Save Events", "[Events]")

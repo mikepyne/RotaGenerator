@@ -65,6 +65,14 @@ TEST_CASE("Loading volunteers", "[Volunteers]")
 
         REQUIRE(vols.count() == 1);
     }
+
+    SECTION("Bad JSON")
+    {
+        in << R"({"data": [{"email":"email""firstName":"First Name", "id":1,)"
+           << R"("homePhone":"123","lastName":"Last name","phoneMobile":"456"}]})";
+
+        REQUIRE_THROWS_AS(vols.load(in), nlohmann::json::parse_error);
+    }
 }
 
 TEST_CASE("Save Volunteers", "[Volunteers]")

@@ -7,6 +7,8 @@
 
 #include <spdlog/spdlog.h>
 
+#include "rgexception.h"
+
 #include "volunteerdlg.h"
 #include "volunteer.h"
 
@@ -89,7 +91,7 @@ void MainWindow::loadVolunteers()
         {
             volunteers->load(data);
         }
-        catch (json::out_of_range e)
+        catch (RGException& e)
         {
             spdlog::error("Error loading volunteers: {}", e.what());
             throw std::runtime_error("Error loading Volunteers data");
@@ -109,7 +111,7 @@ void MainWindow::loadEvents()
         {
             events->load(data);
         }
-        catch (json::out_of_range e)
+        catch (RGException& e)
         {
             spdlog::error("Error loading events: {}", e.what());
             throw std::runtime_error("Error loading events data");
