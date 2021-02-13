@@ -8,11 +8,12 @@ TEST_CASE("Compare Volunteer", "[Volunteer]")
 {
     Volunteer a {1, "First", "Last", "Home", "Mobile", "Email"};
     Volunteer b {2, "First", "Last", "Home", "Mobile", "Email"};
-
     Volunteer c {3, "Forename", "Surname", "Home", "Mobile", "Email"};
 
     CHECK(a == b);
+    CHECK(a != c);
     CHECK_FALSE(a == c);
+    CHECK_FALSE(a != b);
 }
 
 TEST_CASE("Volunteer To Json", "[Volunteer]")
@@ -64,6 +65,7 @@ TEST_CASE("Volunteer From Json", "[Volunteer]")
 
 TEST_CASE("Volunteer with a Bad Key", "[Volunteer]")
 {
+    // With homePhone as a deliberately bad key
     nlohmann::json from {
         {"id", 1},
         {"firstName", "First"},

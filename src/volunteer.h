@@ -68,8 +68,6 @@ public:
 
     ///@}
 
-    ~Volunteer() = default;
-
     /// \name Operators
     /// @{
 

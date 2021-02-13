@@ -17,10 +17,13 @@ target_sources(test_rg
     test_events.cpp
     test_events.h
     test_exceptions.cpp
+    test_rotadetails.cpp
+    test_rotadetails.h
     ${CMAKE_SOURCE_DIR}/src/rotadata.cpp
     ${CMAKE_SOURCE_DIR}/src/volunteer.cpp
     ${CMAKE_SOURCE_DIR}/src/event.cpp
     ${CMAKE_SOURCE_DIR}/src/rgexception.cpp
+    ${CMAKE_SOURCE_DIR}/src/rotadetails.cpp
 )
 
 target_include_directories(

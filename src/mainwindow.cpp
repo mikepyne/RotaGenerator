@@ -30,14 +30,21 @@ MainWindow::MainWindow(
     loadVolunteers();
 
     ui->volunteersView->setModel(&volunteers_model);
-    ui->volunteersView->horizontalHeader()->setStretchLastSection(true);
+    ui->volunteersView->setColumnHidden(0, true);
+    ui->volunteersView->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
+    ui->volunteersView->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
+    ui->volunteersView->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Stretch);
+    ui->volunteersView->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
     ui->volunteersView->verticalHeader()->hide();
     ui->volunteersView->resizeColumnsToContents();
 
     loadEvents();
 
     ui->eventsView->setModel(&events_model);
-    ui->eventsView->horizontalHeader()->setStretchLastSection(true);
+    ui->eventsView->setColumnHidden(0, true);
+    ui->eventsView->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
+    ui->eventsView->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
+    ui->eventsView->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Stretch);
     ui->eventsView->verticalHeader()->hide();
     ui->eventsView->resizeColumnsToContents();
 }
