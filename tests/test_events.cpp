@@ -86,12 +86,12 @@ TEST_CASE("Save Events", "[Events]")
     SECTION("Good save")
     {
         expected << R"({"data":[{"description":"Description","id":1,"label":"label",)"
-                 << R"("volsNeeded":1},{"description":"desc","id":2,)"
-                 << R"("label":"lbl","volsNeeded":3}]})"
+                 << R"("volsNeeded":1,"volunteers":[1,2]},{"description":"desc","id":2,)"
+                 << R"("label":"lbl","volsNeeded":3,"volunteers":[1,2]}]})"
                  << std::endl;
 
-        MockEvent e1(1, "label", "Description", 1);
-        MockEvent e2(2, "lbl", "desc", 3);
+        MockEvent e1(1, "label", "Description", 1, {1, 2});
+        MockEvent e2(2, "lbl", "desc", 3, {1, 2});
 
         ALLOW_CALL(e1, get_id())
             .RETURN(1);
@@ -114,8 +114,8 @@ TEST_CASE("Save Events", "[Events]")
 TEST_CASE("Getting an Event", "[Events]")
 {
     RotaData<Event> events;
-    Event e1(1, "label", "description", 1);
-    Event e2(2, "lbl", "desc", 3);
+    Event e1(1, "label", "description", 1, {1, 2});
+    Event e2(2, "lbl", "desc", 3, {1, 2});
 
     events.add(e1);
     events.add(e2);
@@ -138,8 +138,8 @@ TEST_CASE("Getting an Event", "[Events]")
 TEST_CASE("Deleting an Event", "[Events]")
 {
     RotaData<Event> events;
-    Event e1(1, "label", "description", 1);
-    Event e2(2, "lbl", "desc", 3);
+    Event e1(1, "label", "description", 1, {1, 2});
+    Event e2(2, "lbl", "desc", 3, {1, 2});
 
     events.add(e1);
     events.add(e2);
@@ -164,8 +164,8 @@ TEST_CASE("Deleting an Event", "[Events]")
 TEST_CASE("Edit an Event", "[Events]")
 {
     RotaData<Event> events;
-    Event e1(1, "label", "description", 1);
-    Event e2(2, "lbl", "desc", 3);
+    Event e1(1, "label", "description", 1, {1, 2});
+    Event e2(2, "lbl", "desc", 3, {1, 2});
 
     events.add(e1);
     events.add(e2);
@@ -185,7 +185,7 @@ TEST_CASE("Edit an Event", "[Events]")
 
     SECTION("Edit Bad ID")
     {
-        Event e3(3, "Event", "A description", 2);
+        Event e3(3, "Event", "A description", 2, {1, 2});
 
         REQUIRE_THROWS_MATCHES(events.update(3, e3), RGException,
                                Message("Invalid ID (3)"));

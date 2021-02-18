@@ -15,8 +15,9 @@ public:
         int id,
         const std::string& l,
         const std::string& d,
-        int v
-    ) : Event(id, l, d, v) {};
+        int v,
+        std::vector<int> vols
+    ) : Event(id, l, d, v, vols) {};
 
     static constexpr bool trompeloeil_movable_mock = true;
 

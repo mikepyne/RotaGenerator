@@ -5,9 +5,9 @@
 
 TEST_CASE("Comparing Events", "[Event]")
 {
-    Event a {1, "label", "description", 2};
-    Event b {2, "label", "description", 2};
-    Event c {3, "lbl", "desc", 1};
+    Event a {1, "label", "description", 2, {1, 2}};
+    Event b {2, "label", "description", 2, {1, 2}};
+    Event c {3, "lbl", "desc", 1, {3, 4}};
 
     CHECK(a == b);
     CHECK_FALSE(a == c);
@@ -15,14 +15,15 @@ TEST_CASE("Comparing Events", "[Event]")
 
 TEST_CASE("Event to Json", "[Event]")
 {
-    Event a {1, "label", "description", 2};
+    Event a {1, "label", "description", 2, {1, 2}};
 
     nlohmann::json expected
     {
         {"id", 1},
         {"label", "label"},
         {"description", "description"},
-        {"volsNeeded", 2}
+        {"volsNeeded", 2},
+        {"volunteers", {1, 2}}
     };
 
     nlohmann::json j = a;
@@ -37,7 +38,8 @@ TEST_CASE("Event From Json", "[Event]")
         {"id", 1},
         {"label", "label"},
         {"description", "description"},
-        {"volsNeeded", 2}
+        {"volsNeeded", 2},
+        {"volunteers", {1, 2}}
     };
 
     Event a;
@@ -54,6 +56,7 @@ TEST_CASE("Event From Json", "[Event]")
     CHECK(a.get_label() == "label");
     CHECK(a.get_description() == "description");
     CHECK(a.get_vols_needed() == 2);
+    CHECK(a.get_volunteers() == std::vector<int> {1, 2});
 }
 
 TEST_CASE("Event with a Bad Key", "[Event]")
@@ -77,3 +80,60 @@ TEST_CASE("Event with a Bad Key", "[Event]")
     }
 }
 
+TEST_CASE("Adding volunteers to event", "[Event]")
+{
+    Event e(1, "Label", "An event", 1, {1, 2});
+    std::vector<int> to_add;
+
+    SECTION("No duplicates")
+    {
+        to_add = {3, 4};
+
+        REQUIRE_NOTHROW(e.add_volunteers(to_add));
+        REQUIRE(e.get_volunteers() == std::vector<int> {1, 2, 3, 4});
+    }
+
+    SECTION("Duplicates")
+    {
+        to_add = {2, 3};
+        REQUIRE_NOTHROW(e.add_volunteers(to_add));
+        REQUIRE(e.get_volunteers() == std::vector<int> {1, 2, 3});
+    }
+
+    SECTION("High to low")
+    {
+        Event e2(1, "Label", "An event", 1, {9, 8});
+        to_add = {7, 6};
+
+        REQUIRE_NOTHROW(e2.add_volunteers(to_add));
+        REQUIRE(e2.get_volunteers() == std::vector<int> {6, 7, 8, 9});
+    }
+
+    SECTION("Opposite order")
+    {
+        to_add = {2, 1};
+
+        REQUIRE_NOTHROW(e.add_volunteers(to_add));
+        REQUIRE(e.get_volunteers() == std::vector<int> {1, 2});
+    }
+}
+
+TEST_CASE("Removing volunteers from event", "[Event]")
+{
+    Event e(1, "Label", "An event", 2, {1, 2, 3});
+    std::vector<int> to_remove;
+
+    SECTION("Remove single volunteer")
+    {
+        to_remove = {1};
+        REQUIRE_NOTHROW(e.remove_volunteers(to_remove));
+        REQUIRE(e.get_volunteers() == std::vector<int> {2, 3});
+    }
+
+    SECTION("Remove multiple volunteers")
+    {
+        to_remove = {1, 3};
+        REQUIRE_NOTHROW(e.remove_volunteers(to_remove));
+        REQUIRE(e.get_volunteers() == std::vector<int> {2});
+    }
+}
