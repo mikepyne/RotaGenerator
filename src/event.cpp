@@ -1,3 +1,4 @@
+#include "rgexception.h"
 #include "event.h"
 
 Event::Event(
@@ -5,9 +6,16 @@ Event::Event(
 ) : id(e.at("id")),
     label(e.at("label")),
     description(e.at("description")),
-    volsNeeded(e["volsNeeded"].get<int>()),
-    volunteers(e.at("volunteers"))
+    volsNeeded(e["volsNeeded"].get<int>())
 {
+    try
+    {
+        volunteers = std::vector<int>(e.at("volunteers"));
+    }
+    catch (nlohmann::json::exception& e)
+    {
+        throw RGException(RGException::errors::missing_key, -1, -1, "volunteers");
+    }
 }
 
 Event& Event::operator=(

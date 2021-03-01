@@ -19,8 +19,8 @@ target_sources(RotaGenerator
     volunteer.h
     rota.cpp
     rota.h
-    rotadetails.cpp
-    rotadetails.h
+#    rotadetails.cpp
+#    rotadetails.h
     event.cpp
     event.h
     rgexception.cpp

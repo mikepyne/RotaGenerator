@@ -5,10 +5,12 @@
 RGException::RGException(
     errors e,
     int i,
-    int o
+    int o,
+    const std::string& k
 ) : error(e),
     id(i),
-    other_id(o)
+    other_id(o),
+    key(k)
 {
     switch (error)
     {
@@ -20,5 +22,7 @@ RGException::RGException(
         case errors::invalid:
             w = fmt::format("Invalid ID ({})", id);
             break;
+        case errors::missing_key:
+            w = fmt::format("Missing key ({}) in JSON", key);
     };
 }

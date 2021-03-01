@@ -118,13 +118,13 @@ public:
 
     /// \brief Add a volunteer
     /// \param[in] id To add
-    void addVolunteer(
+    void add_volunteer(
         int id
     );
 
     /// \brief Add an event
     /// \param[in] id To add
-    void addEvent(
+    void add_event(
         int id
     );
 

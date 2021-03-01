@@ -1,7 +1,10 @@
 #include <catch2/catch.hpp>
 #include <nlohmann/json.hpp>
 
+#include "rgexception.h"
 #include "test_event.h"
+
+using Catch::Matchers::Message;
 
 TEST_CASE("Comparing Events", "[Event]")
 {
@@ -57,6 +60,30 @@ TEST_CASE("Event From Json", "[Event]")
     CHECK(a.get_description() == "description");
     CHECK(a.get_vols_needed() == 2);
     CHECK(a.get_volunteers() == std::vector<int> {1, 2});
+}
+
+TEST_CASE("Event missing volunteers", "[Event]")
+{
+    nlohmann::json no_vs
+    {
+        {"id", 1},
+        {"label", "label"},
+        {"description", "description"},
+        {"volsNeeded", 2}
+    };
+
+    Event e;
+    SECTION("Assign")
+    {
+        REQUIRE_THROWS_MATCHES(e = no_vs, RGException,
+                               Message("Missing key (volunteers) in JSON"));
+    }
+
+    SECTION("Construct")
+    {
+        REQUIRE_THROWS_MATCHES(e = Event(no_vs), RGException,
+                               Message("Missing key (volunteers) in JSON"));
+    }
 }
 
 TEST_CASE("Event with a Bad Key", "[Event]")
