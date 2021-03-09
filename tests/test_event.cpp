@@ -56,6 +56,7 @@ TEST_CASE("Event From Json", "[Event]")
         a = Event(from);
     }
 
+    CHECK(a.get_id() == 1);
     CHECK(a.get_label() == "label");
     CHECK(a.get_description() == "description");
     CHECK(a.get_vols_needed() == 2);

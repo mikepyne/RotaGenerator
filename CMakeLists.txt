@@ -13,6 +13,8 @@ enable_testing()
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR})
+
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -22,11 +24,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
-include(json.cmake)
-include(fmt.cmake)
-include(spdlog.cmake)
-include(catch2.cmake)
-include(trompeloeil.cmake)
+include(json)
+include(fmt)
+include(spdlog)
+include(catch2)
+include(trompeloeil)
 
 add_subdirectory(src)
 add_subdirectory(tests)
