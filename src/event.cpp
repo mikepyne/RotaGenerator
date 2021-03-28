@@ -16,6 +16,16 @@ Event::Event(
     {
         throw RGException(RGException::errors::missing_key, -1, -1, "volunteers");
     }
+    try
+    {
+        day = e["day"].get<uint8_t>();
+    }
+    catch (nlohmann::json::exception& e)
+    {
+        // Events don't have to have a specific day, so a missing day key
+        // isn't an error.
+        day = 8;
+    }
 }
 
 Event& Event::operator=(
@@ -27,6 +37,7 @@ Event& Event::operator=(
     description = e.description;
     volsNeeded = e.volsNeeded;
     volunteers = e.volunteers;
+    day = e.day;
     return *this;
 }
 
@@ -39,6 +50,7 @@ Event& Event::operator=(
     description = std::move(e.description);
     volsNeeded = std::move(e.volsNeeded);
     volunteers = std::move(e.volunteers);
+    day = std::move(e.day);
     return *this;
 }
 
@@ -63,7 +75,8 @@ bool Event::eq(
     return label == source.label &&
            description == source.description &&
            volsNeeded == source.volsNeeded &&
-           volunteers == source.volunteers;
+           volunteers == source.volunteers &&
+           day == source.day;
 }
 
 void Event::add_volunteers(

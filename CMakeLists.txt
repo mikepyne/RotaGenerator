@@ -29,6 +29,7 @@ include(fmt)
 include(spdlog)
 include(catch2)
 include(trompeloeil)
+include(date)
 
 add_subdirectory(src)
 add_subdirectory(tests)

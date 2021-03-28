@@ -30,18 +30,27 @@ target_include_directories(
     test_rg
     PUBLIC ${CMAKE_SOURCE_DIR}/src
     ${spdlog_SOURCE_DIR}/include
+    ${date_src_SOURCE_DIR}/include
 )
 
 target_link_libraries(
     test_rg
     Catch2::Catch2
     fmt
+    date::date
 )
 
 target_compile_features(
     test_rg
     PRIVATE
     cxx_std_17
+)
+
+# Define HAS_UNCAUGHT_EXCEPTIONS so the date library compiles correctly.
+target_compile_definitions(
+    test_rg
+    PRIVATE
+    HAS_UNCAUGHT_EXCEPTIONS=1
 )
 
 catch_discover_tests(test_rg)

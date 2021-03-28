@@ -32,6 +32,14 @@ target_link_libraries(
     PRIVATE
     Qt5::Widgets
     fmt
+    date::date
+)
+
+# Define HAS_UNCAUGHT_EXCEPTIONS so the date library compiles correctly.
+target_compile_definitions(
+    RotaGenerator
+    PRIVATE
+    HAS_UNCAUGHT_EXCEPTIONS=1
 )
 
 find_package(Doxygen

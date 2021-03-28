@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <nlohmann/json.hpp>
+#include <date/date.h>
 
 using nlohmann::json;
 
@@ -44,17 +45,20 @@ public:
     /// \param[in] d Description
     /// \param[in] v Volunteers needed
     /// \param[in] vols Volunteers for the event
+    /// \param[in] a Which day the event is on
     Event(
         int id,
         const std::string& l,
         const std::string& d,
         int v,
-        const std::vector<int> vols
+        const std::vector<int> vols,
+        int a = 8
     ) : id(id),
         label(l),
         description(d),
         volsNeeded(v),
-        volunteers(vols)
+        volunteers(vols),
+        day(a)
     {};
 
     /// \brief Copy constructor
@@ -65,7 +69,8 @@ public:
         label(e.label),
         description(e.description),
         volsNeeded(e.volsNeeded),
-        volunteers(e.volunteers)
+        volunteers(e.volunteers),
+        day(e.day)
     {};
 
     /// \brief Move constructor
@@ -76,7 +81,8 @@ public:
         label(std::move(e.label)),
         description(std::move(e.description)),
         volsNeeded(std::move(e.volsNeeded)),
-        volunteers(std::move(e.volunteers))
+        volunteers(std::move(e.volunteers)),
+        day(std::move(e.day))
     {};
     ///@}
 
@@ -164,11 +170,28 @@ public:
     void set_volunteers(
         const std::vector<int>& vols
     ) {volunteers = vols;}
+
+    /// \brief Get the day for this event
+    /// \return the day
+    ///
+    /// The day will be 0 - 6, where Sunday is 0, and 6 is Saturday. Sunday may
+    /// also be 7. Any other value means the event doesn't have a specific day.
+    uint8_t get_day() const {return day;}
+
+    /// \brief Set the day for this event
+    /// \param[in] d The new day for the event
+    ///
+    /// The day should be a value of 0 - 6, where 0 is Sunday and 6 is Saturday.
+    /// (Sunday may also be 7). Set the day to 8 to indicate the event doesn't
+    /// have a specific day.
+    void set_day(
+        uint8_t d
+    ) {day = d;}
     /// @}
 
     /// \brief Nlohmann JSON boilerplate
     NLOHMANN_DEFINE_TYPE_INTRUSIVE(Event, id, label, description,
-                                   volsNeeded, volunteers);
+                                   volsNeeded, volunteers, day);
 
     /// \brief Add volunteers to the list of volunteers for this event
     /// \param[in] to_add Volunteers to be added
@@ -203,6 +226,7 @@ private:
     std::string         description {""};   ///< Longer description of the event
     int                 volsNeeded {0};     ///< How many required for each event
     std::vector<int>    volunteers;         ///< Volunteers for this event
+    uint8_t             day {8};            ///< Day of the event
 };
 
 #endif // EVENT_H

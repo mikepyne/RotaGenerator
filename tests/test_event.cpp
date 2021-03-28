@@ -8,9 +8,9 @@ using Catch::Matchers::Message;
 
 TEST_CASE("Comparing Events", "[Event]")
 {
-    Event a {1, "label", "description", 2, {1, 2}};
-    Event b {2, "label", "description", 2, {1, 2}};
-    Event c {3, "lbl", "desc", 1, {3, 4}};
+    Event a {1, "label", "description", 2, {1, 2}, 1};
+    Event b {2, "label", "description", 2, {1, 2}, 1};
+    Event c {3, "lbl", "desc", 1, {3, 4}, 2};
 
     CHECK(a == b);
     CHECK_FALSE(a == c);
@@ -18,26 +18,51 @@ TEST_CASE("Comparing Events", "[Event]")
 
 TEST_CASE("Event to Json", "[Event]")
 {
-    Event a {1, "label", "description", 2, {1, 2}};
-
-    nlohmann::json expected
+    nlohmann::json expected;
+    nlohmann::json j;
+    SECTION("No day")
     {
-        {"id", 1},
-        {"label", "label"},
-        {"description", "description"},
-        {"volsNeeded", 2},
-        {"volunteers", {1, 2}}
-    };
+        Event a {1, "label", "description", 2, {1, 2}};
 
-    nlohmann::json j = a;
+        expected =
+        {
+            {"day", 8},
+            {"id", 1},
+            {"label", "label"},
+            {"description", "description"},
+            {"volsNeeded", 2},
+            {"volunteers", {1, 2}}
+        };
 
-    REQUIRE(j == expected);
+        j = a;
+        REQUIRE(j == expected);
+    }
+
+    SECTION("No volunteers")
+    {
+        Event a {1, "label", "description", 2, {}, 1};
+
+        expected =
+        {
+            {"day", 1},
+            {"id", 1},
+            {"label", "label"},
+            {"description","description"},
+            {"volsNeeded", 2},
+            {"volunteers", json::array()}
+        };
+
+        j = a;
+        REQUIRE(j == expected);
+    }
+
 }
 
 TEST_CASE("Event From Json", "[Event]")
 {
     nlohmann::json from
     {
+        {"day", 2},
         {"id", 1},
         {"label", "label"},
         {"description", "description"},
@@ -61,6 +86,7 @@ TEST_CASE("Event From Json", "[Event]")
     CHECK(a.get_description() == "description");
     CHECK(a.get_vols_needed() == 2);
     CHECK(a.get_volunteers() == std::vector<int> {1, 2});
+    CHECK(a.get_day() == 2);
 }
 
 TEST_CASE("Event missing volunteers", "[Event]")
