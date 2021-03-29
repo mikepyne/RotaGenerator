@@ -1,3 +1,5 @@
+#include <date/date.h>
+
 #include "rgexception.h"
 #include "event.h"
 
@@ -12,15 +14,15 @@ Event::Event(
     {
         volunteers = std::vector<int>(e.at("volunteers"));
     }
-    catch (nlohmann::json::exception& e)
+    catch (nlohmann::json::exception& ex)
     {
         throw RGException(RGException::errors::missing_key, -1, -1, "volunteers");
     }
     try
     {
-        day = e["day"].get<uint8_t>();
+        day = e.at("day").get<uint8_t>();
     }
-    catch (nlohmann::json::exception& e)
+    catch (nlohmann::json::exception& ex)
     {
         // Events don't have to have a specific day, so a missing day key
         // isn't an error.
@@ -77,6 +79,16 @@ bool Event::eq(
            volsNeeded == source.volsNeeded &&
            volunteers == source.volunteers &&
            day == source.day;
+}
+
+std::string Event::day_to_string(
+    uint8_t day
+)
+{
+    date::weekday wd(day);
+    std::stringstream out;
+    date::to_stream(out, "%A", wd);
+    return out.str();
 }
 
 void Event::add_volunteers(

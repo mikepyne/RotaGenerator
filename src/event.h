@@ -4,7 +4,6 @@
 #include <string>
 #include <vector>
 #include <nlohmann/json.hpp>
-#include <date/date.h>
 
 using nlohmann::json;
 
@@ -188,6 +187,16 @@ public:
         uint8_t d
     ) {day = d;}
     /// @}
+
+    /// \brief Get a string for a given day
+    /// \param[in] day To turn into a string
+    /// \return a string for the day
+    ///
+    /// day must be between 0 (for Sunday) and 6 (Saturday); Sunday may also be
+    /// 7. Values of 8 or above will result in an empty string
+    static std::string day_to_string(
+        uint8_t day
+    );
 
     /// \brief Nlohmann JSON boilerplate
     NLOHMANN_DEFINE_TYPE_INTRUSIVE(Event, id, label, description,

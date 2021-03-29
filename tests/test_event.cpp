@@ -74,19 +74,61 @@ TEST_CASE("Event From Json", "[Event]")
     SECTION("Assign")
     {
         a = from;
+        CHECK(a.get_id() == 1);
+        CHECK(a.get_label() == "label");
+        CHECK(a.get_description() == "description");
+        CHECK(a.get_vols_needed() == 2);
+        CHECK(a.get_volunteers() == std::vector<int> {1, 2});
+        CHECK(a.get_day() == 2);
     }
 
     SECTION("Construct")
     {
         a = Event(from);
+        CHECK(a.get_id() == 1);
+        CHECK(a.get_label() == "label");
+        CHECK(a.get_description() == "description");
+        CHECK(a.get_vols_needed() == 2);
+        CHECK(a.get_volunteers() == std::vector<int> {1, 2});
+        CHECK(a.get_day() == 2);
     }
 
-    CHECK(a.get_id() == 1);
-    CHECK(a.get_label() == "label");
-    CHECK(a.get_description() == "description");
-    CHECK(a.get_vols_needed() == 2);
-    CHECK(a.get_volunteers() == std::vector<int> {1, 2});
-    CHECK(a.get_day() == 2);
+    SECTION("No volunteers")
+    {
+        from = {
+            {"day", 2},
+            {"id", 1},
+            {"label", "label"},
+            {"description", "description"},
+            {"volsNeeded", 2},
+            {"volunteers", json::array()}
+        };
+        a = from;
+        CHECK(a.get_id() == 1);
+        CHECK(a.get_label() == "label");
+        CHECK(a.get_description() == "description");
+        CHECK(a.get_vols_needed() == 2);
+        CHECK(a.get_volunteers() == std::vector<int> {});
+        CHECK(a.get_day() == 2);
+    }
+
+    SECTION("No day")
+    {
+        from = {
+            {"id", 1},
+            {"label", "label"},
+            {"description", "description"},
+            {"volsNeeded", 2},
+            {"volunteers", {1, 2}}
+        };
+        a = from;
+        CHECK(a.get_id() == 1);
+        CHECK(a.get_label() == "label");
+        CHECK(a.get_description() == "description");
+        CHECK(a.get_vols_needed() == 2);
+        CHECK(a.get_volunteers() == std::vector<int> {1, 2});
+        CHECK(a.get_day() == 8);
+    }
 }
 
 TEST_CASE("Event missing volunteers", "[Event]")
@@ -189,5 +231,24 @@ TEST_CASE("Removing volunteers from event", "[Event]")
         to_remove = {1, 3};
         REQUIRE_NOTHROW(e.remove_volunteers(to_remove));
         REQUIRE(e.get_volunteers() == std::vector<int> {2});
+    }
+}
+
+TEST_CASE("Day to String")
+{
+    SECTION("Sunday")
+    {
+        REQUIRE(Event::day_to_string(0) == "Sunday");
+        REQUIRE(Event::day_to_string(7) == "Sunday");
+    }
+
+    SECTION("Saturday")
+    {
+        REQUIRE(Event::day_to_string(6) == "Saturday");
+    }
+
+    SECTION("No Day")
+    {
+        REQUIRE(Event::day_to_string(8) == "");
     }
 }

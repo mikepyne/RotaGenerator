@@ -31,10 +31,10 @@ MainWindow::MainWindow(
 
     ui->volunteersView->setModel(&volunteers_model);
     ui->volunteersView->setColumnHidden(0, true);
-    ui->volunteersView->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
-    ui->volunteersView->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
-    ui->volunteersView->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Stretch);
-    ui->volunteersView->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
+    for (int i {1}; i < volunteers_model.columnCount(); ++i)
+    {
+        ui->volunteersView->horizontalHeader()->setSectionResizeMode(i, QHeaderView::Stretch);
+    }
     ui->volunteersView->verticalHeader()->hide();
     ui->volunteersView->resizeColumnsToContents();
 
@@ -42,9 +42,10 @@ MainWindow::MainWindow(
 
     ui->eventsView->setModel(&events_model);
     ui->eventsView->setColumnHidden(0, true);
-    ui->eventsView->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
-    ui->eventsView->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
-    ui->eventsView->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Stretch);
+    for (int i {1}; i < events_model.columnCount(); ++i)
+    {
+        ui->eventsView->horizontalHeader()->setSectionResizeMode(i, QHeaderView::Stretch);
+    }
     ui->eventsView->verticalHeader()->hide();
     ui->eventsView->resizeColumnsToContents();
 }
