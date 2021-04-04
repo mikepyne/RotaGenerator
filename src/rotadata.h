@@ -12,7 +12,10 @@
 #include "event.h"
 #include "volunteer.h"
 
-constexpr auto data_lbl = "data";
+namespace rg
+{
+
+constexpr auto data_lbl = "data";   ///> Key of the array in the data file
 
 /// \brief Collection of data items
 /// \tparam T an individual data item
@@ -78,7 +81,7 @@ public:
     );
 
 protected:
-    nlohmann::json  data;           ///< The data
+    nlohmann::json  data;           ///< The data array
     int             next_id {1};    ///< Next ID to use
 };
 
@@ -157,7 +160,7 @@ T RotaData<T>::at(
         T item {*f};
         return item;
     }
-    throw(RGException(RGException::errors::invalid, id));
+    throw(rg::Invalid(id));
 }
 
 template <class T>
@@ -182,21 +185,25 @@ void RotaData<T>::update(
     const T& item
 )
 {
+    // Look for duplicates in the data array
     auto d = std::find_if(std::begin(data[data_lbl]), std::end(data[data_lbl]),
                           [&id, &item](nlohmann::json& j){return item == T(j);});
 
+    // Confirm the ID exists in the data array
     auto f = std::find_if(std::begin(data[data_lbl]), std::end(data[data_lbl]),
                           [&id](nlohmann::json& j){return j.at("id") == id;});
 
     if (d != std::end(data[data_lbl]))
     {
-        throw RGException(RGException::errors::duplicate, id, T(*d).get_id());
+        throw rg::Duplicate(id, T(*d).get_id());
     }
     if (f == std::end(data[data_lbl]))
     {
-        throw RGException(RGException::errors::invalid, id, -1);
+        throw rg::Invalid(id);
     }
     *f = item;
 }
+
+} // namespace rg
 
 #endif // ROTADATA_H

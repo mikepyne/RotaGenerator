@@ -5,6 +5,8 @@
 #include "test_event.h"
 
 using Catch::Matchers::Message;
+using nlohmann::json;
+using namespace rg;
 
 TEST_CASE("Comparing Events", "[Event]")
 {
@@ -145,13 +147,13 @@ TEST_CASE("Event missing volunteers", "[Event]")
     SECTION("Assign")
     {
         REQUIRE_THROWS_MATCHES(e = no_vs, RGException,
-                               Message("Missing key (volunteers) in JSON"));
+                               Message("Key volunteers is missing from ID 1"));
     }
 
     SECTION("Construct")
     {
         REQUIRE_THROWS_MATCHES(e = Event(no_vs), RGException,
-                               Message("Missing key (volunteers) in JSON"));
+                               Message("Key volunteers is missing from ID 1"));
     }
 }
 

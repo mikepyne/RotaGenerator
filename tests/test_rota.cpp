@@ -4,6 +4,9 @@
 
 #include "test_rota.h"
 
+using namespace rg;
+
+
 TEST_CASE("Compare Rota", "[Rota]")
 {
     Rota a {1, "label", "description", {1, 2}};

@@ -1,7 +1,12 @@
 #include "volunteer.h"
 
+using nlohmann::json;
+
+namespace rg
+{
+
 Volunteer::Volunteer(
-    const json& v
+    const nlohmann::json& v
 ) : id(v.at("id")),
     firstName(v.at("firstName")),
     lastName(v.at("lastName")),
@@ -38,7 +43,7 @@ Volunteer& Volunteer::operator=(
 }
 
 Volunteer& Volunteer::operator=(
-    const json& v
+    const nlohmann::json& v
 )
 {
     id = v.at("id");
@@ -74,3 +79,5 @@ bool Volunteer::eq(
            phoneMobile == source.phoneMobile &&
            email == source.email;
 }
+
+}   // namespace rg

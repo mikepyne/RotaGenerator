@@ -5,8 +5,11 @@
 #include <vector>
 
 #include <nlohmann/json.hpp>
+#include <date/date.h>
 
-using nlohmann::json;
+
+namespace rg
+{
 
 /// \class Rota
 /// \brief Create a rota
@@ -22,7 +25,7 @@ public:
     /// \brief Construct from JSON
     /// \param[in] r JSON to construct from
     Rota(
-        const json& r
+        const nlohmann::json& r
     );
 
     /// \brief Copy constructor
@@ -129,7 +132,12 @@ public:
     /// @}
 
     /// \brief Generate the rota
-    void generate();
+    /// \param[in] start Start date of the rota
+    /// \param[in] end End date of the rota
+    void generate(
+        date::year_month_day start,
+        date::year_month_day end
+    );
 
     /// \brief Nlohmann JSON boilerplate
     NLOHMANN_DEFINE_TYPE_INTRUSIVE(Rota, id, label, description, events);
@@ -152,4 +160,5 @@ private:
     std::vector<int>    events;             ///< Events in the rota
 };
 
+}   // namespace rg
 #endif // ROTA_H

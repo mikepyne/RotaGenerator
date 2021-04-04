@@ -1,5 +1,8 @@
 #include "eventsmodel.h"
 
+namespace rg
+{
+
 QVariant EventsModel::headerData(
     int section,
     Qt::Orientation orientation,
@@ -81,3 +84,5 @@ QVariant EventsModel::data(
     }
     return QVariant();
 }
+
+}   // namespace rg

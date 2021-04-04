@@ -8,6 +8,8 @@
 #include "rotadata.h"
 #include "volunteer.h"
 
+namespace rg
+{
 
 /// \class VolunteersModel
 /// \brief Model for displaying Volunteers on a view.
@@ -62,4 +64,5 @@ private:
     std::shared_ptr<RotaData<Volunteer>> volunteers;    ///< Volunteers
 };
 
+}   // namespace rg
 #endif // VOLUNTEERSMODEL_H

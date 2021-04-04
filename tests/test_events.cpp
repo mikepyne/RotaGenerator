@@ -8,6 +8,7 @@
 #include "rotadata.h"
 
 using Catch::Matchers::Message;
+using namespace rg;
 
 TEST_CASE("Loading events", "[Events]")
 {
@@ -130,7 +131,7 @@ TEST_CASE("Getting an Event", "[Events]")
 
     SECTION("Bad ID")
     {
-        REQUIRE_THROWS_MATCHES(events.at(3), RGException,
+        REQUIRE_THROWS_MATCHES(events.at(3), rg::Invalid,
                                Message("Invalid ID (3)"));
     }
 }

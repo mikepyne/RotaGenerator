@@ -8,6 +8,9 @@
 #include "rotadata.h"
 #include "event.h"
 
+namespace rg
+{
+
 /// \class EventsModel
 /// \brief Model for displaying Events on a view.
 ///
@@ -51,4 +54,5 @@ private:
     std::shared_ptr<RotaData<Event>> events;    ///< Events
 };
 
+} // namespace rg
 #endif // EVENTSMODEL_H

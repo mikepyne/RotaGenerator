@@ -6,10 +6,10 @@
 
 #include <volunteer.h>
 
-class MockVolunteer : public Volunteer
+class MockVolunteer : public rg::Volunteer
 {
 public:
-    MockVolunteer() : Volunteer() {};
+    MockVolunteer() : rg::Volunteer() {};
 
     MockVolunteer(
         int id,
@@ -18,11 +18,11 @@ public:
         const std::string& h,
         const std::string& m,
         const std::string& e
-    ) : Volunteer(id, f, l, h, m, e) {};
+    ) : rg::Volunteer(id, f, l, h, m, e) {};
 
     static constexpr bool trompeloeil_movable_mock = true;
 
-    MAKE_CONST_MOCK1(eq, bool(const Volunteer&), override);
+    MAKE_CONST_MOCK1(eq, bool(const rg::Volunteer&), override);
     MAKE_CONST_MOCK0(get_id, int(), override);
 };
 

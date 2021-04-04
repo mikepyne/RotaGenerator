@@ -1,8 +1,13 @@
 #include "rgexception.h"
 #include "rota.h"
 
+using nlohmann::json;
+
+namespace rg
+{
+
 Rota::Rota(
-    const json& r
+    const nlohmann::json& r
 ) : id(r.at("id")),
     label(r.at("label")),
     description(r.at("description")),
@@ -13,7 +18,7 @@ Rota::Rota(
         events = std::vector<int>(r.at("events"));
     }  catch (nlohmann::json::exception& e)
     {
-        throw RGException(RGException::errors::invalid, -1, -1);
+        throw rg::MissingKey(id, "events");
     }
 }
 
@@ -39,9 +44,11 @@ Rota& Rota::operator=(
     return *this;
 }
 
-void Rota::generate()
+void Rota::generate(
+    date::year_month_day start,
+    date::year_month_day end
+)
 {
-
 }
 
 bool Rota::eq(
@@ -52,3 +59,5 @@ bool Rota::eq(
            description == source.description &&
            events == source.events;
 }
+
+}   // namespace rg

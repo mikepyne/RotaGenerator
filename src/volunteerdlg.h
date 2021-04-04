@@ -5,10 +5,12 @@
 
 #include <array>
 
-
 namespace Ui {
 class VolunteerDlg;
 }
+
+namespace rg
+{
 
 using Details = std::array<std::string, 5>;
 
@@ -70,4 +72,5 @@ private:
     void enableControls();
 };
 
+}   // namespace rg
 #endif // VolunteerDlg_H

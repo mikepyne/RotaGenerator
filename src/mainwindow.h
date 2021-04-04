@@ -42,10 +42,10 @@ private slots:
 
 private:
     Ui::MainWindow* ui; ///< The UI object
-    std::shared_ptr<RotaData<Volunteer>> volunteers {std::make_shared<RotaData<Volunteer>>()};
-    VolunteersModel volunteers_model {volunteers};
-    std::shared_ptr<RotaData<Event>> events {std::make_shared<RotaData<Event>>()};
-    EventsModel events_model {events};
+    std::shared_ptr<rg::RotaData<rg::Volunteer>> volunteers {std::make_shared<rg::RotaData<rg::Volunteer>>()};
+    rg::VolunteersModel volunteers_model {volunteers};
+    std::shared_ptr<rg::RotaData<rg::Event>> events {std::make_shared<rg::RotaData<rg::Event>>()};
+    rg::EventsModel events_model {events};
 
     void loadVolunteers();
 

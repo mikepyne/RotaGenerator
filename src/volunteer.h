@@ -4,7 +4,8 @@
 #include <string>
 #include <nlohmann/json.hpp>
 
-using nlohmann::json;
+namespace rg
+{
 
 /// \class Volunteer
 /// \brief Details of a volunteer
@@ -20,7 +21,7 @@ public:
     /// \brief Construct from JSON
     /// \param[in] v JSON to construct from
     Volunteer(
-        const json& v
+        const nlohmann::json& v
     );
 
     /// \brief Copy constructor
@@ -86,7 +87,7 @@ public:
     /// \brief Assignment from JSON
     /// \param[in] v JSON to assign from
     Volunteer& operator=(
-        const json& v
+        const nlohmann::json& v
     );
 
     /// \brief Comparison operator
@@ -194,5 +195,5 @@ private:
     std::string email {""};         ///< Email address
 };
 
-
+}   // namespace rg
 #endif // VOLUNTEER_H

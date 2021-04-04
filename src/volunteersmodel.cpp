@@ -2,6 +2,8 @@
 
 #include "volunteersmodel.h"
 
+namespace rg
+{
 
 QVariant VolunteersModel::headerData(
     int section,
@@ -101,3 +103,5 @@ QVariant VolunteersModel::data(
 //    Q_UNUSED(index);
 //    return Qt::ItemFlag::ItemIsSelectable;
 //}
+
+}   // namespace rg

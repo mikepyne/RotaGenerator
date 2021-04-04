@@ -5,8 +5,9 @@
 #include <vector>
 #include <nlohmann/json.hpp>
 
-using nlohmann::json;
 
+namespace rg
+{
 
 /// \class Event
 /// \brief Describes an event that needs volunteers
@@ -35,7 +36,7 @@ public:
     /// \brief Construct from JSON
     /// \param[in] e JSON to construct from
     Event(
-        const json& e
+        const nlohmann::json& e
     );
 
     /// \brief Constructor
@@ -238,4 +239,5 @@ private:
     uint8_t             day {8};            ///< Day of the event
 };
 
+} // namespace rg
 #endif // EVENT_H

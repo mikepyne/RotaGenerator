@@ -6,47 +6,78 @@
 
 #include <fmt/core.h>
 
+namespace rg
+{
 
 /// \class RGException
-/// \brief Report an error with an item
+/// \brief Base class for exceptions in the RotaGenerator
+///
+/// Specific exceptions are defined as derived classes, so specifc elements
+/// for the description can be supplied.
 class RGException : public std::exception
 {
 public:
-    /// \brief Errors when updating an item
-    enum class errors
-    {
-        duplicate,      ///< Duplicate item in list
-        invalid,        ///< Invalid ID given
-        missing_key     ///< Missing key
-    };
 
-    /// \brief Construct an exception
-    /// \param[in] e The error being reported
-    /// \param[in] i The ID of the item the error is for
-    /// \param[in] o The other ID (if applicable)
-    /// \param[in] k The key the error relates to
-    ///
-    /// The error being reported must be specified; the remaining parameters
-    /// depend on what error is being reported.
-    RGException(
-        errors e,
-        int i = -1,
-        int o = -1,
-        const std::string& k = ""
-    );
-
-    /// \brief Returns the explanatory string
+    /// \brief Get the description of the exception
+    /// \returns The description
     const char* what() const noexcept override
     {
         return w.c_str();
     };
 
 protected:
-    errors      error;          ///< Which error
-    int         id {0};         ///< ID of item with error
-    int         other_id {0};   ///< ID of other item
-    std::string key {""};       ///< Key causing the error
     std::string w {""};         ///< The error message
 };
+
+/// \class Duplicate
+/// \brief Duplicate item exists in the data
+class Duplicate : public RGException
+{
+public:
+    /// \brief Create a Duplicate exception
+    /// \param[in] id The id supplied
+    /// \param[in] other_id The of the item that matched
+    Duplicate(
+        int id,
+        int other_id
+    )
+    {
+        w = fmt::format("A duplicate item to {} was found at {}", id, other_id);
+    };
+};
+
+/// \class Invalid
+/// \brief An invalid ID has been supplied
+class Invalid : public RGException
+{
+public:
+    /// \brief Construct the Invalid exception
+    /// \param[in] id The ID supplied (i.e. the invalid ID)
+    Invalid(
+        int id
+    )
+    {
+        w = fmt::format("Invalid ID ({})", id);
+    }
+};
+
+/// \class MissingKey
+/// \brief A key is missing from a JSON item
+class MissingKey : public RGException
+{
+public:
+    /// \brief Construct the MissingKey exception
+    /// \param[in] id The ID with the missing key
+    /// \param[in] key The key that is missing
+    MissingKey(
+        int id,
+        std::string key
+    )
+    {
+        w = fmt::format("Key {} is missing from ID {}", key, id);
+    }
+};
+
+} // namespace rg
 
 #endif // RGEXCEPTION_H

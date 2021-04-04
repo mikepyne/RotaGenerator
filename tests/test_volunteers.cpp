@@ -10,6 +10,8 @@
 #include "rotadata.h"
 
 using Catch::Matchers::Message;
+using namespace rg;
+
 
 TEST_CASE("Loading volunteers", "[Volunteers]")
 {
@@ -207,7 +209,7 @@ TEST_CASE("Edit a volunteer", "[Volunteers]")
         REQUIRE_THROWS_MATCHES(
             vols.update(2, v1),
             RGException,
-            Message("Unable to update item 2; duplicate at 1."));
+            Message("A duplicate item to 2 was found at 1"));
 
         REQUIRE(vols.count() == 2);
     }

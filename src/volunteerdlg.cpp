@@ -6,6 +6,9 @@
 #include "volunteerdlg.h"
 #include "ui_volunteerdlg.h"
 
+namespace rg
+{
+
 VolunteerDlg::VolunteerDlg(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::VolunteerDlg)
@@ -87,3 +90,5 @@ void VolunteerDlg::on_email_textChanged([[maybe_unused]] const QString &arg1)
 {
     enableControls();
 }
+
+}   // namespace rg

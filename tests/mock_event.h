@@ -6,7 +6,7 @@
 
 #include <event.h>
 
-class MockEvent : public Event
+class MockEvent : public rg::Event
 {
 public:
     MockEvent() : Event() {};
@@ -17,7 +17,7 @@ public:
         const std::string& d,
         int v,
         std::vector<int> vols
-    ) : Event(id, l, d, v, vols) {};
+    ) : rg::Event(id, l, d, v, vols) {};
 
     static constexpr bool trompeloeil_movable_mock = true;
 

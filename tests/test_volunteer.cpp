@@ -3,6 +3,7 @@
 
 #include "test_volunteer.h"
 
+using namespace rg;
 
 TEST_CASE("Compare Volunteer", "[Volunteer]")
 {

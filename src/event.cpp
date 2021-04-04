@@ -3,8 +3,13 @@
 #include "rgexception.h"
 #include "event.h"
 
+using nlohmann::json;
+
+namespace rg
+{
+
 Event::Event(
-    const json& e
+    const nlohmann::json& e
 ) : id(e.at("id")),
     label(e.at("label")),
     description(e.at("description")),
@@ -14,15 +19,15 @@ Event::Event(
     {
         volunteers = std::vector<int>(e.at("volunteers"));
     }
-    catch (nlohmann::json::exception& ex)
+    catch (json::exception& ex)
     {
-        throw RGException(RGException::errors::missing_key, -1, -1, "volunteers");
+        throw rg::MissingKey(id, "volunteers");
     }
     try
     {
         day = e.at("day").get<uint8_t>();
     }
-    catch (nlohmann::json::exception& ex)
+    catch (json::exception& ex)
     {
         // Events don't have to have a specific day, so a missing day key
         // isn't an error.
@@ -114,5 +119,7 @@ void Event::remove_volunteers(
                             remove_things);
 
     volunteers.erase(l, std::end(volunteers));
+
+}
 
 }
