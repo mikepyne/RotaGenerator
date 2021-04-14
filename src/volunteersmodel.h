@@ -5,8 +5,7 @@
 
 #include <QAbstractTableModel>
 
-#include "rotadata.h"
-#include "volunteer.h"
+#include "mediator.h"
 
 namespace rg
 {
@@ -22,10 +21,10 @@ public:
     VolunteersModel() = delete;
 
     /// \brief Construct the model
-    /// \param vols the list of volunteers
+    /// \param[in] m The mediator object
     VolunteersModel(
-        std::shared_ptr<RotaData<Volunteer>> vols
-    ) : volunteers(vols) {};
+        std::shared_ptr<rg::Mediator> m
+    ) : mediator(m) {};
 
     /// \brief Get the header for the view
     QVariant headerData(
@@ -61,7 +60,7 @@ public:
 //    ) const override;
 
 private:
-    std::shared_ptr<RotaData<Volunteer>> volunteers;    ///< Volunteers
+    std::shared_ptr<rg::Mediator> mediator;
 };
 
 }   // namespace rg

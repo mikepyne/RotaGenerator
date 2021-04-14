@@ -5,6 +5,7 @@
 
 #include <QMainWindow>
 
+#include "mediator.h"
 #include "rotadata.h"
 #include "volunteer.h"
 #include "volunteersmodel.h"
@@ -42,13 +43,9 @@ private slots:
 
 private:
     Ui::MainWindow* ui; ///< The UI object
-    std::shared_ptr<rg::RotaData<rg::Volunteer>> volunteers {std::make_shared<rg::RotaData<rg::Volunteer>>()};
-    rg::VolunteersModel volunteers_model {volunteers};
-    std::shared_ptr<rg::RotaData<rg::Event>> events {std::make_shared<rg::RotaData<rg::Event>>()};
-    rg::EventsModel events_model {events};
-
-    void loadVolunteers();
-
-    void loadEvents();
+    std::shared_ptr<rg::Mediator> mediator {std::make_shared<rg::Mediator>()};
+    rg::VolunteersModel volunteers_model {mediator};
+    rg::EventsModel events_model {mediator};
 };
+
 #endif // MAINWINDOW_H

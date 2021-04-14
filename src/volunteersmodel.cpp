@@ -1,5 +1,6 @@
 #include <spdlog/spdlog.h>
 
+#include "volunteer.h"
 #include "volunteersmodel.h"
 
 namespace rg
@@ -44,7 +45,7 @@ int VolunteersModel::rowCount(
 ) const
 {
     Q_UNUSED(parent);
-    return volunteers->count();
+    return mediator->count(Mediator::CountTypes::Volunteers);
 }
 
 int VolunteersModel::columnCount(
@@ -64,7 +65,7 @@ QVariant VolunteersModel::data(
     {
         // Calculating the ID from the row index might be a bad idea.
         auto id = index.row() + 1;
-        const auto v = volunteers->at(id);
+        const auto v = mediator->getVolunteer(id);
         switch (index.column())
         {
             case 0:

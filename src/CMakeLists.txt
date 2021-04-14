@@ -25,6 +25,8 @@ target_sources(RotaGenerator
     event.h
     rgexception.cpp
     rgexception.h
+    mediator.cpp
+    mediator.h
 )
 
 target_link_libraries(

@@ -1,3 +1,4 @@
+#include "event.h"
 #include "eventsmodel.h"
 
 namespace rg
@@ -42,7 +43,7 @@ int EventsModel::rowCount(
 ) const
 {
     Q_UNUSED(parent)
-    return events->count();
+    return mediator->count(Mediator::CountTypes::Events);
 }
 
 int EventsModel::columnCount(
@@ -62,7 +63,7 @@ QVariant EventsModel::data(
     if (role == Qt::DisplayRole)
     {
         auto id = index.row() + 1;
-        const auto e = events->at(id);
+        const auto e = mediator->getEvent(id);
         switch (index.column())
         {
             case 0:

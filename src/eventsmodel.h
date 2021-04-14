@@ -5,8 +5,7 @@
 
 #include <QAbstractTableModel>
 
-#include "rotadata.h"
-#include "event.h"
+#include "mediator.h"
 
 namespace rg
 {
@@ -22,10 +21,10 @@ public:
     EventsModel() = delete;
 
     /// \brief Construct the model
-    /// \param e the list of events
+    /// \param m #rg::Mediator
     EventsModel(
-        std::shared_ptr<RotaData<Event>> e
-    ) : events(e) {};
+        std::shared_ptr<rg::Mediator> m
+    ) : mediator(m) {};
 
     /// \brief Get the header for the view
     QVariant headerData(
@@ -51,7 +50,7 @@ public:
     ) const override;
 
 private:
-    std::shared_ptr<RotaData<Event>> events;    ///< Events
+    std::shared_ptr<rg::Mediator> mediator;
 };
 
 } // namespace rg
