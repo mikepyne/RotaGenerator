@@ -1,9 +1,12 @@
 #ifndef MEDIATOR_H
 #define MEDIATOR_H
 
+#include <filesystem>
+
 #include "rotadata.h"
 #include "volunteer.h"
 #include "event.h"
+#include "rota.h"
 
 
 namespace rg
@@ -21,7 +24,8 @@ public:
     enum class CountTypes : int8_t
     {
         Volunteers,
-        Events
+        Events,
+        Rotas,
     };
 
     Mediator() = default;
@@ -34,7 +38,9 @@ public:
     );
 
     /// \brief Load data
-    void loadData();
+    void loadData(
+        std::filesystem::path data_path
+    );
 
     /// \brief Get data for a volunteer
     /// \param[in] id The id of the volunteer
@@ -54,15 +60,33 @@ public:
         int id
     );
 
+    /// \brief Get data for a rota
+    /// \param[in] id The id of the rota
+    /// \returns A #rg::Rota object
+    Rota getRota(
+        int id
+    );
+
 private:
+    std::filesystem::path   data_path;      ///< Where the data is saved
     RotaData<Volunteer>     volunteers;     ///< The volunteers
     RotaData<Event>         events;         ///< The events
+    RotaData<Rota>          rotas;          ///< The rotas
 
     /// \brief Load the data for the Volunteers list
-    void loadVolunteers();
+    void loadVolunteers(
+        std::filesystem::path data_path
+    );
 
     /// \brief Load the data for the Events list
-    void loadEvents();
+    void loadEvents(
+        std::filesystem::path data_path
+    );
+
+    /// \brief Load the Rotas data
+    void loadRotas(
+        std::filesystem::path data_path
+    );
 };
 
 }

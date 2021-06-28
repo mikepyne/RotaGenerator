@@ -24,6 +24,7 @@ target_sources(test_rg
     ${CMAKE_SOURCE_DIR}/src/event.cpp
     ${CMAKE_SOURCE_DIR}/src/rgexception.cpp
     ${CMAKE_SOURCE_DIR}/src/rota.cpp
+    ${CMAKE_SOURCE_DIR}/src/mediator.cpp
 )
 
 target_include_directories(

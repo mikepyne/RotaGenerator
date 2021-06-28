@@ -13,6 +13,8 @@ target_sources(RotaGenerator
     volunteersmodel.h
     eventsmodel.cpp
     eventsmodel.h
+    rotasmodel.cpp
+    rotasmodel.h
     rotadata.cpp
     rotadata.h
     volunteer.cpp

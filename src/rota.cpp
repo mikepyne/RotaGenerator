@@ -1,3 +1,4 @@
+#include "mediator.h"
 #include "rgexception.h"
 #include "rota.h"
 
@@ -30,7 +31,7 @@ Rota& Rota::operator=(
     label = r.label;
     description = r.description;
     events = r.events;
-    return *this;
+   return *this;
 }
 
 Rota& Rota::operator=(
@@ -44,12 +45,18 @@ Rota& Rota::operator=(
     return *this;
 }
 
-void Rota::generate(
-    date::year_month_day start,
-    date::year_month_day end
-)
-{
-}
+//void Rota::generate(
+//    std::shared_ptr<rg::Mediator> m,
+//    date::month month,
+//    int duration
+//)
+//{
+//    for(int e : events)
+//    {
+//        auto event = m->getEvent(e);
+//        event.get_day();
+//    }
+//}
 
 bool Rota::eq(
     const Rota& source

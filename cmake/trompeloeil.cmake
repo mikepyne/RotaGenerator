@@ -5,7 +5,7 @@ FetchContent_Declare(
     GIT_SHALLOW     true
 )
 
-set(TROMPELOEIL_INSTALL_DOCS OFF CACHE_INTERNAL "")
+set(TROMPELOEIL_INSTALL_DOCS OFF CACHE INTERNAL "")
 
 FetchContent_MakeAvailable(trompeloeil)
 

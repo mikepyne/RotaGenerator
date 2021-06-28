@@ -1,4 +1,3 @@
-#include <filesystem>
 #include <fstream>
 
 #include <spdlog/spdlog.h>
@@ -22,14 +21,19 @@ int Mediator::count(
             return volunteers.count();
         case CountTypes::Events:
             return events.count();
+        case CountTypes::Rotas:
+            return rotas.count();
     }
     return -1;
 }
 
-void Mediator::loadData()
+void Mediator::loadData(
+    std::filesystem::path data_path
+)
 {
-    loadVolunteers();
-    loadEvents();
+    loadVolunteers(data_path);
+    loadEvents(data_path);
+    loadRotas(data_path);
 }
 
 Volunteer Mediator::getVolunteer(
@@ -46,13 +50,22 @@ Event Mediator::getEvent(
     return events.at(id);
 }
 
+Rota Mediator::getRota(
+    int id
+)
+{
+    return rotas.at(id);
+}
+
 //-----------------------------------------------------------------------------
 // Private Methods
 
-void Mediator::loadVolunteers()
+void Mediator::loadVolunteers(
+    std::filesystem::path data_path
+)
 {
-    std::filesystem::path p = "/home/mike/Projects/RotaGenerator/data/volunteers.txt";
-    std::fstream data(p, std::ios::in | std::ios::out | std::ios::app);
+    data_path /= "volunteers.json";
+    std::fstream data(data_path, std::ios::in | std::ios::out | std::ios::app);
 
     if (data.good())
     {
@@ -69,10 +82,12 @@ void Mediator::loadVolunteers()
     }
 }
 
-void Mediator::loadEvents()
+void Mediator::loadEvents(
+    std::filesystem::path data_path
+)
 {
-    std::filesystem::path p = "/home/mike/Projects/RotaGenerator/data/events.txt";
-    std::fstream data(p, std::ios::in | std::ios::out | std::ios::app);
+    data_path /= "events.json";
+    std::fstream data(data_path, std::ios::in | std::ios::out | std::ios::app);
 
     if (data.good())
     {
@@ -85,6 +100,27 @@ void Mediator::loadEvents()
         {
             spdlog::error("Error loading events: {}", e.what());
             throw std::runtime_error("Error loading events data");
+        }
+    }
+}
+
+void Mediator::loadRotas(
+    std::filesystem::path data_path
+)
+{
+    data_path /= "rotas.json";
+    std::fstream data(data_path, std::ios::in | std::ios::out | std::ios::app);
+    if (data.good())
+    {
+        spdlog::debug("Opened file");
+        try
+        {
+            rotas.load(data);
+
+        }  catch (RGException& e)
+        {
+            spdlog::error("Error loading rotas: {}", e.what());
+            throw std::runtime_error("Error loading rota data");
         }
     }
 }

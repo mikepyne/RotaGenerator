@@ -131,13 +131,15 @@ public:
 
     /// @}
 
-    /// \brief Generate the rota
-    /// \param[in] start Start date of the rota
-    /// \param[in] end End date of the rota
-    void generate(
-        date::year_month_day start,
-        date::year_month_day end
-    );
+//    /// \brief Generate the rota
+//    /// \param[in] m Mediator.
+//    /// \param[in] start Starting month of the rota
+//    /// \param[in] duration Number of months the rota is for
+//    void generate(
+//        std::shared_ptr<rg::Mediator> m,
+//        date::month start,
+//        int duration
+//    );
 
     /// \brief Nlohmann JSON boilerplate
     NLOHMANN_DEFINE_TYPE_INTRUSIVE(Rota, id, label, description, events);
@@ -154,10 +156,10 @@ protected:
     ) const;
 
 private:
-    int                 id {0};             ///< Rota ID
-    std::string         label {""};         ///< Label for the rota
-    std::string         description {""};   ///< Longer description
-    std::vector<int>    events;             ///< Events in the rota
+    int                             id {0};             ///< Rota ID
+    std::string                     label {""};         ///< Label for the rota
+    std::string                     description {""};   ///< Longer description
+    std::vector<int>                events;             ///< Events in the rota
 };
 
 }   // namespace rg
