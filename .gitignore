@@ -7,4 +7,4 @@ dist/
 MANIFEST
 source_docs/
 CMakeLists.txt.user
-
+CMakeUserPresets.json

@@ -8,7 +8,6 @@
 
 namespace rg
 {
-
 /// \class RGException
 /// \brief Base class for exceptions in the RotaGenerator
 ///
@@ -17,16 +16,12 @@ namespace rg
 class RGException : public std::exception
 {
 public:
-
     /// \brief Get the description of the exception
     /// \returns The description
-    const char* what() const noexcept override
-    {
-        return w.c_str();
-    };
+    const char* what() const noexcept override { return w.c_str(); };
 
 protected:
-    std::string w {""};         ///< The error message
+    std::string w {""};    ///< The error message
 };
 
 /// \class Duplicate
@@ -37,10 +32,7 @@ public:
     /// \brief Create a Duplicate exception
     /// \param[in] id The id supplied
     /// \param[in] other_id The of the item that matched
-    Duplicate(
-        int id,
-        int other_id
-    )
+    Duplicate(int id, int other_id)
     {
         w = fmt::format("A duplicate item to {} was found at {}", id, other_id);
     };
@@ -53,12 +45,7 @@ class Invalid : public RGException
 public:
     /// \brief Construct the Invalid exception
     /// \param[in] id The ID supplied (i.e. the invalid ID)
-    Invalid(
-        int id
-    )
-    {
-        w = fmt::format("Invalid ID ({})", id);
-    }
+    Invalid(int id) { w = fmt::format("Invalid ID ({})", id); }
 };
 
 /// \class MissingKey
@@ -69,15 +56,24 @@ public:
     /// \brief Construct the MissingKey exception
     /// \param[in] id The ID with the missing key
     /// \param[in] key The key that is missing
-    MissingKey(
-        int id,
-        std::string key
-    )
+    MissingKey(int id, std::string key)
     {
         w = fmt::format("Key {} is missing from ID {}", key, id);
     }
 };
 
-} // namespace rg
+/// \class LoadError
+/// \brief Unable to load a data file
+class LoadError : public RGException
+{
+public:
+    /// \brief Consturct the exception
+    LoadError(std::string details)
+    {
+        w = fmt::format("Error loading data: {}", details);
+    }
+};
 
-#endif // RGEXCEPTION_H
+}    // namespace rg
+
+#endif    // RGEXCEPTION_H

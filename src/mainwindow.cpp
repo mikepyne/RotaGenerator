@@ -27,37 +27,46 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     QString d = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
     std::filesystem::path data_path {d.toStdString()};
-    mediator->loadData(data_path);
-
-    ui->volunteersView->setModel(&volunteers_model);
-    ui->volunteersView->setColumnHidden(0, true);
-    for (int i {1}; i < volunteers_model.columnCount(); ++i)
+    try
     {
-        ui->volunteersView->horizontalHeader()->setSectionResizeMode(
-            i,
-            QHeaderView::Stretch);
+        mediator->loadData(data_path);
+
+        ui->volunteersView->setModel(&volunteers_model);
+        ui->volunteersView->setColumnHidden(0, true);
+        for (int i {1}; i < volunteers_model.columnCount(); ++i)
+        {
+            ui->volunteersView->horizontalHeader()->setSectionResizeMode(
+                i,
+                QHeaderView::Stretch);
+        }
+        ui->volunteersView->verticalHeader()->hide();
+        ui->volunteersView->resizeColumnsToContents();
+
+        ui->eventsView->setModel(&events_model);
+        ui->eventsView->setColumnHidden(0, true);
+        for (int i {1}; i < events_model.columnCount(); ++i)
+        {
+            ui->eventsView->horizontalHeader()->setSectionResizeMode(
+                i,
+                QHeaderView::Stretch);
+        }
+        ui->eventsView->verticalHeader()->hide();
+        ui->eventsView->resizeColumnsToContents();
+
+        ui->rotasView->setModel(&rotas_model);
+        ui->rotasView->setColumnHidden(0, true);
+        for (int i {1}; i < rotas_model.columnCount(); ++i)
+        {
+            ui->rotasView->horizontalHeader()->setSectionResizeMode(
+                i,
+                QHeaderView::Stretch);
+        }
     }
-    ui->volunteersView->verticalHeader()->hide();
-    ui->volunteersView->resizeColumnsToContents();
-
-    ui->eventsView->setModel(&events_model);
-    ui->eventsView->setColumnHidden(0, true);
-    for (int i {1}; i < events_model.columnCount(); ++i)
+    catch (RGException& e)
     {
-        ui->eventsView->horizontalHeader()->setSectionResizeMode(
-            i,
-            QHeaderView::Stretch);
-    }
-    ui->eventsView->verticalHeader()->hide();
-    ui->eventsView->resizeColumnsToContents();
-
-    ui->rotasView->setModel(&rotas_model);
-    ui->rotasView->setColumnHidden(0, true);
-    for (int i {1}; i < rotas_model.columnCount(); ++i)
-    {
-        ui->rotasView->horizontalHeader()->setSectionResizeMode(
-            i,
-            QHeaderView::Stretch);
+        QMessageBox msg;
+        msg.setText(QString::fromStdString(e.what()));
+        msg.exec();
     }
 }
 

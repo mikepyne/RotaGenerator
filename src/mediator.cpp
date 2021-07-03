@@ -7,13 +7,10 @@
 
 namespace rg
 {
-
 //-----------------------------------------------------------------------------
 // Public Methods
 
-int Mediator::count(
-    CountTypes which
-)
+int Mediator::count(CountTypes which)
 {
     switch (which)
     {
@@ -27,32 +24,24 @@ int Mediator::count(
     return -1;
 }
 
-void Mediator::loadData(
-    std::filesystem::path data_path
-)
+void Mediator::loadData(std::filesystem::path data_path)
 {
     loadVolunteers(data_path);
     loadEvents(data_path);
     loadRotas(data_path);
 }
 
-Volunteer Mediator::getVolunteer(
-    int id
-)
+Volunteer Mediator::getVolunteer(int id)
 {
     return volunteers.at(id);
 }
 
-Event Mediator::getEvent(
-    int id
-)
+Event Mediator::getEvent(int id)
 {
     return events.at(id);
 }
 
-Rota Mediator::getRota(
-    int id
-)
+Rota Mediator::getRota(int id)
 {
     return rotas.at(id);
 }
@@ -60,16 +49,14 @@ Rota Mediator::getRota(
 //-----------------------------------------------------------------------------
 // Private Methods
 
-void Mediator::loadVolunteers(
-    std::filesystem::path data_path
-)
+void Mediator::loadVolunteers(std::filesystem::path data_path)
 {
     data_path /= "volunteers.json";
     std::fstream data(data_path, std::ios::in | std::ios::out | std::ios::app);
 
     if (data.good())
     {
-        spdlog::debug("Opened file");
+        spdlog::debug("Opened Volunteers file");
         try
         {
             volunteers.load(data);
@@ -82,16 +69,14 @@ void Mediator::loadVolunteers(
     }
 }
 
-void Mediator::loadEvents(
-    std::filesystem::path data_path
-)
+void Mediator::loadEvents(std::filesystem::path data_path)
 {
     data_path /= "events.json";
     std::fstream data(data_path, std::ios::in | std::ios::out | std::ios::app);
 
     if (data.good())
     {
-        spdlog::debug("Opened file");
+        spdlog::debug("Opened Events file");
         try
         {
             events.load(data);
@@ -104,25 +89,23 @@ void Mediator::loadEvents(
     }
 }
 
-void Mediator::loadRotas(
-    std::filesystem::path data_path
-)
+void Mediator::loadRotas(std::filesystem::path data_path)
 {
     data_path /= "rotas.json";
     std::fstream data(data_path, std::ios::in | std::ios::out | std::ios::app);
     if (data.good())
     {
-        spdlog::debug("Opened file");
+        spdlog::debug("Opened Rotas file");
         try
         {
             rotas.load(data);
-
-        }  catch (RGException& e)
+        }
+        catch (RGException& e)
         {
             spdlog::error("Error loading rotas: {}", e.what());
-            throw std::runtime_error("Error loading rota data");
+            throw e;
         }
     }
 }
 
-}   // namespace rg
+}    // namespace rg
