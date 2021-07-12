@@ -12,11 +12,10 @@
 using Catch::Matchers::Message;
 using namespace rg;
 
-
 TEST_CASE("Loading volunteers", "[Volunteers]")
 {
     RotaData<MockVolunteer> vols;
-    std::stringstream in;
+    std::stringstream       in;
 
     SECTION("Empty")
     {
@@ -55,12 +54,9 @@ TEST_CASE("Loading volunteers", "[Volunteers]")
         MockVolunteer v1;
         MockVolunteer v2;
 
-        REQUIRE_CALL(v1, get_id())
-            .TIMES(AT_LEAST(1))
-            .RETURN(1);
+        REQUIRE_CALL(v1, get_id()).TIMES(AT_LEAST(1)).RETURN(1);
 
-        REQUIRE_CALL(v2, eq(ANY(MockVolunteer)))
-            .RETURN(true);
+        REQUIRE_CALL(v2, eq(ANY(MockVolunteer))).RETURN(true);
 
         REQUIRE(vols.add(v1) == 1);
         REQUIRE(vols.add(v2) == -1);
@@ -73,14 +69,14 @@ TEST_CASE("Loading volunteers", "[Volunteers]")
         in << R"({"data": [{"email":"email""firstName":"First Name", "id":1,)"
            << R"("homePhone":"123","lastName":"Last name","phoneMobile":"456"}]})";
 
-        REQUIRE_THROWS_AS(vols.load(in), nlohmann::json::parse_error);
+        REQUIRE_THROWS_AS(vols.load(in), rg::LoadError);
     }
 }
 
 TEST_CASE("Save Volunteers", "[Volunteers]")
 {
-    std::stringstream expected;
-    std::stringstream out;
+    std::stringstream       expected;
+    std::stringstream       out;
     RotaData<MockVolunteer> vols;
 
     SECTION("Empty Save")
@@ -98,20 +94,16 @@ TEST_CASE("Save Volunteers", "[Volunteers]")
                  << R"("lastName":"Last name","phoneHome":"home",)"
                  << R"("phoneMobile":"mobile"},{"email":"m@p",)"
                  << R"("firstName":"Christian","id":2,"lastName":"Surname",)"
-                 << R"("phoneHome":"One","phoneMobile":"Two"}]})"
-                 << std::endl;
+                 << R"("phoneHome":"One","phoneMobile":"Two"}]})" << std::endl;
 
         MockVolunteer v1(1, "First name", "Last name", "home", "mobile", "email");
-        MockVolunteer v2(2, "Christian", "Surname", "One", "Two", "m@p");;
+        MockVolunteer v2(2, "Christian", "Surname", "One", "Two", "m@p");
 
-        ALLOW_CALL(v1, get_id())
-            .RETURN(1);
+        ALLOW_CALL(v1, get_id()).RETURN(1);
 
-        ALLOW_CALL(v2, get_id())
-            .RETURN(2);
+        ALLOW_CALL(v2, get_id()).RETURN(2);
 
-        ALLOW_CALL(v2, eq(ANY(MockVolunteer)))
-            .RETURN(false);
+        ALLOW_CALL(v2, eq(ANY(MockVolunteer))).RETURN(false);
 
         vols.add(v1);
         vols.add(v2);
@@ -124,8 +116,8 @@ TEST_CASE("Save Volunteers", "[Volunteers]")
 TEST_CASE("Getting a Volunteer", "[Volunteers]")
 {
     RotaData<Volunteer> vols;
-    Volunteer v1(1, "First name", "Last name", "home", "mobile", "email");
-    Volunteer v2(2, "Christian", "Surname", "One", "Two", "m@p");
+    Volunteer           v1(1, "First name", "Last name", "home", "mobile", "email");
+    Volunteer           v2(2, "Christian", "Surname", "One", "Two", "m@p");
 
     vols.add(v1);
     vols.add(v2);
@@ -140,16 +132,15 @@ TEST_CASE("Getting a Volunteer", "[Volunteers]")
 
     SECTION("Bad ID")
     {
-        REQUIRE_THROWS_MATCHES(vols.at(3), RGException,
-                               Message("Invalid ID (3)"));
+        REQUIRE_THROWS_MATCHES(vols.at(3), RGException, Message("Invalid ID (3)"));
     }
 }
 
 TEST_CASE("Deleting a volunteer", "[Volunteers]")
 {
     RotaData<Volunteer> vols;
-    Volunteer v1(1, "First name", "Last name", "home", "mobile", "email");
-    Volunteer v2(2, "Christian", "Surname", "One", "Two", "m@p");
+    Volunteer           v1(1, "First name", "Last name", "home", "mobile", "email");
+    Volunteer           v2(2, "Christian", "Surname", "One", "Two", "m@p");
 
     vols.add(v1);
     vols.add(v2);
@@ -160,8 +151,7 @@ TEST_CASE("Deleting a volunteer", "[Volunteers]")
     {
         REQUIRE(vols.erase(1));
         REQUIRE(vols.count() == 1);
-        REQUIRE_THROWS_MATCHES(vols.at(1), RGException,
-                               Message("Invalid ID (1)"));
+        REQUIRE_THROWS_MATCHES(vols.at(1), RGException, Message("Invalid ID (1)"));
     }
 
     SECTION("Bad ID")
@@ -174,8 +164,8 @@ TEST_CASE("Deleting a volunteer", "[Volunteers]")
 TEST_CASE("Edit a volunteer", "[Volunteers]")
 {
     RotaData<Volunteer> vols;
-    Volunteer v1(1, "First name", "Last name", "home", "mobile", "email");
-    Volunteer v2(2, "Christian", "Surname", "One", "Two", "m@p");
+    Volunteer           v1(1, "First name", "Last name", "home", "mobile", "email");
+    Volunteer           v2(2, "Christian", "Surname", "One", "Two", "m@p");
 
     vols.add(v1);
     vols.add(v2);
@@ -195,10 +185,15 @@ TEST_CASE("Edit a volunteer", "[Volunteers]")
 
     SECTION("Edit Bad ID")
     {
-        Volunteer v3(3, "Jelly", "Crainer", "01234 567890", "07912 345678",
+        Volunteer v3(3,
+                     "Jelly",
+                     "Crainer",
+                     "01234 567890",
+                     "07912 345678",
                      "jelly@crainer.com");
 
-        REQUIRE_THROWS_MATCHES(vols.update(3, v3), RGException,
+        REQUIRE_THROWS_MATCHES(vols.update(3, v3),
+                               RGException,
                                Message("Invalid ID (3)"));
 
         REQUIRE(vols.count() == 2);
@@ -206,10 +201,9 @@ TEST_CASE("Edit a volunteer", "[Volunteers]")
 
     SECTION("Duplicate an existing item")
     {
-        REQUIRE_THROWS_MATCHES(
-            vols.update(2, v1),
-            RGException,
-            Message("A duplicate item to 2 was found at 1"));
+        REQUIRE_THROWS_MATCHES(vols.update(2, v1),
+                               RGException,
+                               Message("A duplicate item to 2 was found at 1"));
 
         REQUIRE(vols.count() == 2);
     }

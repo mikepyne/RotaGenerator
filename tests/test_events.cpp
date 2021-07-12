@@ -13,7 +13,7 @@ using namespace rg;
 TEST_CASE("Loading events", "[Events]")
 {
     RotaData<MockEvent> events;
-    std::stringstream in;
+    std::stringstream   in;
 
     SECTION("Empty events")
     {
@@ -47,12 +47,9 @@ TEST_CASE("Loading events", "[Events]")
         MockEvent e1;
         MockEvent e2;
 
-        REQUIRE_CALL(e1, get_id())
-            .TIMES(AT_LEAST(1))
-            .RETURN(1);
+        REQUIRE_CALL(e1, get_id()).TIMES(AT_LEAST(1)).RETURN(1);
 
-        REQUIRE_CALL(e2, eq(ANY(MockEvent)))
-            .RETURN(true);
+        REQUIRE_CALL(e2, eq(ANY(MockEvent))).RETURN(true);
 
         REQUIRE(events.add(e1) == 1);
         REQUIRE(events.add(e2) == -1);
@@ -65,16 +62,15 @@ TEST_CASE("Loading events", "[Events]")
         in << R"({"data": [{"id":1"label":"label","description":"Description",)"
            << R"("volsNeeded":1)}]})";
 
-        REQUIRE_THROWS_AS(events.load(in), nlohmann::json::parse_error);
+        REQUIRE_THROWS_AS(events.load(in), rg::LoadError);
     }
-
 }
 
 TEST_CASE("Save Events", "[Events]")
 {
     RotaData<MockEvent> events;
-    std::stringstream expected;
-    std::stringstream out;
+    std::stringstream   expected;
+    std::stringstream   out;
 
     SECTION("Save empty events")
     {
@@ -86,22 +82,19 @@ TEST_CASE("Save Events", "[Events]")
 
     SECTION("Good save")
     {
-        expected << R"({"data":[{"description":"Description","id":1,"label":"label",)"
-                 << R"("volsNeeded":1,"volunteers":[1,2]},{"description":"desc","id":2,)"
-                 << R"("label":"lbl","volsNeeded":3,"volunteers":[1,2]}]})"
-                 << std::endl;
+        expected
+            << R"({"data":[{"description":"Description","id":1,"label":"label",)"
+            << R"("volsNeeded":1,"volunteers":[1,2]},{"description":"desc","id":2,)"
+            << R"("label":"lbl","volsNeeded":3,"volunteers":[1,2]}]})" << std::endl;
 
         MockEvent e1(1, "label", "Description", 1, {1, 2});
         MockEvent e2(2, "lbl", "desc", 3, {1, 2});
 
-        ALLOW_CALL(e1, get_id())
-            .RETURN(1);
+        ALLOW_CALL(e1, get_id()).RETURN(1);
 
-        ALLOW_CALL(e2, get_id())
-            .RETURN(2);
+        ALLOW_CALL(e2, get_id()).RETURN(2);
 
-        ALLOW_CALL(e2, eq(ANY(MockEvent)))
-            .RETURN(false);
+        ALLOW_CALL(e2, eq(ANY(MockEvent))).RETURN(false);
 
         events.add(e1);
         events.add(e2);
@@ -111,12 +104,11 @@ TEST_CASE("Save Events", "[Events]")
     }
 }
 
-
 TEST_CASE("Getting an Event", "[Events]")
 {
     RotaData<Event> events;
-    Event e1(1, "label", "description", 1, {1, 2});
-    Event e2(2, "lbl", "desc", 3, {1, 2});
+    Event           e1(1, "label", "description", 1, {1, 2});
+    Event           e2(2, "lbl", "desc", 3, {1, 2});
 
     events.add(e1);
     events.add(e2);
@@ -131,16 +123,15 @@ TEST_CASE("Getting an Event", "[Events]")
 
     SECTION("Bad ID")
     {
-        REQUIRE_THROWS_MATCHES(events.at(3), rg::Invalid,
-                               Message("Invalid ID (3)"));
+        REQUIRE_THROWS_MATCHES(events.at(3), rg::Invalid, Message("Invalid ID (3)"));
     }
 }
 
 TEST_CASE("Deleting an Event", "[Events]")
 {
     RotaData<Event> events;
-    Event e1(1, "label", "description", 1, {1, 2});
-    Event e2(2, "lbl", "desc", 3, {1, 2});
+    Event           e1(1, "label", "description", 1, {1, 2});
+    Event           e2(2, "lbl", "desc", 3, {1, 2});
 
     events.add(e1);
     events.add(e2);
@@ -151,8 +142,7 @@ TEST_CASE("Deleting an Event", "[Events]")
     {
         REQUIRE(events.erase(1) == 1);
         REQUIRE(events.count() == 1);
-        REQUIRE_THROWS_MATCHES(events.at(1), RGException,
-                               Message("Invalid ID (1)"));
+        REQUIRE_THROWS_MATCHES(events.at(1), RGException, Message("Invalid ID (1)"));
     }
 
     SECTION("Bad ID")
@@ -165,8 +155,8 @@ TEST_CASE("Deleting an Event", "[Events]")
 TEST_CASE("Edit an Event", "[Events]")
 {
     RotaData<Event> events;
-    Event e1(1, "label", "description", 1, {1, 2});
-    Event e2(2, "lbl", "desc", 3, {1, 2});
+    Event           e1(1, "label", "description", 1, {1, 2});
+    Event           e2(2, "lbl", "desc", 3, {1, 2});
 
     events.add(e1);
     events.add(e2);
@@ -188,7 +178,8 @@ TEST_CASE("Edit an Event", "[Events]")
     {
         Event e3(3, "Event", "A description", 2, {1, 2});
 
-        REQUIRE_THROWS_MATCHES(events.update(3, e3), RGException,
+        REQUIRE_THROWS_MATCHES(events.update(3, e3),
+                               RGException,
                                Message("Invalid ID (3)"));
 
         REQUIRE(events.count() == 2);
