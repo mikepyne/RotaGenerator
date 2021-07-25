@@ -9,29 +9,25 @@ Things that I want to do using this tool:
 1. Generate a list of weekends in a given month (or months)
 2. Identify the liturgical day for each weekend
 3. Assign readers to a reading/mass
-  	1. Some readers are available for a specific mass
-  	1. Other readers are available for all masses
-  	1. Some readers may not be available for particular weekends
-  	1. Some masses may be special occasions and not require readers
+    1. Some readers are available for a specific mass
+    1. Other readers are available for all masses
+    1. Some readers may not be available for particular weekends
+    1. Some masses may be special occasions and not require readers
 4. Fill in some sort of template, using the above information
-
-## Requirements
-
-See requirements.txt for list of required packages.
-
-Missing packages can be installed using PyPi.
 
 ## Testing
 
-Unit tests are written using [PyTest](https://docs.pytest.org/en/latest/).
+Unit tests use Catch2; use the 'test_rg' cmake target, or the built-in 'test' target.
 
-[Tox](https://tox.readthedocs.io/en/latest/) is used to manage the testing
-environment and execute the unit tests.
+### Coverage
 
-To execute the tests:
+After running the tests, use the following targets:
 
-    cd {project_dir}
-    tox
+* test_rg-gcov
+* lcov-capture
+* lcov-genhtml
+
+The coverage report is in the build folder, in lcov/html/selected_targets
 
 ## Links
 

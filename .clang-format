@@ -44,6 +44,7 @@ IndentWidth: '4'
 IndentWrappedFunctionNames: 'true'
 KeepEmptyLinesAtTheStartOfBlocks: 'false'
 Language: Cpp
+MacroBlockBegin: "SECTION"
 MaxEmptyLinesToKeep: '1'
 NamespaceIndentation: None
 PenaltyBreakBeforeFirstCallParameter: '0'

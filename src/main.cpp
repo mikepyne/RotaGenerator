@@ -7,22 +7,19 @@
 
 #include "mainwindow.h"
 
-/// \mainpage %Rota Generator
-///
-/// \section Introduction
-///
-/// Generate rotas for events.
-
 void initialise_logging(
-//    const std::string& name
+    //    const std::string& name
 )
 {
-    auto console{std::make_shared<spdlog::sinks::stdout_color_sink_mt>()};
+    auto console {std::make_shared<spdlog::sinks::stdout_color_sink_mt>()};
     console->set_level(spdlog::level::trace);
     console->set_pattern("%T [%^%l%$] %v");
 
-    auto file{std::make_shared<spdlog::sinks::daily_file_sink_mt>("rota_generator",
-                                                                  0, 0, false, 5)};
+    auto file {std::make_shared<spdlog::sinks::daily_file_sink_mt>("rota_generator",
+                                                                   0,
+                                                                   0,
+                                                                   false,
+                                                                   5)};
 
     file->set_level(spdlog::level::debug);
     file->set_pattern("%T %l %v");
@@ -31,15 +28,16 @@ void initialise_logging(
     sinks.push_back(console);
     sinks.push_back(file);
 
-    auto rg_logger{std::make_shared<spdlog::logger>("rota_generator",
-                                                    begin(sinks), end(sinks))};
+    auto rg_logger {std::make_shared<spdlog::logger>("rota_generator",
+                                                     begin(sinks),
+                                                     end(sinks))};
 
     rg_logger->set_level(spdlog::level::trace);
     spdlog::register_logger(rg_logger);
     spdlog::set_default_logger(rg_logger);
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     initialise_logging();
     spdlog::debug("Starting Rota Generator");

@@ -54,7 +54,20 @@ QVariant RotasModel::data(const QModelIndex& index, int role) const
     if (!index.isValid())
         return QVariant();
 
-    // FIXME: Implement me!
+    if (role == Qt::DisplayRole)
+    {
+        auto       id = index.row() + 1;
+        const auto r  = mediator->getRota(id);
+        switch (index.column())
+        {
+            case 0:
+                return r.get_id();
+            case 1:
+                return QString::fromUtf8(r.get_label().c_str());
+            case 2:
+                return QString::fromUtf8(r.get_description().c_str());
+        }
+    }
     return QVariant();
 }
 

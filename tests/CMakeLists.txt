@@ -1,4 +1,3 @@
-
 add_executable(test_rg)
 
 target_sources(test_rg
@@ -54,4 +53,15 @@ target_compile_definitions(
     HAS_UNCAUGHT_EXCEPTIONS=1
 )
 
+set(ENABLE_COVERAGE ON CACHE INTERNAL "")
+
+add_coverage(test_rg)
+
 catch_discover_tests(test_rg)
+
+coverage_evaluate(test_rg)
+# The coverage report is generated using the following targets:
+# * test_rg
+# * test_rg-gcov
+# * lcov-capture
+# * lcov-genhtml

@@ -25,7 +25,7 @@ constexpr auto data_lbl = "data";    ///> Key of the array in the data file
 template<class T>
 class RotaData
 {
-    public:
+public:
     /// \brief Load from file
     /// \param[in] in Stream to read items from
     ///
@@ -67,7 +67,7 @@ class RotaData
     /// \param value the updated item
     void update(int id, const T& value);
 
-    protected:
+protected:
     nlohmann::json data;           ///< The data array
     int            next_id {1};    ///< Next ID to use
 };

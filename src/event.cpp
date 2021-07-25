@@ -7,10 +7,8 @@ using nlohmann::json;
 
 namespace rg
 {
-
-Event::Event(
-    const nlohmann::json& e
-) : id(e.at("id")),
+Event::Event(const nlohmann::json& e) :
+    id(e.at("id")),
     label(e.at("label")),
     description(e.at("description")),
     volsNeeded(e["volsNeeded"].get<int>())
@@ -35,70 +33,56 @@ Event::Event(
     }
 }
 
-Event& Event::operator=(
-    const Event& e
-)
+Event& Event::operator=(const Event& e)
 {
-    id = e.id;
-    label = e.label;
+    id          = e.id;
+    label       = e.label;
     description = e.description;
-    volsNeeded = e.volsNeeded;
-    volunteers = e.volunteers;
-    day = e.day;
+    volsNeeded  = e.volsNeeded;
+    volunteers  = e.volunteers;
+    day         = e.day;
     return *this;
 }
 
-Event& Event::operator=(
-    const Event&& e
-)
+Event& Event::operator=(const Event&& e)
 {
-    id = std::move(e.id);
-    label = std::move(e.label);
+    id          = std::move(e.id);
+    label       = std::move(e.label);
     description = std::move(e.description);
-    volsNeeded = std::move(e.volsNeeded);
-    volunteers = std::move(e.volunteers);
-    day = std::move(e.day);
+    volsNeeded  = std::move(e.volsNeeded);
+    volunteers  = std::move(e.volunteers);
+    day         = std::move(e.day);
     return *this;
 }
 
-bool Event::operator==(
-    const Event& source
-) const
+bool Event::operator==(const Event& source) const
 {
     return eq(source);
 }
 
-bool Event::operator!=(
-    const Event &source
-) const
+bool Event::operator!=(const Event& source) const
 {
     return !eq(source);
 }
 
-bool Event::eq(
-    const Event& source
-) const
+bool Event::eq(const Event& source) const
 {
-    return label == source.label &&
-           description == source.description &&
-           volsNeeded == source.volsNeeded &&
-           volunteers == source.volunteers &&
-           day == source.day;
+    return label == source.label && description == source.description
+           && volsNeeded == source.volsNeeded && volunteers == source.volunteers
+           && day == source.day;
 }
 
-std::string Event::day_to_string(
-    uint8_t day
-)
+std::string Event::day_to_string(uint8_t day)
 {
-    date::weekday wd(day);
+    date::weekday     wd(day);
     std::stringstream out;
     date::to_stream(out, "%A", wd);
     return out.str();
 }
 
-void Event::add_volunteers(
-    const std::vector<int> &to_add
-)
+// Event and Rota both add and remove data to/from a vector - base class for the
+// two, perhaps?
+void Event::add_volunteers(const std::vector<int>& to_add)
 {
     volunteers.insert(std::end(volunteers), std::begin(to_add), std::end(to_add));
     std::sort(std::begin(volunteers), std::end(volunteers));
@@ -106,20 +90,17 @@ void Event::add_volunteers(
     volunteers.erase(l, std::end(volunteers));
 }
 
-void Event::remove_volunteers(
-    const std::vector<int> &to_remove
-)
+void Event::remove_volunteers(const std::vector<int>& to_remove)
 {
-    auto remove_things = [&to_remove](int i){
+    auto remove_things = [&to_remove](int i) {
         auto l = std::find(std::begin(to_remove), std::end(to_remove), i);
         return l != std::end(to_remove);
     };
 
-    auto l = std::remove_if(std::begin(volunteers), std::end(volunteers),
-                            remove_things);
+    auto l =
+        std::remove_if(std::begin(volunteers), std::end(volunteers), remove_things);
 
     volunteers.erase(l, std::end(volunteers));
-
 }
 
-}
+}    // namespace rg
