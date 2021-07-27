@@ -19,7 +19,7 @@ TEST_CASE("Compare Volunteer", "[Volunteer]")
 
 TEST_CASE("Volunteer To Json", "[Volunteer]")
 {
-    Volunteer a {1, "First", "Last", "Home", "Mobile", "Email"};
+    Volunteer      a {1, "First", "Last", "Home", "Mobile", "Email"};
     nlohmann::json expected {
         {"id", 1},
         {"email", "Email"},
@@ -35,33 +35,28 @@ TEST_CASE("Volunteer To Json", "[Volunteer]")
 
 TEST_CASE("Volunteer From Json", "[Volunteer]")
 {
-    nlohmann::json from {
-        {"id", 1},
-        {"firstName", "First"},
-        {"lastName", "Last"},
-        {"phoneHome", "Home"},
-        {"phoneMobile", "Mobile"},
-        {"email", "Email"}
-    };
+    nlohmann::json from {{"id", 1},
+                         {"firstName", "First"},
+                         {"lastName", "Last"},
+                         {"phoneHome", "Home"},
+                         {"phoneMobile", "Mobile"},
+                         {"email", "Email"}};
 
     Volunteer v;
 
-    SECTION("Assign")
-    {
-        v = from;
-    }
+    SECTION("Assign") { v = from; }
 
-    SECTION("Construct")
-    {
-        v = Volunteer(from);
-    }
+    SECTION("Construct") { v = Volunteer(from); }
 
+    Volunteer vb;
+    vb = v;
     REQUIRE(v.get_id() == 1);
     REQUIRE(v.get_first_name() == "First");
     REQUIRE(v.get_last_name() == "Last");
     REQUIRE(v.get_phone_home() == "Home");
     REQUIRE(v.get_phone_mobile() == "Mobile");
     REQUIRE(v.get_email() == "Email");
+    REQUIRE(v == vb);
 }
 
 TEST_CASE("Volunteer with a Bad Key", "[Volunteer]")
