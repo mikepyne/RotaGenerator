@@ -22,7 +22,7 @@ constexpr auto data_lbl = "data";    ///> Key of the array in the data file
 ///
 /// A data item is a Volunteer or an Event. This template is a collection of
 /// data items.
-template<class T>
+template<typename T>
 class RotaData
 {
 public:
@@ -132,8 +132,8 @@ int RotaData<T>::count() const
     }
     catch (nlohmann::json::type_error& e)
     {
-        return 0;
     }
+    return 0;
 }
 
 template<class T>

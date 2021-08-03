@@ -16,19 +16,11 @@ target_sources(RotaGenerator
     rotasmodel.cpp
     rotasmodel.h
     rotadata.cpp
-    rotadata.h
     volunteer.cpp
-    volunteer.h
     rota.cpp
-    rota.h
-#    rotadetails.cpp
-#    rotadetails.h
     event.cpp
-    event.h
     rgexception.cpp
-    rgexception.h
     mediator.cpp
-    mediator.h
 )
 
 target_link_libraries(

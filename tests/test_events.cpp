@@ -1,11 +1,9 @@
+#include <iostream>
 #include <sstream>
 #include <string_view>
 #include <catch2/catch.hpp>
 
-#include "mock_event.h"
 #include "test_events.h"
-
-#include "rotadata.h"
 
 using Catch::Matchers::Message;
 using namespace rg;
@@ -83,9 +81,9 @@ TEST_CASE("Save Events", "[Events]")
     SECTION("Good save")
     {
         expected
-            << R"({"data":[{"description":"Description","id":1,"label":"label",)"
-            << R"("volsNeeded":1,"volunteers":[1,2]},{"description":"desc","id":2,)"
-            << R"("label":"lbl","volsNeeded":3,"volunteers":[1,2]}]})" << std::endl;
+            << R"({"data":[{"day":8,"description":"Description","id":1,"label":"label",)"
+            << R"("volsNeeded":1,"volunteers":[1,2]},{"day":8,"description":"desc","id":2,)"
+            << R"("label":"lbl","volsNeeded":3,"volunteers":[1,2]}]})";
 
         MockEvent e1(1, "label", "Description", 1, {1, 2});
         MockEvent e2(2, "lbl", "desc", 3, {1, 2});
@@ -100,7 +98,7 @@ TEST_CASE("Save Events", "[Events]")
         events.add(e2);
         events.save(out);
 
-        REQUIRE(out.str() != expected.str());
+        REQUIRE(out.str() == expected.str());
     }
 }
 
@@ -184,4 +182,11 @@ TEST_CASE("Edit an Event", "[Events]")
 
         REQUIRE(events.count() == 2);
     }
+}
+
+TEST_CASE("Count with no data", "[Events]")
+{
+    RotaData<Event> events;
+
+    REQUIRE(events.count() == 0);
 }

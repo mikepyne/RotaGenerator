@@ -15,10 +15,10 @@ TEST_CASE("Compare Rota", "[Rota]")
     Rota b {2, "label", "description", {1, 2}};
     Rota c {3, "NotLabel", "Mismatched description", {3, 4}};
 
-    REQUIRE(a == b);
-    REQUIRE(a != c);
-    REQUIRE_FALSE(a == c);
-    REQUIRE_FALSE(a != b);
+    CHECK(a == b);
+    CHECK(a != c);
+    CHECK_FALSE(a == c);
+    CHECK_FALSE(a != b);
 }
 
 TEST_CASE("Rota to Json", "[Rota]")
@@ -59,13 +59,17 @@ TEST_CASE("Rota From Json", "[Rota]")
                          {"events", {1, 2}}};
 
     Rota r;
+    Rota rb;
     SECTION("Assign")
     {
-        r = from;
+        r  = from;
+        rb = r;
         CHECK(r.get_id() == 1);
         CHECK(r.get_label() == "label");
         CHECK(r.get_description() == "description");
         CHECK(r.get_events() == std::vector<int> {1, 2});
+
+        CHECK(r == rb);
     }
 
     SECTION("Construct")
@@ -100,7 +104,7 @@ TEST_CASE("Missing rota events", "[Rota]")
     }
 }
 
-TEST_CASE("Adding events to a rota", "Rota]")
+TEST_CASE("Adding events to a rota", "[Rota]")
 {
     Rota             r(1, "Label", "A rota", {1, 2});
     std::vector<int> to_add;
@@ -133,5 +137,25 @@ TEST_CASE("Adding events to a rota", "Rota]")
 
         REQUIRE_NOTHROW(r.add_events(to_add));
         REQUIRE(r.get_events() == std::vector<int> {1, 2});
+    }
+}
+
+TEST_CASE("Removing events from a rota", "[Rota]")
+{
+    Rota             r(1, "Label", "A rota", {1, 2, 3});
+    std::vector<int> to_remove;
+
+    SECTION("Remove single event")
+    {
+        to_remove = {1};
+        REQUIRE_NOTHROW(r.remove_events(to_remove));
+        REQUIRE(r.get_events() == std::vector<int> {2, 3});
+    }
+
+    SECTION("Remove multiple events")
+    {
+        to_remove = {1, 3};
+        REQUIRE_NOTHROW(r.remove_events(to_remove));
+        REQUIRE(r.get_events() == std::vector<int> {2});
     }
 }
