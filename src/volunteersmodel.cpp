@@ -5,12 +5,9 @@
 
 namespace rg
 {
-
-QVariant VolunteersModel::headerData(
-    int section,
-    Qt::Orientation orientation,
-    int role
-) const
+QVariant VolunteersModel::headerData(int             section,
+                                     Qt::Orientation orientation,
+                                     int             role) const
 {
     Q_UNUSED(orientation);
 
@@ -24,7 +21,7 @@ QVariant VolunteersModel::headerData(
         switch (section)
         {
             case 0:
-                return"ID";
+                return "ID";
             case 1:
                 return "Name";
             case 2:
@@ -40,32 +37,25 @@ QVariant VolunteersModel::headerData(
     return QVariant();
 }
 
-int VolunteersModel::rowCount(
-    const QModelIndex& parent
-) const
+int VolunteersModel::rowCount(const QModelIndex& parent) const
 {
     Q_UNUSED(parent);
     return mediator->count(Mediator::CountTypes::Volunteers);
 }
 
-int VolunteersModel::columnCount(
-    const QModelIndex& parent
-) const
+int VolunteersModel::columnCount(const QModelIndex& parent) const
 {
     Q_UNUSED(parent);
     return 5;
 }
 
-QVariant VolunteersModel::data(
-    const QModelIndex& index,
-    int role
-) const
+QVariant VolunteersModel::data(const QModelIndex& index, int role) const
 {
     if (role == Qt::DisplayRole)
     {
         // Calculating the ID from the row index might be a bad idea.
-        auto id = index.row() + 1;
-        const auto v = mediator->getVolunteer(id);
+        auto       id = index.row() + 1;
+        const auto v  = mediator->getVolunteer(id);
         switch (index.column())
         {
             case 0:
@@ -85,24 +75,47 @@ QVariant VolunteersModel::data(
     return QVariant();
 }
 
-//bool VolunteersModel::setData(
-//    const QModelIndex& index,
-//    const QVariant& value,
-//    int role
-//)
-//{
-//    Q_UNUSED(index);
-//    Q_UNUSED(value);
-//    Q_UNUSED(role);
-//    return false;
-//}
+bool VolunteersModel::setData(const QModelIndex& index,
+                              const QVariant&    value,
+                              int                role)
+{
+    if (index.isValid() && role == Qt::EditRole)
+    {
+        auto id = index.row() + 1;
+        auto v  = mediator->getVolunteer(id);
 
-//Qt::ItemFlags VolunteersModel::flags(
-//    const QModelIndex& index
-//) const
-//{
-//    Q_UNUSED(index);
-//    return Qt::ItemFlag::ItemIsSelectable;
-//}
+        switch (index.column())
+        {
+            case 1:
+                // set the name
+                break;
+            case 2:
+                v.set_phone_home(value.toString().toStdString());
+                break;
+            case 3:
+                v.set_phone_mobile(value.toString().toStdString());
+                break;
+            case 4:
+                v.set_email(value.toString().toStdString());
+                break;
+            default:
+                break;
+        }
+        // write the edit back to the mediator
+        emit dataChanged(index, index, {Qt::DisplayRole, Qt::EditRole});
+        return true;
+    }
+    return false;
+}
 
-}   // namespace rg
+Qt::ItemFlags VolunteersModel::flags(const QModelIndex& index) const
+{
+    if (!index.isValid())
+    {
+        return Qt::ItemIsEnabled;
+    }
+
+    return QAbstractTableModel::flags(index) | Qt::ItemIsEditable;
+}
+
+}    // namespace rg

@@ -130,3 +130,44 @@ TEST_CASE("Deleting a Rota", "[Rotas]")
         REQUIRE(rotas.count() == 2);
     }
 }
+
+TEST_CASE("Edit a Rota", "[Rotas]")
+{
+    RotaData<Rota> rotas;
+    Rota           r1(1, "label", "description", {1, 2});
+    Rota           r2(2, "lbl", "desc", {2});
+
+    rotas.add(r1);
+    rotas.add(r2);
+
+    REQUIRE(rotas.count() == 2);
+
+    SECTION("Edit Good ID")
+    {
+        Rota to_edit = rotas.at(1);
+
+        to_edit.set_label("New Label");
+        rotas.update(1, to_edit);
+
+        Rota edited = rotas.at(1);
+        REQUIRE(edited.get_label() == "New Label");
+    }
+
+    SECTION("Edit Bad ID")
+    {
+        Rota to_edit(3, "Rota", "A rota", {1, 2});
+
+        REQUIRE_THROWS_MATCHES(rotas.update(3, to_edit),
+                               RGException,
+                               Message("Invalid ID (3)"));
+
+        REQUIRE(rotas.count() == 2);
+    }
+}
+
+TEST_CASE("Rotas with no data", "[Rotas]")
+{
+    RotaData<Rota> rotas;
+
+    REQUIRE(rotas.count() == 0);
+}
