@@ -81,27 +81,28 @@ bool VolunteersModel::setData(const QModelIndex& index,
 {
     if (index.isValid() && role == Qt::EditRole)
     {
-        auto id = index.row() + 1;
-        auto v  = mediator->getVolunteer(id);
+        auto id  = index.row() + 1;
+        auto vol = mediator->getVolunteer(id);
+        auto val = value.toString().toStdString();
 
         switch (index.column())
         {
             case 1:
-                // set the name
+                vol.set_name(val);
                 break;
             case 2:
-                v.set_phone_home(value.toString().toStdString());
+                vol.set_phone_home(val);
                 break;
             case 3:
-                v.set_phone_mobile(value.toString().toStdString());
+                vol.set_phone_mobile(val);
                 break;
             case 4:
-                v.set_email(value.toString().toStdString());
+                vol.set_email(val);
                 break;
             default:
                 break;
         }
-        // write the edit back to the mediator
+        mediator->updateVolunteer(vol);
         emit dataChanged(index, index, {Qt::DisplayRole, Qt::EditRole});
         return true;
     }

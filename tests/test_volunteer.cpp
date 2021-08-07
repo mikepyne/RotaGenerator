@@ -85,9 +85,67 @@ TEST_CASE("Volunteer with a Bad Key", "[Volunteer]")
 
 TEST_CASE("Volunteer's Name", "[Volunteer]")
 {
-    auto v = Volunteer();
-    v.set_first_name("John");
-    v.set_last_name("Smith");
+    auto        v = Volunteer();
+    std::string to_split("John Smith");
+    std::string expected(to_split);
+    std::string expFirst("John");
+    std::string expLast("Smith");
 
-    REQUIRE(v.get_name() == "John Smith");
+    SECTION("Without splitting")
+    {
+        v.set_first_name("John");
+        v.set_last_name("Smith");
+
+        REQUIRE(v.get_name() == expected);
+    }
+
+    SECTION("Split, with no spaces")
+    {
+        to_split = "NoSpacesInMyName";
+        expected = to_split;
+        expFirst = "";
+
+        v.set_name(to_split);
+        REQUIRE(v.get_first_name() == expFirst);
+        REQUIRE(v.get_last_name() == expected);
+    }
+
+    SECTION("Simple split")
+    {
+        to_split = "John Smith";
+
+        v.set_name(to_split);
+        REQUIRE(v.get_first_name() == expFirst);
+        REQUIRE(v.get_last_name() == expLast);
+    }
+
+    SECTION("Double barrelled")
+    {
+        to_split = "John Smith Jones";
+        expLast  = "Smith Jones";
+
+        v.set_name(to_split);
+        REQUIRE(v.get_first_name() == expFirst);
+        REQUIRE(v.get_last_name() == expLast);
+    }
+
+    SECTION("Hyphenated first name")
+    {
+        to_split = "John-Paul Smith";
+        expFirst = "John-Paul";
+
+        v.set_name(to_split);
+        REQUIRE(v.get_first_name() == expFirst);
+        REQUIRE(v.get_last_name() == expLast);
+    }
+
+    SECTION("Hyphenated last name")
+    {
+        to_split = "John Paul-Smith";
+        expLast  = "Paul-Smith";
+
+        v.set_name(to_split);
+        REQUIRE(v.get_first_name() == expFirst);
+        REQUIRE(v.get_last_name() == expLast);
+    }
 }

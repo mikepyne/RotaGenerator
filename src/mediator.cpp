@@ -36,6 +36,12 @@ Volunteer Mediator::getVolunteer(int id)
     return volunteers.at(id);
 }
 
+void Mediator::updateVolunteer(const Volunteer& v)
+{
+    volunteers.update(v.get_id(), v);
+    saveVolunteers(data_path);
+}
+
 Event Mediator::getEvent(int id)
 {
     return events.at(id);
@@ -52,7 +58,7 @@ Rota Mediator::getRota(int id)
 void Mediator::loadVolunteers(std::filesystem::path data_path)
 {
     data_path /= "volunteers.json";
-    std::fstream data(data_path, std::ios::in | std::ios::out | std::ios::app);
+    std::fstream data(data_path, std::ios::in);
 
     if (data.good())
     {
@@ -103,6 +109,25 @@ void Mediator::loadRotas(std::filesystem::path data_path)
         catch (RGException& e)
         {
             spdlog::error("Error loading rotas: {}", e.what());
+            throw e;
+        }
+    }
+}
+
+void Mediator::saveVolunteers(std::filesystem::path data_path)
+{
+    data_path /= "volunteers.json";
+    std::fstream data(data_path, std::ios::out | std::ios::trunc);
+    if (data.good())
+    {
+        spdlog::debug("Opened Volunteers file for saving");
+        try
+        {
+            volunteers.save(data);
+        }
+        catch (RGException& e)
+        {
+            spdlog::error("Error saving volunteers: {}", e.what());
             throw e;
         }
     }

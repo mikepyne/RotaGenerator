@@ -76,7 +76,7 @@
       <item row="0" column="1">
        <widget class="QStackedWidget" name="stack">
         <property name="currentIndex">
-         <number>2</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="volunteersPage">
          <layout class="QGridLayout" name="gridLayout_2">
@@ -105,6 +105,9 @@
             </item>
             <item row="0" column="0" colspan="3">
              <widget class="QTableView" name="volunteersView">
+              <property name="selectionMode">
+               <enum>QAbstractItemView::NoSelection</enum>
+              </property>
               <property name="selectionBehavior">
                <enum>QAbstractItemView::SelectRows</enum>
               </property>
