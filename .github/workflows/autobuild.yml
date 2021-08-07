@@ -50,3 +50,8 @@ jobs:
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
       run: ctest -C ${{env.BUILD_TYPE}}
       
+    - name: Coverage
+      working-directory: ${{github.workspace}}/build
+      run: cmake --build ${{github.workspace}}/build --target test_rg-gcov
+      run: cmake --build ${{github.workspace}}/build --target lcov-capture
+      run: cmake --build ${{github.workspace}}/build --target lcov-genhtml
