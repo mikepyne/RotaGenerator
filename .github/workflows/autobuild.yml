@@ -22,8 +22,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Install Dependencies
-      run: |
-        sudo apt install -y ninja-build doxygen graphviz lcov
+      run: sudo apt install -y ninja-build doxygen graphviz lcov
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
       with:
@@ -52,6 +51,6 @@ jobs:
       
     - name: Coverage
       working-directory: ${{github.workspace}}/build
-      run: cmake --build ${{github.workspace}}/build --target test_rg-gcov
-      run: cmake --build ${{github.workspace}}/build --target lcov-capture
-      run: cmake --build ${{github.workspace}}/build --target lcov-genhtml
+      - run: cmake --build ${{github.workspace}}/build --target test_rg-gcov
+      - run: cmake --build ${{github.workspace}}/build --target lcov-capture
+      - run: cmake --build ${{github.workspace}}/build --target lcov-genhtml
