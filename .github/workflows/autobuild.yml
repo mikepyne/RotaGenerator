@@ -50,7 +50,7 @@ jobs:
       run: ctest -C ${{env.BUILD_TYPE}}
       
     - name: Coverage
-      working-directory: ${{github.workspace}}/build
-      - run: cmake --build ${{github.workspace}}/build --target test_rg-gcov
-      - run: cmake --build ${{github.workspace}}/build --target lcov-capture
-      - run: cmake --build ${{github.workspace}}/build --target lcov-genhtml
+      run: |
+        cmake --build ${{github.workspace}}/build --target test_rg-gcov
+        cmake --build ${{github.workspace}}/build --target lcov-capture
+        cmake --build ${{github.workspace}}/build --target lcov-genhtml
