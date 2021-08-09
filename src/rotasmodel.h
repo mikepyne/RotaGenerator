@@ -18,7 +18,7 @@ class RotasModel : public QAbstractTableModel
 {
     Q_OBJECT
 
-    public:
+public:
     RotasModel() = delete;
 
     /// \brief Construct a model
@@ -26,10 +26,9 @@ class RotasModel : public QAbstractTableModel
     RotasModel(std::shared_ptr<rg::Mediator> m) : mediator(m) {};
 
     /// \brief Get the header for the view
-    QVariant headerData(
-        int             section,
-        Qt::Orientation orientation,
-        int             role = Qt::DisplayRole) const override;
+    QVariant headerData(int             section,
+                        Qt::Orientation orientation,
+                        int             role = Qt::DisplayRole) const override;
 
     /// \brief Number of rows in the model
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;
@@ -38,10 +37,16 @@ class RotasModel : public QAbstractTableModel
     int columnCount(const QModelIndex& parent = QModelIndex()) const override;
 
     /// \brief Get the data for a cell
-    QVariant
-        data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
+    QVariant data(const QModelIndex& index,
+                  int                role = Qt::DisplayRole) const override;
 
-    private:
+    bool setData(const QModelIndex& index,
+                 const QVariant&    value,
+                 int                role = Qt::EditRole) override;
+
+    Qt::ItemFlags flags(const QModelIndex& index) const override;
+
+private:
     std::shared_ptr<rg::Mediator> mediator;
 };
 

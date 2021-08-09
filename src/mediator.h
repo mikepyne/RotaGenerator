@@ -60,6 +60,12 @@ public:
     /// \returns A #rg::Rota object
     Rota getRota(int id);
 
+    /// \brief Update a rota
+    /// \param[in] r The updated rota
+    ///
+    /// Replace the volunteer in the list with this one
+    void updateRota(const Rota& r);
+
 private:
     std::filesystem::path data_path;     ///< Where the data is saved
     RotaData<Volunteer>   volunteers;    ///< The volunteers
@@ -77,6 +83,9 @@ private:
 
     /// \brief Save Volunteers data to file.
     void saveVolunteers(std::filesystem::path data_path);
+
+    /// \brief Save Rotas data to file.
+    void saveRotas(std::filesystem::path data_path);
 };
 
 }    // namespace rg

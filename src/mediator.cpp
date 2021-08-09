@@ -52,6 +52,12 @@ Rota Mediator::getRota(int id)
     return rotas.at(id);
 }
 
+void Mediator::updateRota(const Rota& r)
+{
+    rotas.update(r.get_id(), r);
+    saveRotas(data_path);
+}
+
 //-----------------------------------------------------------------------------
 // Private Methods
 
@@ -129,6 +135,24 @@ void Mediator::saveVolunteers(std::filesystem::path data_path)
         {
             spdlog::error("Error saving volunteers: {}", e.what());
             throw e;
+        }
+    }
+}
+
+void Mediator::saveRotas(std::filesystem::path data_path)
+{
+    data_path /= "rotas.json";
+    std::fstream data(data_path, std::ios::out | std::ios::trunc);
+    if (data.good())
+    {
+        spdlog::debug("Opened rotas file for saving");
+        try
+        {
+            rotas.save(data);
+        }
+        catch (RGException& e)
+        {
+            spdlog::error("Error saving Rotas: {}", e.what());
         }
     }
 }

@@ -71,4 +71,39 @@ QVariant RotasModel::data(const QModelIndex& index, int role) const
     return QVariant();
 }
 
+bool RotasModel::setData(const QModelIndex& index, const QVariant& value, int role)
+{
+    if (index.isValid() && role == Qt::EditRole)
+    {
+        auto id   = index.row() + 1;
+        auto rota = mediator->getRota(id);
+        auto val  = value.toString().toStdString();
+
+        switch (index.column())
+        {
+            case 1:
+                rota.set_label(val);
+                break;
+            case 2:
+                rota.set_description(val);
+            default:
+                break;
+        }
+        mediator->updateRota(rota);
+        emit dataChanged(index, index, {Qt::DisplayRole, Qt::EditRole});
+        return true;
+    }
+    return false;
+}
+
+Qt::ItemFlags RotasModel::flags(const QModelIndex& index) const
+{
+    if (!index.isValid())
+    {
+        return Qt::ItemIsEnabled;
+    }
+
+    return QAbstractTableModel::flags(index) | Qt::ItemIsEditable;
+}
+
 }    // namespace rg
