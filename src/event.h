@@ -129,9 +129,9 @@ public:
     /// \return the number of volunteers
     int get_vols_needed() const { return volsNeeded; };
 
-    /// \brief Set the label for this event
+    /// \brief Set the number of volunteers for this event
     /// \param n the number of volunteers
-    void set_vols_needed(const std::string& n) { label = n; };
+    void set_vols_needed(const int n) { volsNeeded = n; };
 
     /// \brief Get the volunteers for the event
     /// \return the list of IDs of volunteers for the event

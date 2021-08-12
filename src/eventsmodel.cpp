@@ -3,12 +3,9 @@
 
 namespace rg
 {
-
-QVariant EventsModel::headerData(
-    int section,
-    Qt::Orientation orientation,
-    int role
-) const
+QVariant EventsModel::headerData(int             section,
+                                 Qt::Orientation orientation,
+                                 int             role) const
 {
     Q_UNUSED(orientation);
 
@@ -38,32 +35,25 @@ QVariant EventsModel::headerData(
     return QVariant();
 }
 
-int EventsModel::rowCount(
-    const QModelIndex& parent
-) const
+int EventsModel::rowCount(const QModelIndex& parent) const
 {
     Q_UNUSED(parent)
     return mediator->count(Mediator::CountTypes::Events);
 }
 
-int EventsModel::columnCount(
-    const QModelIndex& parent
-) const
+int EventsModel::columnCount(const QModelIndex& parent) const
 {
     Q_UNUSED(parent);
     return 5;
 }
 
-QVariant EventsModel::data(
-    const QModelIndex& index,
-    int role
-) const
+QVariant EventsModel::data(const QModelIndex& index, int role) const
 {
     Q_UNUSED(index);
     if (role == Qt::DisplayRole)
     {
-        auto id = index.row() + 1;
-        const auto e = mediator->getEvent(id);
+        auto       id = index.row() + 1;
+        const auto e  = mediator->getEvent(id);
         switch (index.column())
         {
             case 0:
@@ -86,4 +76,47 @@ QVariant EventsModel::data(
     return QVariant();
 }
 
-}   // namespace rg
+bool EventsModel::setData(const QModelIndex& index, const QVariant& value, int role)
+{
+    if (index.isValid() && role == Qt::EditRole)
+    {
+        auto id    = index.row() + 1;
+        auto event = mediator->getEvent(id);
+        auto val   = value.toString().toStdString();
+
+        switch (index.column())
+        {
+            case 1:
+                event.set_label(val);
+                break;
+            case 2:
+                event.set_description(val);
+                break;
+            case 3:
+                event.set_vols_needed(value.toInt());
+                break;
+            case 4:
+                event.set_day(value.toInt());
+                break;
+            default:
+                break;
+        }
+        // TODO: Add updateEvent to the mediator.
+        //        mediator->updateEvent(event);
+        emit dataChanged(index, index, {Qt::DisplayRole, Qt::EditRole});
+        return true;
+    }
+    return false;
+}
+
+Qt::ItemFlags EventsModel::flags(const QModelIndex& index) const
+{
+    if (!index.isValid())
+    {
+        return Qt::ItemIsEnabled;
+    }
+
+    return QAbstractTableModel::flags(index) | Qt::ItemIsEditable;
+}
+
+}    // namespace rg

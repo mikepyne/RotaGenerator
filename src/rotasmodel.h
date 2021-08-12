@@ -40,10 +40,12 @@ public:
     QVariant data(const QModelIndex& index,
                   int                role = Qt::DisplayRole) const override;
 
+    /// \brief Set the data for a cell
     bool setData(const QModelIndex& index,
                  const QVariant&    value,
                  int                role = Qt::EditRole) override;
 
+    /// \brief Get flags for a given index
     Qt::ItemFlags flags(const QModelIndex& index) const override;
 
 private:

@@ -9,7 +9,6 @@
 
 namespace rg
 {
-
 /// \class EventsModel
 /// \brief Model for displaying Events on a view.
 ///
@@ -22,36 +21,34 @@ public:
 
     /// \brief Construct the model
     /// \param m #rg::Mediator
-    EventsModel(
-        std::shared_ptr<rg::Mediator> m
-    ) : mediator(m) {};
+    EventsModel(std::shared_ptr<rg::Mediator> m) : mediator(m) {};
 
     /// \brief Get the header for the view
-    QVariant headerData(
-        int section,
-        Qt::Orientation orientation,
-        int role = Qt::DisplayRole
-    ) const override;
+    QVariant headerData(int             section,
+                        Qt::Orientation orientation,
+                        int             role = Qt::DisplayRole) const override;
 
     /// \brief Number of rows in the model
-    int rowCount(
-        const QModelIndex& parent = QModelIndex()
-    ) const override;
+    int rowCount(const QModelIndex& parent = QModelIndex()) const override;
 
     /// \brief Number of columns in the model
-    int columnCount(
-        const QModelIndex& parent = QModelIndex()
-    ) const override;
+    int columnCount(const QModelIndex& parent = QModelIndex()) const override;
 
     /// \brief Get the data for a cell
-    QVariant data(
-        const QModelIndex& index,
-        int role = Qt::DisplayRole
-    ) const override;
+    QVariant data(const QModelIndex& index,
+                  int                role = Qt::DisplayRole) const override;
+
+    /// \brief Set the data from a cell
+    bool setData(const QModelIndex& index,
+                 const QVariant&    value,
+                 int                role = Qt::DisplayRole) override;
+
+    /// \brief Get flags for a given index
+    Qt::ItemFlags flags(const QModelIndex& index) const override;
 
 private:
     std::shared_ptr<rg::Mediator> mediator;
 };
 
-} // namespace rg
-#endif // EVENTSMODEL_H
+}    // namespace rg
+#endif    // EVENTSMODEL_H

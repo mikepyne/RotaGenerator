@@ -20,6 +20,19 @@ TEST_CASE("Comparing Events", "[Event]")
     CHECK_FALSE(a != b);
 }
 
+TEST_CASE("Setters and Getters")
+{
+    Event a;
+
+    SECTION("ID")
+    {
+        a.set_id(1);
+
+        REQUIRE(a.get_id() == 1);
+    }
+    // TODO: Add tests for remaining setters/getters
+}
+
 TEST_CASE("Event to Json", "[Event]")
 {
     nlohmann::json expected;
