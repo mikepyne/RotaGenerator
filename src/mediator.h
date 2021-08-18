@@ -10,6 +10,14 @@
 
 namespace rg
 {
+/// \name Filenames
+/// \brief Constants for the filenames.
+/// @{
+constexpr std::string_view vols_fname {"volunteers.json"};
+constexpr std::string_view events_fname {"events.json"};
+constexpr std::string_view rotas_fname {"rotas.json"};
+/// @}
+
 /// \class Mediator
 /// \brief Mediator to manage getting and using events and volunteers.
 ///
@@ -33,7 +41,7 @@ public:
     int count(CountTypes which);
 
     /// \brief Load data
-    void loadData(std::filesystem::path data_path);
+    void loadData(std::filesystem::path dp);
 
     /// \brief Get data for a volunteer
     /// \param[in] id The id of the volunteer
@@ -55,6 +63,12 @@ public:
     /// Will throw Invalid if the ID doesn't exist
     Event getEvent(int id);
 
+    /// \brief Update an event
+    /// \param[in] e The updated event
+    ///
+    /// Replace the event in the list with this one.
+    void updateEvent(const Event& e);
+
     /// \brief Get data for a rota
     /// \param[in] id The id of the rota
     /// \returns A #rg::Rota object
@@ -73,19 +87,22 @@ private:
     RotaData<Rota>        rotas;         ///< The rotas
 
     /// \brief Load the data for the Volunteers list
-    void loadVolunteers(std::filesystem::path data_path);
+    void loadVolunteers();
 
     /// \brief Load the data for the Events list
-    void loadEvents(std::filesystem::path data_path);
+    void loadEvents();
 
     /// \brief Load the Rotas data
-    void loadRotas(std::filesystem::path data_path);
+    void loadRotas();
 
     /// \brief Save Volunteers data to file.
-    void saveVolunteers(std::filesystem::path data_path);
+    void saveVolunteers();
 
     /// \brief Save Rotas data to file.
-    void saveRotas(std::filesystem::path data_path);
+    void saveRotas();
+
+    /// \brief Save Events data to file
+    void saveEvents();
 };
 
 }    // namespace rg
