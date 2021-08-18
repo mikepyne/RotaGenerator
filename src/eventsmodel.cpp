@@ -101,8 +101,7 @@ bool EventsModel::setData(const QModelIndex& index, const QVariant& value, int r
             default:
                 break;
         }
-        // TODO: Add updateEvent to the mediator.
-        //        mediator->updateEvent(event);
+        mediator->updateEvent(event);
         emit dataChanged(index, index, {Qt::DisplayRole, Qt::EditRole});
         return true;
     }

@@ -78,6 +78,7 @@ MainWindow::~MainWindow()
 void MainWindow::on_add_volunteer_clicked()
 {
     spdlog::debug("In the click");
+    volunteers_model.insertRows(volunteers_model.rowCount() + 1, 1, QModelIndex());
     //    VolunteerDlg av;
     //    if (av.exec() == QDialog::Accepted)
     //    {

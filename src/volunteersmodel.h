@@ -46,6 +46,8 @@ public:
     /// \brief Get flags for a given index
     Qt::ItemFlags flags(const QModelIndex& index) const override;
 
+    bool insertRows(int row, int count, const QModelIndex& parent) override;
+
 private:
     std::shared_ptr<rg::Mediator> mediator;
 };

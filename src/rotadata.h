@@ -15,7 +15,7 @@
 
 namespace rg
 {
-constexpr auto data_lbl = "data";    ///> Key of the array in the data file
+constexpr auto data_lbl = "data";    ///< Key of the array in the data file
 
 /// \brief Collection of data items
 /// \tparam T an individual data item

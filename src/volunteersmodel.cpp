@@ -119,4 +119,11 @@ Qt::ItemFlags VolunteersModel::flags(const QModelIndex& index) const
     return QAbstractTableModel::flags(index) | Qt::ItemIsEditable;
 }
 
+bool VolunteersModel::insertRows(int row, int count, const QModelIndex& parent)
+{
+    beginInsertRows(parent, row, row + count - 1);
+    endInsertRows();
+    return true;
+}
+
 }    // namespace rg
