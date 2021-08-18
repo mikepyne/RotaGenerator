@@ -17,6 +17,41 @@ TEST_CASE("Compare Volunteer", "[Volunteer]")
     CHECK_FALSE(a != b);
 }
 
+TEST_CASE("Getters and Setters")
+{
+    Volunteer v;
+
+    SECTION("ID")
+    {
+        v.set_id(1);
+        REQUIRE(v.get_id() == 1);
+    }
+
+    SECTION("First Name")
+    {
+        v.set_first_name("Name");
+        REQUIRE(v.get_first_name() == "Name");
+    }
+
+    SECTION("Last Name")
+    {
+        v.set_last_name("Last");
+        REQUIRE(v.get_last_name() == "Last");
+    }
+
+    SECTION("Phone Home")
+    {
+        v.set_phone_home("Home");
+        REQUIRE(v.get_phone_home() == "Home");
+    }
+
+    SECTION("Phone Mobile")
+    {
+        v.set_phone_mobile("Mobile");
+        REQUIRE(v.get_phone_mobile() == "Mobile");
+    }
+}
+
 TEST_CASE("Volunteer To Json", "[Volunteer]")
 {
     Volunteer      a {1, "First", "Last", "Home", "Mobile", "Email"};

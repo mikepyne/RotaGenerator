@@ -21,6 +21,35 @@ TEST_CASE("Compare Rota", "[Rota]")
     CHECK_FALSE(a != b);
 }
 
+TEST_CASE("Getters and Setter")
+{
+    Rota r;
+
+    SECTION("ID")
+    {
+        r.set_id(1);
+        REQUIRE(r.get_id() == 1);
+    }
+
+    SECTION("Label")
+    {
+        r.set_label("A Label");
+        REQUIRE(r.get_label() == "A Label");
+    }
+
+    SECTION("Description")
+    {
+        r.set_description("The description");
+        REQUIRE(r.get_description() == "The description");
+    }
+
+    SECTION("Events")
+    {
+        r.set_events({3, 4});
+        REQUIRE(r.get_events() == std::vector<int> {3, 4});
+    }
+}
+
 TEST_CASE("Rota to Json", "[Rota]")
 {
     nlohmann::json expected;

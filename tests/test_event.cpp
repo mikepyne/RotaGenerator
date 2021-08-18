@@ -27,10 +27,26 @@ TEST_CASE("Setters and Getters")
     SECTION("ID")
     {
         a.set_id(1);
-
         REQUIRE(a.get_id() == 1);
     }
-    // TODO: Add tests for remaining setters/getters
+
+    SECTION("Label")
+    {
+        a.set_label("A Label");
+        REQUIRE(a.get_label() == "A Label");
+    }
+
+    SECTION("Vols Needed")
+    {
+        a.set_vols_needed(1);
+        REQUIRE(a.get_vols_needed() == 1);
+    }
+
+    SECTION("Volunteers")
+    {
+        a.set_volunteers({1, 2});
+        REQUIRE(a.get_volunteers() == std::vector<int> {1, 2});
+    }
 }
 
 TEST_CASE("Event to Json", "[Event]")
