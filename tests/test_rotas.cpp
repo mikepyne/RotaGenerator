@@ -171,3 +171,35 @@ TEST_CASE("Rotas with no data", "[Rotas]")
 
     REQUIRE(rotas.count() == 0);
 }
+
+TEST_CASE("Next ID", "[Rotas]")
+{
+    RotaData<Rota>    rotas;
+    std::stringstream in;
+
+    Rota r2;
+    r2.set_label("New Label");
+    r2.set_description("A description");
+    r2.set_events({1, 2});
+
+    in << R"({"data":[{"id":10,"label":"A Label","description":"A Description")"
+          R"(,"events":[1]}]})";
+
+    rotas.load(in);
+    CHECK(rotas.count() == 1);
+
+    rotas.add(r2);
+    CHECK(rotas.count() == 2);
+    REQUIRE(r2.get_id() == 11);
+
+    std::stringstream out;
+
+    rotas.save(out);
+
+    auto expected =
+        R"({"data":[{"description":"A Description","events":[1],"id":10,)"
+        R"("label":"A Label"},{"description":"A description","events":[1,2],)"
+        R"("id":11,"label":"New Label"}]})";
+
+    REQUIRE(out.str() == expected);
+}
