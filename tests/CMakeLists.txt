@@ -24,11 +24,13 @@ target_sources(test_rg
     test_rotas.h
     test_mediator.cpp
     test_mediator.h
-    $<TARGET_OBJECTS:rg_objects>
+    ${CMAKE_SOURCE_DIR}/src/rotadata.cpp
+    ${CMAKE_SOURCE_DIR}/src/volunteer.cpp
+    ${CMAKE_SOURCE_DIR}/src/rota.cpp
+    ${CMAKE_SOURCE_DIR}/src/event.cpp
+    ${CMAKE_SOURCE_DIR}/src/rgexception.cpp
 )
 
-# Why does the src dir need to be explicitly added, when the rg_objects library
-# exports the include directory?
 target_include_directories(
     test_rg
     PRIVATE
@@ -75,6 +77,11 @@ coverage_evaluate(test_rg)
 # * lcov-capture
 # * lcov-genhtml
 
+add_custom_target(
+    clean_coverage
+    COMMAND find ${PROJECT_BINARY_DIR} -iname *.gcno -delete
+    COMMAND find ${PROJECT_BINARY_DIR} -iname *.gcda -delete
+)
 # Custom command or something to delete coverage files would be useful.
 # find command to delete coverage files:
 # find build-RotaGenerator-Desktop_Qt_5_15_0_GCC_64bit-Debug/ -iname *.gc[nd][oa] -delete

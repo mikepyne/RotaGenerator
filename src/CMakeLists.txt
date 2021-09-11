@@ -1,8 +1,12 @@
-# Object library for files that are shared with the unit tests
-add_library(rg_objects OBJECT)
+# The main executable
+add_executable(RotaGenerator)
 
-target_sources(rg_objects
-    PUBLIC
+target_sources(RotaGenerator
+    PRIVATE
+    main.cpp
+    mainwindow.cpp
+    mainwindow.h
+    mainwindow.ui
     rota.cpp
     rota.h
     rotadata.cpp
@@ -15,41 +19,6 @@ target_sources(rg_objects
     rgexception.h
     mediator.cpp
     mediator.h
-)
-
-target_include_directories(
-    rg_objects
-    PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}
-)
-
-target_link_libraries(
-    rg_objects
-    PRIVATE
-    Qt5::Widgets
-    date::date
-    nlohmann_json::nlohmann_json
-    fmt
-    spdlog::spdlog
-)
-
-# Define HAS_UNCAUGHT_EXCEPTIONS so the date library compiles correctly.
-target_compile_definitions(
-    rg_objects
-    PRIVATE
-    HAS_UNCAUGHT_EXCEPTIONS=1
-)
-
-# The main executable
-add_executable(RotaGenerator)
-
-target_sources(RotaGenerator
-    PRIVATE
-    main.cpp
-    mainwindow.cpp
-    mainwindow.h
-    mainwindow.ui
-    $<TARGET_OBJECTS:rg_objects>
     volunteerdlg.cpp
     volunteerdlg.h
     volunteerdlg.ui
