@@ -9,7 +9,3 @@ set(SPDLOG_BUILD_TESTS OFF CACHE INTERNAL "")
 set(SPDLOG_INSTALL OFF CACHE INTERNAL "")
 
 FetchContent_MakeAvailable(spdlog)
-
-include_directories(
-    "${spdlog_SOURCE_DIR}/include"
-)

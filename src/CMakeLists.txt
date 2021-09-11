@@ -1,3 +1,46 @@
+# Object library for files that are shared with the unit tests
+add_library(rg_objects OBJECT)
+
+target_sources(rg_objects
+    PUBLIC
+    rota.cpp
+    rota.h
+    rotadata.cpp
+    rotadata.h
+    volunteer.cpp
+    volunteer.h
+    event.cpp
+    event.h
+    rgexception.cpp
+    rgexception.h
+    mediator.cpp
+    mediator.h
+)
+
+target_include_directories(
+    rg_objects
+    PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+target_link_libraries(
+    rg_objects
+    PRIVATE
+    Qt5::Widgets
+    date::date
+    nlohmann_json::nlohmann_json
+    fmt
+    spdlog::spdlog
+)
+
+# Define HAS_UNCAUGHT_EXCEPTIONS so the date library compiles correctly.
+target_compile_definitions(
+    rg_objects
+    PRIVATE
+    HAS_UNCAUGHT_EXCEPTIONS=1
+)
+
+# The main executable
 add_executable(RotaGenerator)
 
 target_sources(RotaGenerator
@@ -6,21 +49,16 @@ target_sources(RotaGenerator
     mainwindow.cpp
     mainwindow.h
     mainwindow.ui
+    $<TARGET_OBJECTS:rg_objects>
     volunteerdlg.cpp
     volunteerdlg.h
     volunteerdlg.ui
-    volunteersmodel.cpp
-    volunteersmodel.h
     eventsmodel.cpp
     eventsmodel.h
     rotasmodel.cpp
-    rotasmodel.h
-    rotadata.cpp
-    volunteer.cpp
-    rota.cpp
-    event.cpp
-    rgexception.cpp
-    mediator.cpp
+    rotasmodel.cpp
+    volunteersmodel.cpp
+    volunteersmodel.h
 )
 
 target_link_libraries(
@@ -29,6 +67,8 @@ target_link_libraries(
     Qt5::Widgets
     fmt
     date::date
+    nlohmann_json::nlohmann_json
+    spdlog::spdlog
 )
 
 # Define HAS_UNCAUGHT_EXCEPTIONS so the date library compiles correctly.
@@ -38,6 +78,7 @@ target_compile_definitions(
     HAS_UNCAUGHT_EXCEPTIONS=1
 )
 
+# Documentation
 find_package(Doxygen
     REQUIRED dot)
 
@@ -53,12 +94,15 @@ if(DOXYGEN_FOUND)
         */*.py
         */${json_SOURCE_DIR}/*
         */${spdlog_SOURCE_DIR}/*
-        */${googletest_SOURCE_DIR}/*
+        */${date_SOURCE_DIR}/*
+        */${trompeloeil_SOURCE_DIR}/*
+        */${fmt_SOURCE_DIR}/*
+        */${catch2_SOURCE_DIR}/*
     )
 
     doxygen_add_docs(
         doxygen
-        ${PROJECT_SOURCE_DIR}
+        ${CMAKE_CURRENT_SOURCE_DIR}
     )
 
 else (DOXYGEN_FOUND)

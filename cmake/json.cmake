@@ -13,7 +13,3 @@ set(JSON_MultipleHeaders OFF CACHE INTERNAL "")
 set(JSON_SystemInclude OFF CACHE INTERNAL "")
 
 FetchContent_MakeAvailable(json)
-
-include_directories(
-    "${json_SOURCE_DIR}/include"
-)

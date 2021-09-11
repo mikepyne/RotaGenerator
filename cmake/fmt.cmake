@@ -10,7 +10,3 @@ set(FMT_INSTALL OFF CACHE INTERNAL "")
 set(FMT_TEST OFF CACHE INTERNAL "")
 
 FetchContent_MakeAvailable(fmt)
-
-include_directories(
-    "${fmt_SOURCE_DIR}/include"
-)

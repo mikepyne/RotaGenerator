@@ -13,9 +13,6 @@ set(ENABLE_COVERAGE ON CACHE INTERNAL "")
 
 FetchContent_MakeAvailable(catch2)
 
-include_directories(
-    "${catch2_SOURCE_DIR}/single_include")
-
 # Append the contrib path to the module path list, so the include command can
 # find the custom Catch module.
 list(APPEND

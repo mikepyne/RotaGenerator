@@ -22,27 +22,28 @@ target_sources(test_rg
     test_rota.h
     test_rotas.cpp
     test_rotas.h
-    ${CMAKE_SOURCE_DIR}/src/rotadata.cpp
-    ${CMAKE_SOURCE_DIR}/src/volunteer.cpp
-    ${CMAKE_SOURCE_DIR}/src/rota.cpp
-    ${CMAKE_SOURCE_DIR}/src/event.cpp
-    ${CMAKE_SOURCE_DIR}/src/rgexception.cpp
+    test_mediator.cpp
+    test_mediator.h
+    $<TARGET_OBJECTS:rg_objects>
 )
 
+# Why does the src dir need to be explicitly added, when the rg_objects library
+# exports the include directory?
 target_include_directories(
     test_rg
     PRIVATE
     ${CMAKE_SOURCE_DIR}/src
-    ${spdlog_SOURCE_DIR}/include
-    ${date_src_SOURCE_DIR}/include
 )
 
 target_link_libraries(
     test_rg
     PRIVATE
     Catch2::Catch2
+    trompeloeil
     fmt
     date::date
+    nlohmann_json::nlohmann_json
+    spdlog::spdlog
 )
 
 target_compile_features(
@@ -65,8 +66,15 @@ add_coverage(test_rg)
 catch_discover_tests(test_rg)
 
 coverage_evaluate(test_rg)
+
+# Use a custom command to run the coverage once tests are run?
+
 # The coverage report is generated using the following targets:
 # * test_rg
 # * test_rg-gcov
 # * lcov-capture
 # * lcov-genhtml
+
+# Custom command or something to delete coverage files would be useful.
+# find command to delete coverage files:
+# find build-RotaGenerator-Desktop_Qt_5_15_0_GCC_64bit-Debug/ -iname *.gc[nd][oa] -delete

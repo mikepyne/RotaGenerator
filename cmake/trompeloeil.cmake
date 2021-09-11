@@ -8,6 +8,3 @@ FetchContent_Declare(
 set(TROMPELOEIL_INSTALL_DOCS OFF CACHE INTERNAL "")
 
 FetchContent_MakeAvailable(trompeloeil)
-
-include_directories(
-    "${trompeloeil_SOURCE_DIR}/include/catch2")
